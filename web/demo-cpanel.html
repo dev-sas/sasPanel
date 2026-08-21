@@ -1,0 +1,978 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>sasPanel - cPanel Dashboard Demo</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+		/>
+		<link rel="stylesheet" href="/css/cpanel.css" />
+		<style>
+			body {
+				margin: 0;
+				padding: 0;
+				background-color: #0f172a;
+				color: #f8fafc;
+				font-family:
+					-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+			}
+			.demo-navbar {
+				background: #1e293b;
+				border-bottom: 1px solid #334155;
+				padding: 0.75rem 1.5rem;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+			}
+			.demo-logo {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				font-size: 1.25rem;
+				font-weight: 700;
+				color: #38bdf8;
+				text-decoration: none;
+			}
+			.demo-badge {
+				background: #0284c7;
+				color: #fff;
+				font-size: 0.6875rem;
+				padding: 2px 6px;
+				border-radius: 4px;
+				font-weight: 600;
+			}
+			.demo-nav-tabs {
+				display: flex;
+				gap: 0.5rem;
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+			.demo-nav-link {
+				color: #94a3b8;
+				text-decoration: none;
+				padding: 0.5rem 0.875rem;
+				border-radius: 6px;
+				font-size: 0.875rem;
+				font-weight: 500;
+				display: flex;
+				align-items: center;
+				gap: 0.375rem;
+				transition: all 0.15s ease;
+			}
+			.demo-nav-link:hover,
+			.demo-nav-link.active {
+				background: #334155;
+				color: #f8fafc;
+			}
+			.demo-nav-link.active {
+				background: #2563eb;
+				color: #fff;
+			}
+		</style>
+	</head>
+	<body class="theme-dark">
+		<!-- Top Demo Navbar -->
+		<header class="demo-navbar">
+			<a href="#" class="demo-logo">
+				<i class="fas fa-server"></i>
+				<span>sasPanel</span>
+				<span class="demo-badge">cPanel Edition</span>
+			</a>
+
+			<ul class="demo-nav-tabs">
+				<li>
+					<a href="#" class="demo-nav-link active"><i class="fas fa-grip"></i> Dashboard</a>
+				</li>
+				<li>
+					<a href="#" class="demo-nav-link"><i class="fas fa-users"></i> Users</a>
+				</li>
+				<li>
+					<a href="#" class="demo-nav-link"><i class="fas fa-globe"></i> Web</a>
+				</li>
+				<li>
+					<a href="#" class="demo-nav-link"><i class="fas fa-book-atlas"></i> DNS</a>
+				</li>
+				<li>
+					<a href="#" class="demo-nav-link"><i class="fas fa-envelope"></i> Mail</a>
+				</li>
+				<li>
+					<a href="#" class="demo-nav-link"><i class="fas fa-database"></i> DB</a>
+				</li>
+				<li>
+					<a href="#" class="demo-nav-link"><i class="fas fa-clock"></i> Cron</a>
+				</li>
+				<li>
+					<a href="#" class="demo-nav-link"><i class="fas fa-box-archive"></i> Backup</a>
+				</li>
+			</ul>
+
+			<div style="display: flex; align-items: center; gap: 0.75rem">
+				<div
+					style="
+						display: flex;
+						align-items: center;
+						gap: 0.5rem;
+						background: #0f172a;
+						padding: 0.35rem 0.75rem;
+						border-radius: 9999px;
+						border: 1px solid #334155;
+					"
+				>
+					<i class="fas fa-user-circle" style="color: #38bdf8"></i>
+					<span style="font-size: 0.8125rem; font-weight: 600">devsas</span>
+				</div>
+			</div>
+		</header>
+
+		<div class="cpanel-dashboard-container">
+			<!-- Top Hero & Search Bar -->
+			<div class="cpanel-hero">
+				<div class="cpanel-hero-welcome">
+					<div class="cpanel-hero-avatar">
+						<i class="fas fa-user-shield"></i>
+					</div>
+					<div>
+						<h1 class="cpanel-hero-title">Welcome to your Control Panel, devsas!</h1>
+						<p class="cpanel-hero-subtitle">
+							Manage your websites, domains, databases, emails, and server settings.
+						</p>
+					</div>
+				</div>
+
+				<div class="cpanel-hero-actions">
+					<div class="cpanel-search-wrapper">
+						<i class="fas fa-magnifying-glass cpanel-search-icon"></i>
+						<input
+							type="search"
+							id="cpanelSearchInput"
+							class="cpanel-search-input"
+							placeholder="Search tools, domains, databases, emails..."
+							autocomplete="off"
+							aria-label="Search tools"
+						/>
+						<span class="cpanel-search-badge" title="Press / or Ctrl+K to search">/</span>
+						<button
+							type="button"
+							id="cpanelSearchClear"
+							class="cpanel-search-clear"
+							title="Clear search"
+						>
+							<i class="fas fa-xmark"></i>
+						</button>
+					</div>
+
+					<div class="cpanel-quick-controls">
+						<button
+							type="button"
+							id="cpanelExpandAll"
+							class="cpanel-control-btn"
+							title="Expand all categories"
+						>
+							<i class="fas fa-angles-down"></i>
+							<span>Expand</span>
+						</button>
+						<button
+							type="button"
+							id="cpanelCollapseAll"
+							class="cpanel-control-btn"
+							title="Collapse all categories"
+						>
+							<i class="fas fa-angles-up"></i>
+							<span>Collapse</span>
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Two-Column cPanel Grid Layout -->
+			<div class="cpanel-grid-layout">
+				<!-- Left/Main: Collapsible Category Cards -->
+				<div class="cpanel-main-content">
+					<!-- Empty Search Results Message -->
+					<div id="cpanelNoResults" class="cpanel-no-results">
+						<div class="cpanel-no-results-icon">
+							<i class="fas fa-magnifying-glass"></i>
+						</div>
+						<h3 class="cpanel-no-results-title">No matching tools found</h3>
+						<p class="cpanel-no-results-desc">Please try another keyword or search query.</p>
+						<button
+							type="button"
+							id="cpanelResetSearch"
+							class="cpanel-control-btn"
+							style="background: #2563eb; color: #fff"
+						>
+							<i class="fas fa-rotate-left"></i> Reset Search
+						</button>
+					</div>
+
+					<!-- 1. FILES CATEGORY -->
+					<div class="cpanel-category-card" data-category-id="files">
+						<div class="cpanel-category-header">
+							<div class="cpanel-category-header-left">
+								<div class="cpanel-category-icon cat-icon-files">
+									<i class="fas fa-folder-tree"></i>
+								</div>
+								<h2 class="cpanel-category-title">Files</h2>
+								<span class="cpanel-category-count">6</span>
+							</div>
+							<div class="cpanel-category-toggle">
+								<i class="fas fa-chevron-down"></i>
+							</div>
+						</div>
+						<div class="cpanel-category-body">
+							<div class="cpanel-tools-grid">
+								<a
+									href="/fm/"
+									class="cpanel-tool-item"
+									data-keywords="file manager upload download edit explorer directory htdocs"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-fm">
+										<i class="fas fa-folder-open"></i>
+									</div>
+									<span class="cpanel-tool-name">File Manager</span>
+									<span class="cpanel-tool-desc">Browse and manage files</span>
+								</a>
+
+								<a
+									href="/list/backup/"
+									class="cpanel-tool-item"
+									data-keywords="backups restore download archive snapshots tar zip"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-backup">
+										<i class="fas fa-box-archive"></i>
+									</div>
+									<span class="cpanel-tool-name">Backups</span>
+									<span class="cpanel-tool-desc">Create & restore backups</span>
+								</a>
+
+								<a
+									href="/list/backup/exclusions/"
+									class="cpanel-tool-item"
+									data-keywords="backup exclusions ignore filter exclude"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-backup">
+										<i class="fas fa-filter"></i>
+									</div>
+									<span class="cpanel-tool-name">Backup Exclusions</span>
+									<span class="cpanel-tool-desc">Configure ignored paths</span>
+								</a>
+
+								<a
+									href="/list/terminal/"
+									class="cpanel-tool-item"
+									data-keywords="terminal console ssh shell bash command line"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-terminal">
+										<i class="fas fa-terminal"></i>
+									</div>
+									<span class="cpanel-tool-name">Web Terminal</span>
+									<span class="cpanel-tool-desc">In-browser SSH console</span>
+								</a>
+
+								<a
+									href="/list/web/"
+									class="cpanel-tool-item"
+									data-keywords="ftp accounts credentials sftp file transfer upload"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-fm">
+										<i class="fas fa-network-wired"></i>
+									</div>
+									<span class="cpanel-tool-name">FTP Accounts</span>
+									<span class="cpanel-tool-desc">Manage FTP / SFTP users</span>
+								</a>
+
+								<a
+									href="/list/server/?disk"
+									class="cpanel-tool-item"
+									data-keywords="disk usage quota space storage analyzer"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-disk">
+										<i class="fas fa-hard-drive"></i>
+									</div>
+									<span class="cpanel-tool-name">Disk Usage</span>
+									<span class="cpanel-tool-desc">Inspect storage consumption</span>
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<!-- 2. DOMAINS & WEB CATEGORY -->
+					<div class="cpanel-category-card" data-category-id="domains">
+						<div class="cpanel-category-header">
+							<div class="cpanel-category-header-left">
+								<div class="cpanel-category-icon cat-icon-domains">
+									<i class="fas fa-earth-americas"></i>
+								</div>
+								<h2 class="cpanel-category-title">Domains & Web</h2>
+								<span class="cpanel-category-count">7</span>
+							</div>
+							<div class="cpanel-category-toggle">
+								<i class="fas fa-chevron-down"></i>
+							</div>
+						</div>
+						<div class="cpanel-category-body">
+							<div class="cpanel-tools-grid">
+								<a
+									href="/list/web/"
+									class="cpanel-tool-item"
+									data-keywords="web domains sites virtualhosts vhosts apache nginx aliases"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-web">
+										<i class="fas fa-globe"></i>
+									</div>
+									<span class="cpanel-tool-name">Web Domains</span>
+									<span class="cpanel-tool-desc">Manage websites & aliases</span>
+								</a>
+
+								<a
+									href="/add/web/"
+									class="cpanel-tool-item"
+									data-keywords="add domain new website create host domain"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-web">
+										<i class="fas fa-circle-plus"></i>
+									</div>
+									<span class="cpanel-tool-name">Add Domain</span>
+									<span class="cpanel-tool-desc">Create new web domain</span>
+								</a>
+
+								<a
+									href="/list/dns/"
+									class="cpanel-tool-item"
+									data-keywords="dns zone editor records a mx cname txt ns bind named"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-dns">
+										<i class="fas fa-book-atlas"></i>
+									</div>
+									<span class="cpanel-tool-name">Zone Editor</span>
+									<span class="cpanel-tool-desc">DNS zones & records</span>
+								</a>
+
+								<a
+									href="/add/dns/"
+									class="cpanel-tool-item"
+									data-keywords="add dns new zone domain name servers"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-dns">
+										<i class="fas fa-plus-circle"></i>
+									</div>
+									<span class="cpanel-tool-name">Add DNS Zone</span>
+									<span class="cpanel-tool-desc">Create custom DNS zone</span>
+								</a>
+
+								<a
+									href="/list/ssl/"
+									class="cpanel-tool-item"
+									data-keywords="ssl tls lets encrypt certificates https secure certs"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-ssl">
+										<i class="fas fa-shield-halved"></i>
+									</div>
+									<span class="cpanel-tool-name">SSL/TLS Status</span>
+									<span class="cpanel-tool-desc">Let's Encrypt & certs</span>
+								</a>
+
+								<a
+									href="/list/webapps/"
+									class="cpanel-tool-item"
+									data-keywords="wordpress quick install web apps joomla drupal phpbb nodejs"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-app">
+										<i class="fas fa-cubes"></i>
+									</div>
+									<span class="cpanel-tool-name">Web Apps / WordPress</span>
+									<span class="cpanel-tool-desc">1-Click App Installer</span>
+								</a>
+
+								<a
+									href="/list/web-log/"
+									class="cpanel-tool-item"
+									data-keywords="web logs access error logs visitor traffic nginx apache"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-logs">
+										<i class="fas fa-file-lines"></i>
+									</div>
+									<span class="cpanel-tool-name">Access & Error Logs</span>
+									<span class="cpanel-tool-desc">Live web server logs</span>
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<!-- 3. DATABASES CATEGORY -->
+					<div class="cpanel-category-card" data-category-id="databases">
+						<div class="cpanel-category-header">
+							<div class="cpanel-category-header-left">
+								<div class="cpanel-category-icon cat-icon-databases">
+									<i class="fas fa-database"></i>
+								</div>
+								<h2 class="cpanel-category-title">Databases</h2>
+								<span class="cpanel-category-count">3</span>
+							</div>
+							<div class="cpanel-category-toggle">
+								<i class="fas fa-chevron-down"></i>
+							</div>
+						</div>
+						<div class="cpanel-category-body">
+							<div class="cpanel-tools-grid">
+								<a
+									href="/list/db/"
+									class="cpanel-tool-item"
+									data-keywords="mysql databases mariadb db sql users tables postgresql"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-db">
+										<i class="fas fa-database"></i>
+									</div>
+									<span class="cpanel-tool-name">MySQL Databases</span>
+									<span class="cpanel-tool-desc">Manage DBs & users</span>
+								</a>
+
+								<a
+									href="/add/db/"
+									class="cpanel-tool-item"
+									data-keywords="add database new mysql mariadb create db user"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-db">
+										<i class="fas fa-folder-plus"></i>
+									</div>
+									<span class="cpanel-tool-name">Add Database</span>
+									<span class="cpanel-tool-desc">Create new database</span>
+								</a>
+
+								<a
+									href="/phpmyadmin/"
+									target="_blank"
+									rel="noopener"
+									class="cpanel-tool-item"
+									data-keywords="phpmyadmin pma sql query export import table database admin"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-pma">
+										<i class="fas fa-table-columns"></i>
+									</div>
+									<span class="cpanel-tool-name">phpMyAdmin</span>
+									<span class="cpanel-tool-desc">Web database manager</span>
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<!-- 4. EMAIL CATEGORY -->
+					<div class="cpanel-category-card" data-category-id="email">
+						<div class="cpanel-category-header">
+							<div class="cpanel-category-header-left">
+								<div class="cpanel-category-icon cat-icon-email">
+									<i class="fas fa-envelope"></i>
+								</div>
+								<h2 class="cpanel-category-title">Email</h2>
+								<span class="cpanel-category-count">4</span>
+							</div>
+							<div class="cpanel-category-toggle">
+								<i class="fas fa-chevron-down"></i>
+							</div>
+						</div>
+						<div class="cpanel-category-body">
+							<div class="cpanel-tools-grid">
+								<a
+									href="/list/mail/"
+									class="cpanel-tool-item"
+									data-keywords="email accounts mail inbox mailbox imap pop3 smtp"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-mail">
+										<i class="fas fa-envelope-open-text"></i>
+									</div>
+									<span class="cpanel-tool-name">Email Accounts</span>
+									<span class="cpanel-tool-desc">Manage mailboxes & quotas</span>
+								</a>
+
+								<a
+									href="/add/mail/"
+									class="cpanel-tool-item"
+									data-keywords="add mail domain new email address create"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-mail">
+										<i class="fas fa-plus-circle"></i>
+									</div>
+									<span class="cpanel-tool-name">Add Mail Domain</span>
+									<span class="cpanel-tool-desc">Setup new email domain</span>
+								</a>
+
+								<a
+									href="/webmail/"
+									target="_blank"
+									rel="noopener"
+									class="cpanel-tool-item"
+									data-keywords="webmail roundcube snappymail rainloop read email inbox"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-webmail">
+										<i class="fas fa-inbox"></i>
+									</div>
+									<span class="cpanel-tool-name">Webmail</span>
+									<span class="cpanel-tool-desc">Access Roundcube / Webmail</span>
+								</a>
+
+								<a
+									href="/list/mail-dns/"
+									class="cpanel-tool-item"
+									data-keywords="mail dns dkim spf dmarc spam authentication records"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-mail">
+										<i class="fas fa-shield-cat"></i>
+									</div>
+									<span class="cpanel-tool-name">Mail DNS & DKIM</span>
+									<span class="cpanel-tool-desc">SPF, DKIM & deliverability</span>
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<!-- 5. METRICS & MONITORING CATEGORY -->
+					<div class="cpanel-category-card" data-category-id="metrics">
+						<div class="cpanel-category-header">
+							<div class="cpanel-category-header-left">
+								<div class="cpanel-category-icon cat-icon-metrics">
+									<i class="fas fa-chart-pie"></i>
+								</div>
+								<h2 class="cpanel-category-title">Metrics & Logs</h2>
+								<span class="cpanel-category-count">4</span>
+							</div>
+							<div class="cpanel-category-toggle">
+								<i class="fas fa-chevron-down"></i>
+							</div>
+						</div>
+						<div class="cpanel-category-body">
+							<div class="cpanel-tools-grid">
+								<a
+									href="/list/stats/"
+									class="cpanel-tool-item"
+									data-keywords="statistics analytics visitors awstats bandwidth traffic chart"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-stats">
+										<i class="fas fa-chart-line"></i>
+									</div>
+									<span class="cpanel-tool-name">Web Statistics</span>
+									<span class="cpanel-tool-desc">Visitor analytics & traffic</span>
+								</a>
+
+								<a
+									href="/list/rrd/"
+									class="cpanel-tool-item"
+									data-keywords="rrd graphs health monitoring cpu ram load bandwidth server status"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-stats">
+										<i class="fas fa-chart-area"></i>
+									</div>
+									<span class="cpanel-tool-name">System Health (RRD)</span>
+									<span class="cpanel-tool-desc">CPU, RAM & Network Graphs</span>
+								</a>
+
+								<a
+									href="/list/log/"
+									class="cpanel-tool-item"
+									data-keywords="activity logs history audit trail actions events"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-logs">
+										<i class="fas fa-clock-rotate-left"></i>
+									</div>
+									<span class="cpanel-tool-name">Activity Logs</span>
+									<span class="cpanel-tool-desc">Recent account actions</span>
+								</a>
+
+								<a
+									href="/list/log/auth/"
+									class="cpanel-tool-item"
+									data-keywords="auth logs login failed attempts security audit ip"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-logs">
+										<i class="fas fa-fingerprint"></i>
+									</div>
+									<span class="cpanel-tool-name">Auth Logs</span>
+									<span class="cpanel-tool-desc">Login audit & history</span>
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<!-- 6. SECURITY & ACCESS CATEGORY -->
+					<div class="cpanel-category-card" data-category-id="security">
+						<div class="cpanel-category-header">
+							<div class="cpanel-category-header-left">
+								<div class="cpanel-category-icon cat-icon-security">
+									<i class="fas fa-shield-halved"></i>
+								</div>
+								<h2 class="cpanel-category-title">Security & Access</h2>
+								<span class="cpanel-category-count">5</span>
+							</div>
+							<div class="cpanel-category-toggle">
+								<i class="fas fa-chevron-down"></i>
+							</div>
+						</div>
+						<div class="cpanel-category-body">
+							<div class="cpanel-tools-grid">
+								<a
+									href="/list/key/"
+									class="cpanel-tool-item"
+									data-keywords="ssh keys public key authorized keys rsa ed25519 authentication"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-ssh">
+										<i class="fas fa-key"></i>
+									</div>
+									<span class="cpanel-tool-name">SSH Keys</span>
+									<span class="cpanel-tool-desc">Manage SSH authentication</span>
+								</a>
+
+								<a
+									href="/list/access-key/"
+									class="cpanel-tool-item"
+									data-keywords="api access keys tokens authentication rest automation"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-ssh">
+										<i class="fas fa-id-badge"></i>
+									</div>
+									<span class="cpanel-tool-name">API Access Keys</span>
+									<span class="cpanel-tool-desc">Manage REST API tokens</span>
+								</a>
+
+								<a
+									href="/edit/user/?user=devsas"
+									class="cpanel-tool-item"
+									data-keywords="2fa two factor authentication security otp qr code google authenticator"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-2fa">
+										<i class="fas fa-mobile-screen-button"></i>
+									</div>
+									<span class="cpanel-tool-name">2-Factor Auth (2FA)</span>
+									<span class="cpanel-tool-desc">Secure your account with 2FA</span>
+								</a>
+
+								<a
+									href="/list/firewall/"
+									class="cpanel-tool-item"
+									data-keywords="firewall iptables ufw ports rules block allow security"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-firewall">
+										<i class="fas fa-shield"></i>
+									</div>
+									<span class="cpanel-tool-name">Firewall Rules</span>
+									<span class="cpanel-tool-desc">Port & IP filtering</span>
+								</a>
+
+								<a
+									href="/list/firewall/banlist/"
+									class="cpanel-tool-item"
+									data-keywords="banlist fail2ban blacklists blocked ips brute force"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-firewall">
+										<i class="fas fa-ban"></i>
+									</div>
+									<span class="cpanel-tool-name">IP Ban List</span>
+									<span class="cpanel-tool-desc">Fail2ban blocked clients</span>
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<!-- 7. SERVER & ADVANCED CATEGORY -->
+					<div class="cpanel-category-card" data-category-id="server">
+						<div class="cpanel-category-header">
+							<div class="cpanel-category-header-left">
+								<div class="cpanel-category-icon cat-icon-software">
+									<i class="fas fa-gears"></i>
+								</div>
+								<h2 class="cpanel-category-title">Software & Advanced</h2>
+								<span class="cpanel-category-count">6</span>
+							</div>
+							<div class="cpanel-category-toggle">
+								<i class="fas fa-chevron-down"></i>
+							</div>
+						</div>
+						<div class="cpanel-category-body">
+							<div class="cpanel-tools-grid">
+								<a
+									href="/list/cron/"
+									class="cpanel-tool-item"
+									data-keywords="cron jobs crontab scheduled tasks automation timing schedule"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-cron">
+										<i class="fas fa-clock"></i>
+									</div>
+									<span class="cpanel-tool-name">Cron Jobs</span>
+									<span class="cpanel-tool-desc">Automated scheduled tasks</span>
+								</a>
+
+								<a
+									href="/edit/user/?user=devsas"
+									class="cpanel-tool-item"
+									data-keywords="user profile settings password language theme php preferences"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-users">
+										<i class="fas fa-user-gear"></i>
+									</div>
+									<span class="cpanel-tool-name">User Preferences</span>
+									<span class="cpanel-tool-desc">Password, theme & language</span>
+								</a>
+
+								<a
+									href="/list/user/"
+									class="cpanel-tool-item"
+									data-keywords="user accounts management hosting packages customers clients"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-users">
+										<i class="fas fa-users"></i>
+									</div>
+									<span class="cpanel-tool-name">User Accounts</span>
+									<span class="cpanel-tool-desc">Manage server users & packages</span>
+								</a>
+
+								<a
+									href="/list/server/"
+									class="cpanel-tool-item"
+									data-keywords="server settings config configuration apache nginx php mysql bind"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-server">
+										<i class="fas fa-server"></i>
+									</div>
+									<span class="cpanel-tool-name">Server Settings</span>
+									<span class="cpanel-tool-desc">Core daemon configurations</span>
+								</a>
+
+								<a
+									href="/list/services/"
+									class="cpanel-tool-item"
+									data-keywords="services status daemons restart stop start health"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-server">
+										<i class="fas fa-wave-square"></i>
+									</div>
+									<span class="cpanel-tool-name">Service Status</span>
+									<span class="cpanel-tool-desc">Monitor & restart daemons</span>
+								</a>
+
+								<a
+									href="/list/updates/"
+									class="cpanel-tool-item"
+									data-keywords="updates upgrade packages software patches version"
+								>
+									<div class="cpanel-tool-icon-box tool-icon-server">
+										<i class="fas fa-arrows-rotate"></i>
+									</div>
+									<span class="cpanel-tool-name">System Updates</span>
+									<span class="cpanel-tool-desc">Check and apply upgrades</span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Right/Sidebar: General Info & Resource Usage Statistics -->
+				<div class="cpanel-sidebar">
+					<!-- General Information Card -->
+					<div class="cpanel-sidebar-card">
+						<div class="cpanel-sidebar-header">
+							<h3 class="cpanel-sidebar-title">
+								<i class="fas fa-circle-info" style="color: #38bdf8"></i>
+								General Information
+							</h3>
+						</div>
+						<div class="cpanel-sidebar-body">
+							<ul class="cpanel-info-list">
+								<li class="cpanel-info-row">
+									<span class="cpanel-info-label"> <i class="fas fa-user"></i> Current User </span>
+									<span class="cpanel-info-value">
+										devsas
+										<span class="cpanel-pill-badge badge-admin"> admin </span>
+									</span>
+								</li>
+
+								<li class="cpanel-info-row">
+									<span class="cpanel-info-label"> <i class="fas fa-server"></i> Hostname </span>
+									<span class="cpanel-info-value"> srv.devsas.shop </span>
+								</li>
+
+								<li class="cpanel-info-row">
+									<span class="cpanel-info-label">
+										<i class="fas fa-network-wired"></i> Shared IP
+									</span>
+									<span class="cpanel-info-value"> 192.168.10.78 </span>
+								</li>
+
+								<li class="cpanel-info-row">
+									<span class="cpanel-info-label">
+										<i class="fas fa-folder"></i> Home Directory
+									</span>
+									<span class="cpanel-info-value">
+										<code>/home/devsas</code>
+									</span>
+								</li>
+
+								<li class="cpanel-info-row">
+									<span class="cpanel-info-label"> <i class="fas fa-box"></i> Package Plan </span>
+									<span class="cpanel-info-value"> default </span>
+								</li>
+
+								<li class="cpanel-info-row">
+									<span class="cpanel-info-label">
+										<i class="fas fa-microchip"></i> Server Load
+									</span>
+									<span class="cpanel-info-value"> 0.12, 0.08, 0.05 </span>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<!-- Resource Usage & Statistics Card -->
+					<div class="cpanel-sidebar-card">
+						<div class="cpanel-sidebar-header">
+							<h3 class="cpanel-sidebar-title">
+								<i class="fas fa-chart-simple" style="color: #4ade80"></i>
+								Statistics & Quota
+							</h3>
+						</div>
+						<div class="cpanel-sidebar-body">
+							<div class="cpanel-meters-list">
+								<!-- Disk Usage -->
+								<div class="cpanel-meter-item">
+									<div class="cpanel-meter-header">
+										<span class="cpanel-meter-title">
+											<i class="fas fa-hard-drive"></i> Disk Usage
+										</span>
+										<span class="cpanel-meter-value"> 145 MB / 10,240 MB (1.4%) </span>
+									</div>
+									<div class="cpanel-meter-track">
+										<div
+											class="cpanel-meter-fill fill-green"
+											style="width: 1.4%"
+											data-percentage="1.4"
+										></div>
+									</div>
+								</div>
+
+								<!-- Bandwidth -->
+								<div class="cpanel-meter-item">
+									<div class="cpanel-meter-header">
+										<span class="cpanel-meter-title">
+											<i class="fas fa-right-left"></i> Monthly Bandwidth
+										</span>
+										<span class="cpanel-meter-value"> 450 MB / 50,000 MB (0.9%) </span>
+									</div>
+									<div class="cpanel-meter-track">
+										<div
+											class="cpanel-meter-fill fill-green"
+											style="width: 0.9%"
+											data-percentage="0.9"
+										></div>
+									</div>
+								</div>
+
+								<!-- Web Domains -->
+								<div class="cpanel-meter-item">
+									<div class="cpanel-meter-header">
+										<span class="cpanel-meter-title">
+											<i class="fas fa-globe"></i> Web Domains
+										</span>
+										<span class="cpanel-meter-value"> 1 / ∞ </span>
+									</div>
+									<div class="cpanel-meter-track">
+										<div
+											class="cpanel-meter-fill fill-blue"
+											style="width: 10%"
+											data-percentage="10"
+										></div>
+									</div>
+								</div>
+
+								<!-- MySQL Databases -->
+								<div class="cpanel-meter-item">
+									<div class="cpanel-meter-header">
+										<span class="cpanel-meter-title">
+											<i class="fas fa-database"></i> MySQL Databases
+										</span>
+										<span class="cpanel-meter-value"> 2 / ∞ </span>
+									</div>
+									<div class="cpanel-meter-track">
+										<div
+											class="cpanel-meter-fill fill-blue"
+											style="width: 20%"
+											data-percentage="20"
+										></div>
+									</div>
+								</div>
+
+								<!-- Email Accounts -->
+								<div class="cpanel-meter-item">
+									<div class="cpanel-meter-header">
+										<span class="cpanel-meter-title">
+											<i class="fas fa-envelope"></i> Email Accounts
+										</span>
+										<span class="cpanel-meter-value"> 1 / ∞ </span>
+									</div>
+									<div class="cpanel-meter-track">
+										<div
+											class="cpanel-meter-fill fill-blue"
+											style="width: 10%"
+											data-percentage="10"
+										></div>
+									</div>
+								</div>
+
+								<!-- DNS Zones -->
+								<div class="cpanel-meter-item">
+									<div class="cpanel-meter-header">
+										<span class="cpanel-meter-title">
+											<i class="fas fa-book-atlas"></i> DNS Zones
+										</span>
+										<span class="cpanel-meter-value"> 1 / ∞ </span>
+									</div>
+									<div class="cpanel-meter-track">
+										<div
+											class="cpanel-meter-fill fill-blue"
+											style="width: 10%"
+											data-percentage="10"
+										></div>
+									</div>
+								</div>
+
+								<!-- Cron Jobs -->
+								<div class="cpanel-meter-item">
+									<div class="cpanel-meter-header">
+										<span class="cpanel-meter-title"> <i class="fas fa-clock"></i> Cron Jobs </span>
+										<span class="cpanel-meter-value"> 1 / ∞ </span>
+									</div>
+									<div class="cpanel-meter-track">
+										<div
+											class="cpanel-meter-fill fill-blue"
+											style="width: 10%"
+											data-percentage="10"
+										></div>
+									</div>
+								</div>
+
+								<!-- Backups -->
+								<div class="cpanel-meter-item">
+									<div class="cpanel-meter-header">
+										<span class="cpanel-meter-title">
+											<i class="fas fa-box-archive"></i> Backups
+										</span>
+										<span class="cpanel-meter-value"> 1 / 3 </span>
+									</div>
+									<div class="cpanel-meter-track">
+										<div
+											class="cpanel-meter-fill fill-amber"
+											style="width: 33%"
+											data-percentage="33"
+										></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="/js/custom_scripts/cpanel-dashboard.js"></script>
+	</body>
+</html>

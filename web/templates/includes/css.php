@@ -1,6 +1,7 @@
 <link rel="alternate icon" href="/images/favicon.png" type="image/png">
 <link rel="icon" href="/images/logo.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/css/themes/default.min.css?<?= JS_LATEST_UPDATE ?>">
+<link rel="stylesheet" href="/css/cpanel.css?<?= JS_LATEST_UPDATE ?>">
 
 <?php
 $selected_theme = !empty($_SESSION["userTheme"]) ? $_SESSION["userTheme"] : $_SESSION["THEME"];

@@ -1,54 +1,64 @@
 <?php
-// Calculate usage percentages
-function get_percentage($used, $total) {
-	if ($total === "unlimited" || $total === "0" || empty($total) || !is_numeric($total) || !is_numeric($used)) {
-		return 0;
+// Resolve active user key safely
+$active_user = !empty($_SESSION["look"]) ? $_SESSION["look"] : ($_SESSION["user"] ?? ($user_plain ?? (isset($user) ? trim($user, "'\"") : "admin")));
+$user_data = $panel[$active_user] ?? ($panel[$user_plain] ?? (is_array($panel) ? reset($panel) : []));
+
+if (!function_exists("get_percentage")) {
+	function get_percentage($used, $total) {
+		if ($total === "unlimited" || $total === "0" || empty($total) || !is_numeric($total) || !is_numeric($used)) {
+			return 0;
+		}
+		if ($total <= 0) return 0;
+		return round(($used / $total) * 100, 1);
 	}
-	if ($total <= 0) return 0;
-	return round(($used / $total) * 100, 1);
 }
 
-function get_meter_color($pct) {
-	if ($pct >= 90) return 'fill-red';
-	if ($pct >= 70) return 'fill-amber';
-	return 'fill-green';
+if (!function_exists("get_meter_color")) {
+	function get_meter_color($pct) {
+		if ($pct >= 90) return 'fill-red';
+		if ($pct >= 70) return 'fill-amber';
+		return 'fill-green';
+	}
 }
 
-$u_disk = $panel[$user]["U_DISK"] ?? 0;
-$disk_quota = $panel[$user]["DISK_QUOTA"] ?? "unlimited";
+$u_disk = $user_data["U_DISK"] ?? 0;
+$disk_quota = $user_data["DISK_QUOTA"] ?? "unlimited";
 $disk_pct = get_percentage($u_disk, $disk_quota);
 
-$u_bw = $panel[$user]["U_BANDWIDTH"] ?? 0;
-$bw_quota = $panel[$user]["BANDWIDTH"] ?? "unlimited";
+$u_bw = $user_data["U_BANDWIDTH"] ?? 0;
+$bw_quota = $user_data["BANDWIDTH"] ?? "unlimited";
 $bw_pct = get_percentage($u_bw, $bw_quota);
 
-$u_web = $panel[$user]["U_WEB_DOMAINS"] ?? 0;
-$max_web = $panel[$user]["WEB_DOMAINS"] ?? "unlimited";
+$u_web = $user_data["U_WEB_DOMAINS"] ?? 0;
+$max_web = $user_data["WEB_DOMAINS"] ?? "unlimited";
 $web_pct = get_percentage($u_web, $max_web);
 
-$u_mail = $panel[$user]["U_MAIL_ACCOUNTS"] ?? 0;
-$max_mail = $panel[$user]["MAIL_ACCOUNTS"] ?? "unlimited";
+$u_mail = $user_data["U_MAIL_ACCOUNTS"] ?? 0;
+$max_mail = $user_data["MAIL_ACCOUNTS"] ?? "unlimited";
 $mail_pct = get_percentage($u_mail, $max_mail);
 
-$u_db = $panel[$user]["U_DATABASES"] ?? 0;
-$max_db = $panel[$user]["DATABASES"] ?? "unlimited";
+$u_db = $user_data["U_DATABASES"] ?? 0;
+$max_db = $user_data["DATABASES"] ?? "unlimited";
 $db_pct = get_percentage($u_db, $max_db);
 
-$u_cron = $panel[$user]["U_CRON_JOBS"] ?? 0;
-$max_cron = $panel[$user]["CRON_JOBS"] ?? "unlimited";
+$u_cron = $user_data["U_CRON_JOBS"] ?? 0;
+$max_cron = $user_data["CRON_JOBS"] ?? "unlimited";
 $cron_pct = get_percentage($u_cron, $max_cron);
 
-$u_backup = $panel[$user]["U_BACKUPS"] ?? 0;
-$max_backup = $panel[$user]["BACKUPS"] ?? "unlimited";
+$u_backup = $user_data["U_BACKUPS"] ?? 0;
+$max_backup = $user_data["BACKUPS"] ?? "unlimited";
 $backup_pct = get_percentage($u_backup, $max_backup);
 
-$u_dns = $panel[$user]["U_DNS_DOMAINS"] ?? 0;
-$max_dns = $panel[$user]["DNS_DOMAINS"] ?? "unlimited";
+$u_dns = $user_data["U_DNS_DOMAINS"] ?? 0;
+$max_dns = $user_data["DNS_DOMAINS"] ?? "unlimited";
 $dns_pct = get_percentage($u_dns, $max_dns);
 
 $server_host = $_SERVER['SERVER_NAME'] ?? gethostname();
 $server_ip = $_SERVER['SERVER_ADDR'] ?? get_real_user_ip();
+$display_name = !empty($user_data["NAME"]) ? $user_data["NAME"] : $active_user;
 ?>
+
+<link rel="stylesheet" href="/css/cpanel.css?<?= JS_LATEST_UPDATE ?>">
 
 <div class="cpanel-dashboard-container">
 
@@ -60,7 +70,7 @@ $server_ip = $_SERVER['SERVER_ADDR'] ?? get_real_user_ip();
 			</div>
 			<div>
 				<h1 class="cpanel-hero-title">
-					<?= _("Welcome to your Control Panel") ?>, <?= htmlspecialchars($panel[$user]["NAME"] ?: $user) ?>!
+					<?= _("Welcome to your Control Panel") ?>, <?= htmlspecialchars($display_name) ?>!
 				</h1>
 				<p class="cpanel-hero-subtitle">
 					<?= _("Manage your websites, domains, databases, emails, and server settings.") ?>
@@ -281,7 +291,7 @@ $server_ip = $_SERVER['SERVER_ADDR'] ?? get_real_user_ip();
 							<i class="fas fa-database"></i>
 						</div>
 						<h2 class="cpanel-category-title"><?= _("Databases") ?></h2>
-						<span class="cpanel-category-count"><?= !empty($panel[$user]["DATABASES_PMA"]) ? "3" : "2" ?></span>
+						<span class="cpanel-category-count"><?= !empty($user_data["DATABASES_PMA"]) ? "3" : "2" ?></span>
 					</div>
 					<div class="cpanel-category-toggle">
 						<i class="fas fa-chevron-down"></i>
@@ -460,7 +470,7 @@ $server_ip = $_SERVER['SERVER_ADDR'] ?? get_real_user_ip();
 							<span class="cpanel-tool-desc"><?= _("Manage REST API tokens") ?></span>
 						</a>
 
-						<a href="/edit/user/?user=<?= $user ?>&token=<?= $_SESSION["token"] ?>" class="cpanel-tool-item" data-keywords="2fa two factor authentication security otp qr code google authenticator">
+						<a href="/edit/user/?user=<?= htmlspecialchars($active_user) ?>&token=<?= $_SESSION["token"] ?>" class="cpanel-tool-item" data-keywords="2fa two factor authentication security otp qr code google authenticator">
 							<div class="cpanel-tool-icon-box tool-icon-2fa">
 								<i class="fas fa-mobile-screen-button"></i>
 							</div>
@@ -517,7 +527,7 @@ $server_ip = $_SERVER['SERVER_ADDR'] ?? get_real_user_ip();
 						</a>
 						<?php } ?>
 
-						<a href="/edit/user/?user=<?= $user ?>&token=<?= $_SESSION["token"] ?>" class="cpanel-tool-item" data-keywords="user profile settings password language theme php preferences">
+						<a href="/edit/user/?user=<?= htmlspecialchars($active_user) ?>&token=<?= $_SESSION["token"] ?>" class="cpanel-tool-item" data-keywords="user profile settings password language theme php preferences">
 							<div class="cpanel-tool-icon-box tool-icon-users">
 								<i class="fas fa-user-gear"></i>
 							</div>
@@ -591,7 +601,7 @@ $server_ip = $_SERVER['SERVER_ADDR'] ?? get_real_user_ip();
 								<i class="fas fa-user"></i> <?= _("Current User") ?>
 							</span>
 							<span class="cpanel-info-value">
-								<?= htmlspecialchars($user) ?>
+								<?= htmlspecialchars($active_user) ?>
 								<span class="cpanel-pill-badge <?= $_SESSION["userContext"] === "admin" ? "badge-admin" : "" ?>">
 									<?= htmlspecialchars($_SESSION["userContext"] ?? "user") ?>
 								</span>
@@ -621,17 +631,17 @@ $server_ip = $_SERVER['SERVER_ADDR'] ?? get_real_user_ip();
 								<i class="fas fa-folder"></i> <?= _("Home Directory") ?>
 							</span>
 							<span class="cpanel-info-value">
-								<code>/home/<?= htmlspecialchars($user) ?></code>
+								<code>/home/<?= htmlspecialchars($active_user) ?></code>
 							</span>
 						</li>
 
-						<?php if (!empty($panel[$user]["PACKAGE"])) { ?>
+						<?php if (!empty($user_data["PACKAGE"])) { ?>
 						<li class="cpanel-info-row">
 							<span class="cpanel-info-label">
 								<i class="fas fa-box"></i> <?= _("Package Plan") ?>
 							</span>
 							<span class="cpanel-info-value">
-								<?= htmlspecialchars($panel[$user]["PACKAGE"]) ?>
+								<?= htmlspecialchars($user_data["PACKAGE"]) ?>
 							</span>
 						</li>
 						<?php } ?>
