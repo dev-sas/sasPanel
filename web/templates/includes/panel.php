@@ -55,7 +55,7 @@ $bw_quota_val = $user_info["BANDWIDTH"] ?? "unlimited";
 					<?php if (!($_SESSION["userContext"] === "admin" && $_SESSION["look"] === "admin" && $_SESSION["POLICY_SYSTEM_PROTECTED_ADMIN"] == "yes")) { ?>
 						<a title="<?= _("File Manager") ?>" class="top-bar-quick-btn <?= $TAB == "FM" ? "active" : "" ?>" href="/fm/">
 							<i class="fas fa-folder-open"></i>
-							<span class="u-hide-mobile"><?= _("Files") ?></span>
+							<span class="cp-btn-label"><?= _("Files") ?></span>
 						</a>
 					<?php } ?>
 				<?php } ?>
@@ -64,7 +64,7 @@ $bw_quota_val = $user_info["BANDWIDTH"] ?? "unlimited";
 				<?php if (isset($_SESSION["WEB_TERMINAL"]) && !empty($_SESSION["WEB_TERMINAL"]) && $_SESSION["WEB_TERMINAL"] == "true" && $_SESSION["login_shell"] != "nologin") { ?>
 					<a title="<?= _("Web Terminal") ?>" class="top-bar-quick-btn <?= $TAB == "TERMINAL" ? "active" : "" ?>" href="/list/terminal/">
 						<i class="fas fa-terminal"></i>
-						<span class="u-hide-mobile"><?= _("Terminal") ?></span>
+						<span class="cp-btn-label"><?= _("Terminal") ?></span>
 					</a>
 				<?php } ?>
 
@@ -73,7 +73,7 @@ $bw_quota_val = $user_info["BANDWIDTH"] ?? "unlimited";
 					<?php if ($_SESSION["userContext"] === "admin" && empty($_SESSION["look"])) { ?>
 						<a title="<?= _("WHM Panel") ?>" class="top-bar-quick-btn cp-whm-quick-btn <?= in_array($TAB, ["WHM", "SERVER", "SERVICES"]) ? "active" : "" ?>" href="/list/whm/">
 							<i class="fas fa-server"></i>
-							<span class="u-hide-mobile"><?= _("WHM") ?></span>
+							<span class="cp-btn-label"><?= _("WHM") ?></span>
 						</a>
 					<?php } ?>
 				<?php } ?>
@@ -172,10 +172,12 @@ $bw_quota_val = $user_info["BANDWIDTH"] ?? "unlimited";
 						<div class="cp-user-avatar">
 							<i class="fas <?= $_SESSION["userContext"] === "admin" ? "fa-user-shield" : "fa-user" ?>"></i>
 						</div>
-						<span class="cp-user-name"><?= htmlspecialchars($active_user_plain) ?></span>
-						<span class="cp-user-role-badge <?= $_SESSION["userContext"] === "admin" ? "badge-admin" : "" ?>">
-							<?= htmlspecialchars($_SESSION["userContext"] ?? "user") ?>
-						</span>
+						<div class="cp-user-text-wrap">
+							<span class="cp-user-name"><?= htmlspecialchars($active_user_plain) ?></span>
+							<span class="cp-user-role-badge <?= $_SESSION["userContext"] === "admin" ? "badge-admin" : "" ?>">
+								<?= htmlspecialchars($_SESSION["userContext"] ?? "user") ?>
+							</span>
+						</div>
 					</a>
 
 					<!-- Logout Button -->
