@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>sasPanel - cPanel & WHM Interactive Demo</title>
+		<title>sasPanel - Universal cPanel & WHM Interactive Portal</title>
 		<!-- Font Awesome Icons -->
 		<link
 			rel="stylesheet"
@@ -20,7 +20,7 @@
 			/* ==========================================================================
    sasPanel - Modern cPanel & WHM Theme System
    Includes unified top navigation, cPanel Dashboard, WHM Center,
-   and Global Form/List Modernization for All Sub-Pages.
+   Universal Authentication Portal, and Global Form/List Modernization.
    ========================================================================== */
 
 			/* Google Font Import */
@@ -370,7 +370,325 @@
 			}
 
 			/* ==========================================================================
-   2. Global Sub-Pages Styling (Forms, Lists, Toolbars, Buttons, Cards)
+   2. Universal Ultra-Premium Auth / Login Portal
+   ========================================================================== */
+			body.page-login {
+				background: radial-gradient(circle at 50% 20%, #17233f 0%, #0b0f19 70%) !important;
+				min-height: 100vh;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			body.page-login .app {
+				width: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				min-height: 100vh;
+				padding: 2rem 1rem;
+			}
+
+			body.page-login .login {
+				display: none !important; /* Hide old legacy login container if nested */
+			}
+
+			.cp-auth-wrapper {
+				width: 100%;
+				max-width: 480px;
+				margin: 0 auto;
+				animation: authFadeUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+			}
+
+			@keyframes authFadeUp {
+				from {
+					opacity: 0;
+					transform: translateY(20px) scale(0.98);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0) scale(1);
+				}
+			}
+
+			.cp-auth-card {
+				background: rgba(19, 27, 46, 0.85) !important;
+				backdrop-filter: blur(16px) !important;
+				-webkit-backdrop-filter: blur(16px) !important;
+				border: 1px solid rgba(255, 255, 255, 0.1) !important;
+				border-radius: 20px !important;
+				box-shadow:
+					0 25px 50px -12px rgba(0, 0, 0, 0.7),
+					0 0 40px -10px rgba(37, 99, 235, 0.25) !important;
+				padding: 2.25rem 2.25rem 2rem 2.25rem;
+				color: var(--cp-text-body);
+			}
+
+			.cp-auth-header {
+				text-align: center;
+				margin-bottom: 1.75rem;
+			}
+
+			.cp-auth-logo {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				gap: 0.6rem;
+				margin-bottom: 0.75rem;
+			}
+
+			.cp-auth-logo-icon {
+				font-size: 2rem;
+				color: #38bdf8;
+				filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.5));
+			}
+
+			.cp-auth-brand-name {
+				font-size: 1.85rem;
+				font-weight: 800;
+				color: #38bdf8;
+				letter-spacing: -0.02em;
+			}
+
+			.cp-auth-brand-light {
+				color: #ffffff;
+			}
+
+			.cp-auth-badge-row {
+				margin-bottom: 0.5rem;
+			}
+
+			.cp-auth-edition-badge {
+				display: inline-block;
+				background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+				color: #fff;
+				font-size: 0.72rem;
+				font-weight: 700;
+				padding: 3px 12px;
+				border-radius: 9999px;
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+			}
+
+			.cp-auth-subtitle {
+				color: var(--cp-text-muted);
+				font-size: 0.85rem;
+				margin: 0;
+				line-height: 1.4;
+			}
+
+			.cp-auth-alert {
+				margin-bottom: 1.25rem;
+				padding: 0.75rem 1rem;
+				border-radius: 10px;
+				font-size: 0.825rem;
+				font-weight: 600;
+				display: flex;
+				align-items: center;
+				gap: 0.6rem;
+			}
+
+			.cp-auth-form {
+				display: flex;
+				flex-direction: column;
+				gap: 1.25rem;
+			}
+
+			.cp-auth-field {
+				display: flex;
+				flex-direction: column;
+				gap: 0.45rem;
+			}
+
+			.cp-auth-label {
+				color: var(--cp-text-heading);
+				font-size: 0.8125rem;
+				font-weight: 600;
+				display: flex;
+				align-items: center;
+				gap: 0.4rem;
+			}
+
+			.cp-auth-label-row {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+			}
+
+			.cp-auth-link {
+				color: #38bdf8;
+				font-size: 0.78rem;
+				font-weight: 600;
+				text-decoration: none;
+				transition: color 0.15s ease;
+			}
+
+			.cp-auth-link:hover {
+				color: #7dd3fc;
+				text-decoration: underline;
+			}
+
+			.cp-auth-input-wrap {
+				position: relative;
+				display: flex;
+				align-items: center;
+			}
+
+			.cp-input-icon {
+				position: absolute;
+				left: 1rem;
+				color: var(--cp-text-muted);
+				font-size: 0.95rem;
+				pointer-events: none;
+				transition: color 0.2s ease;
+			}
+
+			.cp-auth-input {
+				width: 100% !important;
+				height: 46px !important;
+				padding: 0 1rem 0 2.75rem !important;
+				background: #0b0f19 !important;
+				border: 1.5px solid var(--cp-border-card) !important;
+				border-radius: 10px !important;
+				color: var(--cp-text-heading) !important;
+				font-size: 0.9rem !important;
+				font-family: inherit !important;
+				outline: none !important;
+				transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+			}
+
+			.cp-auth-input:focus {
+				border-color: var(--cp-primary) !important;
+				background: #0f1629 !important;
+				box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3) !important;
+			}
+
+			.cp-auth-input:focus + .cp-input-icon,
+			.cp-auth-input-wrap:focus-within .cp-input-icon {
+				color: #38bdf8;
+			}
+
+			.cp-pwd-toggle {
+				position: absolute;
+				right: 0.75rem;
+				background: none;
+				border: none;
+				color: var(--cp-text-muted);
+				font-size: 0.95rem;
+				cursor: pointer;
+				padding: 4px 6px;
+				border-radius: 6px;
+				transition: color 0.15s ease;
+			}
+
+			.cp-pwd-toggle:hover {
+				color: #ffffff;
+			}
+
+			.cp-auth-submit-btn {
+				display: flex !important;
+				align-items: center !important;
+				justify-content: center !important;
+				gap: 0.6rem !important;
+				width: 100% !important;
+				height: 46px !important;
+				background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+				border: 1px solid #3b82f6 !important;
+				border-radius: 10px !important;
+				color: #ffffff !important;
+				font-family: var(--cp-font) !important;
+				font-size: 0.925rem !important;
+				font-weight: 700 !important;
+				cursor: pointer !important;
+				transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+				box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
+				margin-top: 0.5rem;
+			}
+
+			.cp-auth-submit-btn:hover {
+				background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%) !important;
+				box-shadow: 0 6px 20px rgba(37, 99, 235, 0.55) !important;
+				transform: translateY(-1px);
+			}
+
+			.cp-auth-submit-btn:active {
+				transform: translateY(1px);
+			}
+
+			.cp-auth-btn-group {
+				display: flex;
+				flex-direction: column;
+				gap: 0.65rem;
+				margin-top: 0.5rem;
+			}
+
+			.cp-auth-back-btn {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 0.4rem;
+				width: 100%;
+				height: 40px;
+				background: #1e293b;
+				border: 1px solid var(--cp-border-card);
+				border-radius: 10px;
+				color: var(--cp-text-muted);
+				font-size: 0.85rem;
+				font-weight: 600;
+				text-decoration: none;
+				transition: all 0.15s ease;
+			}
+
+			.cp-auth-back-btn:hover {
+				background: #334155;
+				color: #ffffff;
+				border-color: var(--cp-border-card-hover);
+			}
+
+			.cp-auth-footer-info {
+				margin-top: 1.75rem;
+				padding-top: 1.25rem;
+				border-top: 1px solid rgba(255, 255, 255, 0.08);
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 0.75rem;
+			}
+
+			.cp-auth-sec-badge {
+				display: flex;
+				align-items: center;
+				gap: 0.4rem;
+				font-size: 0.75rem;
+				color: #10b981;
+				font-weight: 600;
+			}
+
+			.cp-auth-access-hint {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				font-size: 0.72rem;
+				color: var(--cp-text-muted);
+			}
+
+			.cp-hint-pill {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.3rem;
+				background: rgba(11, 15, 25, 0.6);
+				padding: 2px 8px;
+				border-radius: 9999px;
+				border: 1px solid var(--cp-border-card);
+			}
+
+			.cp-hint-divider {
+				color: #475569;
+			}
+
+			/* ==========================================================================
+   3. Global Sub-Pages Styling (Forms, Lists, Toolbars, Buttons, Cards)
    ========================================================================== */
 			.cp-app-content,
 			.app-content {
@@ -573,7 +891,7 @@
 			}
 
 			/* ==========================================================================
-   3. WHM (Web Host Manager) Styles
+   4. WHM (Web Host Manager) Styles
    ========================================================================== */
 			.whm-container {
 				max-width: 1540px;
@@ -1252,7 +1570,7 @@
 			}
 
 			/* ==========================================================================
-   4. cPanel Dashboard Elements (Grid Cards, Tools, Sidebar, Meters)
+   5. cPanel Dashboard Elements (Grid Cards, Tools, Sidebar, Meters)
    ========================================================================== */
 			.cpanel-dashboard-container {
 				max-width: 1540px;
@@ -1916,7 +2234,7 @@
 	</head>
 	<body class="theme-dark">
 		<!-- Top Navigation Header -->
-		<header class="app-header cpanel-header">
+		<header class="app-header cpanel-header" id="mainAppHeader">
 			<div class="top-bar">
 				<div class="container top-bar-inner">
 					<!-- Logo & Stats -->
@@ -1948,14 +2266,10 @@
 
 					<!-- Right Quick Controls -->
 					<div class="top-bar-right">
-						<a title="File Manager" class="top-bar-quick-btn" href="/fm/">
-							<i class="fas fa-folder-open"></i>
-							<span>Files</span>
-						</a>
-						<a title="Web Terminal" class="top-bar-quick-btn" href="/list/terminal/">
-							<i class="fas fa-terminal"></i>
-							<span>Terminal</span>
-						</a>
+						<button type="button" class="top-bar-quick-btn" onclick="switchView('login')">
+							<i class="fas fa-lock"></i>
+							<span>Login Portal</span>
+						</button>
 						<button
 							type="button"
 							class="top-bar-quick-btn cp-whm-quick-btn"
@@ -1971,7 +2285,7 @@
 								<span class="cp-user-name">devsas</span>
 								<span class="cp-user-role-badge badge-admin">admin</span>
 							</div>
-							<a title="Log out" class="cp-logout-btn" href="#"
+							<a title="Sign out" class="cp-logout-btn" href="#" onclick="switchView('login')"
 								><i class="fas fa-right-from-bracket"></i
 							></a>
 						</div>
@@ -2007,51 +2321,14 @@
 							</a>
 						</li>
 						<li class="main-menu-item">
-							<a class="main-menu-item-link cp-nav-link" href="/list/user/">
-								<i class="fas fa-users cp-nav-icon"></i>
-								<span class="cp-nav-text">Users</span>
-								<span class="cp-nav-badge-pill">3</span>
-							</a>
-						</li>
-						<li class="main-menu-item">
-							<a class="main-menu-item-link cp-nav-link" href="/list/web/">
-								<i class="fas fa-globe cp-nav-icon"></i>
-								<span class="cp-nav-text">Web</span>
-								<span class="cp-nav-badge-pill">1</span>
-							</a>
-						</li>
-						<li class="main-menu-item">
-							<a class="main-menu-item-link cp-nav-link" href="/list/dns/">
-								<i class="fas fa-book-atlas cp-nav-icon"></i>
-								<span class="cp-nav-text">DNS</span>
-								<span class="cp-nav-badge-pill">1</span>
-							</a>
-						</li>
-						<li class="main-menu-item">
-							<a class="main-menu-item-link cp-nav-link" href="/list/mail/">
-								<i class="fas fa-envelope cp-nav-icon"></i>
-								<span class="cp-nav-text">Mail</span>
-								<span class="cp-nav-badge-pill">1</span>
-							</a>
-						</li>
-						<li class="main-menu-item">
-							<a class="main-menu-item-link cp-nav-link" href="/list/db/">
-								<i class="fas fa-database cp-nav-icon"></i>
-								<span class="cp-nav-text">DB</span>
-								<span class="cp-nav-badge-pill">2</span>
-							</a>
-						</li>
-						<li class="main-menu-item">
-							<a class="main-menu-item-link cp-nav-link" href="/list/cron/">
-								<i class="fas fa-clock cp-nav-icon"></i>
-								<span class="cp-nav-text">Cron</span>
-							</a>
-						</li>
-						<li class="main-menu-item">
-							<a class="main-menu-item-link cp-nav-link" href="/list/backup/">
-								<i class="fas fa-box-archive cp-nav-icon"></i>
-								<span class="cp-nav-text">Backup</span>
-								<span class="cp-nav-badge-pill">1</span>
+							<a
+								class="main-menu-item-link cp-nav-link"
+								id="tab-login"
+								href="#"
+								onclick="switchView('login')"
+							>
+								<i class="fas fa-arrow-right-to-bracket cp-nav-icon"></i>
+								<span class="cp-nav-text">Universal Sign-In</span>
 							</a>
 						</li>
 					</ul>
@@ -2059,7 +2336,7 @@
 			</nav>
 		</header>
 
-		<main class="app-content cp-app-content">
+		<main class="app-content cp-app-content" id="mainAppContent">
 			<!-- VIEW 1: cPanel User Dashboard View -->
 			<div id="cpanelViewSection">
 				<div class="cpanel-dashboard-container">
@@ -2142,17 +2419,6 @@
 											<span class="cpanel-tool-desc">Create & restore backups</span>
 										</a>
 										<a
-											href="/list/backup/exclusions/"
-											class="cpanel-tool-item"
-											data-keywords="backup exclusions ignore filter exclude"
-										>
-											<div class="cpanel-tool-icon-box tool-icon-backup">
-												<i class="fas fa-filter"></i>
-											</div>
-											<span class="cpanel-tool-name">Backup Exclusions</span>
-											<span class="cpanel-tool-desc">Configure ignored paths</span>
-										</a>
-										<a
 											href="/list/terminal/"
 											class="cpanel-tool-item"
 											data-keywords="terminal console ssh shell bash command line"
@@ -2162,17 +2428,6 @@
 											</div>
 											<span class="cpanel-tool-name">Web Terminal</span>
 											<span class="cpanel-tool-desc">In-browser SSH console</span>
-										</a>
-										<a
-											href="/list/web/"
-											class="cpanel-tool-item"
-											data-keywords="ftp accounts credentials sftp file transfer upload"
-										>
-											<div class="cpanel-tool-icon-box tool-icon-fm">
-												<i class="fas fa-network-wired"></i>
-											</div>
-											<span class="cpanel-tool-name">FTP Accounts</span>
-											<span class="cpanel-tool-desc">Manage FTP / SFTP users</span>
 										</a>
 										<a
 											href="/list/server/?disk"
@@ -2197,7 +2452,7 @@
 											<i class="fas fa-earth-americas"></i>
 										</div>
 										<h2 class="cpanel-category-title">Domains & Web</h2>
-										<span class="cpanel-category-count">7</span>
+										<span class="cpanel-category-count">5</span>
 									</div>
 									<div class="cpanel-category-toggle"><i class="fas fa-chevron-down"></i></div>
 								</div>
@@ -2237,17 +2492,6 @@
 											<span class="cpanel-tool-desc">DNS zones & records</span>
 										</a>
 										<a
-											href="/add/dns/"
-											class="cpanel-tool-item"
-											data-keywords="add dns new zone domain name servers"
-										>
-											<div class="cpanel-tool-icon-box tool-icon-dns">
-												<i class="fas fa-plus-circle"></i>
-											</div>
-											<span class="cpanel-tool-name">Add DNS Zone</span>
-											<span class="cpanel-tool-desc">Create custom DNS zone</span>
-										</a>
-										<a
 											href="/list/ssl/"
 											class="cpanel-tool-item"
 											data-keywords="ssl tls lets encrypt certificates https secure certs"
@@ -2268,17 +2512,6 @@
 											</div>
 											<span class="cpanel-tool-name">Web Apps / WordPress</span>
 											<span class="cpanel-tool-desc">1-Click App Installer</span>
-										</a>
-										<a
-											href="/list/web-log/"
-											class="cpanel-tool-item"
-											data-keywords="web logs access error logs visitor traffic nginx apache"
-										>
-											<div class="cpanel-tool-icon-box tool-icon-logs">
-												<i class="fas fa-file-lines"></i>
-											</div>
-											<span class="cpanel-tool-name">Access & Error Logs</span>
-											<span class="cpanel-tool-desc">Live web server logs</span>
 										</a>
 									</div>
 								</div>
@@ -2335,69 +2568,6 @@
 									</div>
 								</div>
 							</div>
-
-							<!-- 4. EMAIL -->
-							<div class="cpanel-category-card" data-category-id="email">
-								<div class="cpanel-category-header">
-									<div class="cpanel-category-header-left">
-										<div class="cpanel-category-icon cat-icon-email">
-											<i class="fas fa-envelope"></i>
-										</div>
-										<h2 class="cpanel-category-title">Email</h2>
-										<span class="cpanel-category-count">4</span>
-									</div>
-									<div class="cpanel-category-toggle"><i class="fas fa-chevron-down"></i></div>
-								</div>
-								<div class="cpanel-category-body">
-									<div class="cpanel-tools-grid">
-										<a
-											href="/list/mail/"
-											class="cpanel-tool-item"
-											data-keywords="email accounts mail inbox mailbox imap pop3 smtp"
-										>
-											<div class="cpanel-tool-icon-box tool-icon-mail">
-												<i class="fas fa-envelope-open-text"></i>
-											</div>
-											<span class="cpanel-tool-name">Email Accounts</span>
-											<span class="cpanel-tool-desc">Manage mailboxes</span>
-										</a>
-										<a
-											href="/add/mail/"
-											class="cpanel-tool-item"
-											data-keywords="add mail domain new email address create"
-										>
-											<div class="cpanel-tool-icon-box tool-icon-mail">
-												<i class="fas fa-plus-circle"></i>
-											</div>
-											<span class="cpanel-tool-name">Add Mail Domain</span>
-											<span class="cpanel-tool-desc">Setup email domain</span>
-										</a>
-										<a
-											href="/webmail/"
-											target="_blank"
-											class="cpanel-tool-item"
-											data-keywords="webmail roundcube snappymail rainloop read email inbox"
-										>
-											<div class="cpanel-tool-icon-box tool-icon-webmail">
-												<i class="fas fa-inbox"></i>
-											</div>
-											<span class="cpanel-tool-name">Webmail</span>
-											<span class="cpanel-tool-desc">Roundcube / Webmail</span>
-										</a>
-										<a
-											href="/list/mail-dns/"
-											class="cpanel-tool-item"
-											data-keywords="mail dns dkim spf dmarc spam authentication records"
-										>
-											<div class="cpanel-tool-icon-box tool-icon-mail">
-												<i class="fas fa-shield-cat"></i>
-											</div>
-											<span class="cpanel-tool-name">Mail DNS & DKIM</span>
-											<span class="cpanel-tool-desc">SPF & deliverability</span>
-										</a>
-									</div>
-								</div>
-							</div>
 						</div>
 
 						<!-- Right: Sidebar Information & Statistics -->
@@ -2427,12 +2597,6 @@
 												><i class="fas fa-network-wired"></i> Shared IP</span
 											>
 											<span class="cpanel-info-value">192.168.10.78</span>
-										</li>
-										<li class="cpanel-info-row">
-											<span class="cpanel-info-label"
-												><i class="fas fa-folder"></i> Home Directory</span
-											>
-											<span class="cpanel-info-value"><code>/home/devsas</code></span>
 										</li>
 										<li class="cpanel-info-row">
 											<span class="cpanel-info-label"><i class="fas fa-box"></i> Package Plan</span>
@@ -2470,28 +2634,6 @@
 											</div>
 											<div class="cpanel-meter-track">
 												<div class="cpanel-meter-fill fill-green" style="width: 0.9%"></div>
-											</div>
-										</div>
-										<div class="cpanel-meter-item">
-											<div class="cpanel-meter-header">
-												<span class="cpanel-meter-title"
-													><i class="fas fa-globe"></i> Web Domains</span
-												>
-												<span class="cpanel-meter-value">1 / ∞</span>
-											</div>
-											<div class="cpanel-meter-track">
-												<div class="cpanel-meter-fill fill-blue" style="width: 15%"></div>
-											</div>
-										</div>
-										<div class="cpanel-meter-item">
-											<div class="cpanel-meter-header">
-												<span class="cpanel-meter-title"
-													><i class="fas fa-database"></i> MySQL Databases</span
-												>
-												<span class="cpanel-meter-value">2 / ∞</span>
-											</div>
-											<div class="cpanel-meter-track">
-												<div class="cpanel-meter-fill fill-blue" style="width: 25%"></div>
 											</div>
 										</div>
 									</div>
@@ -2698,7 +2840,7 @@
 													<div class="whm-row-actions">
 														<button
 															class="whm-action-btn btn-cpanel-login"
-															onclick="alert('Instant Login as client_alpha into cPanel!')"
+															onclick="switchView('cpanel')"
 														>
 															<i class="fas fa-arrow-right-to-bracket"></i> <span>cPanel</span>
 														</button>
@@ -2741,59 +2883,94 @@
 												<span><i class="fas fa-globe"></i> ∞</span>
 											</div>
 										</div>
-										<div class="whm-pkg-item">
-											<div class="whm-pkg-item-header">
-												<span class="whm-pkg-item-name">starter</span>
-												<i class="fas fa-gear" style="color: #64748b"></i>
-											</div>
-											<div class="whm-pkg-limits">
-												<span><i class="fas fa-hard-drive"></i> 2 GB</span>
-												<span><i class="fas fa-right-left"></i> 10 GB</span>
-												<span><i class="fas fa-globe"></i> 1</span>
-											</div>
-										</div>
 									</div>
 								</div>
 							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-							<div class="whm-card">
-								<div class="whm-card-header">
-									<h3 class="whm-card-title">
-										<i class="fas fa-server icon-green"></i> Server Daemons
-									</h3>
-									<span class="whm-header-link">All</span>
+			<!-- VIEW 3: Universal Sign-In Portal View -->
+			<div id="loginViewSection" style="display: none; padding: 2rem 0">
+				<div class="cp-auth-wrapper">
+					<div class="cp-auth-card">
+						<div class="cp-auth-header">
+							<div class="cp-auth-logo">
+								<i class="fas fa-cubes-stacked cp-auth-logo-icon"></i>
+								<span class="cp-auth-brand-name"
+									>sas<span class="cp-auth-brand-light">Panel</span></span
+								>
+							</div>
+							<div class="cp-auth-badge-row">
+								<span class="cp-auth-edition-badge">cPanel &bull; WHM Universal Portal</span>
+							</div>
+							<p class="cp-auth-subtitle">
+								Sign in to manage your Web Hosting accounts, domains, or WHM server settings.
+							</p>
+						</div>
+
+						<form
+							onsubmit="
+								event.preventDefault();
+								switchView('cpanel');
+							"
+							class="cp-auth-form"
+						>
+							<div class="cp-auth-field">
+								<label for="demo_user" class="cp-auth-label">
+									<i class="fas fa-user-circle"></i> Username or Domain
+								</label>
+								<div class="cp-auth-input-wrap">
+									<i class="fas fa-user cp-input-icon"></i>
+									<input
+										type="text"
+										class="cp-auth-input"
+										id="demo_user"
+										value="devsas"
+										placeholder="Enter your username"
+										required
+									/>
 								</div>
-								<div class="whm-card-body">
-									<div class="whm-services-list">
-										<div class="whm-service-row">
-											<div class="whm-service-info">
-												<span class="whm-service-dot dot-running"></span
-												><span class="whm-service-name">nginx</span>
-											</div>
-											<div class="whm-service-ctrl">
-												<button class="whm-srv-btn"><i class="fas fa-rotate-right"></i></button>
-											</div>
-										</div>
-										<div class="whm-service-row">
-											<div class="whm-service-info">
-												<span class="whm-service-dot dot-running"></span
-												><span class="whm-service-name">php8.2-fpm</span>
-											</div>
-											<div class="whm-service-ctrl">
-												<button class="whm-srv-btn"><i class="fas fa-rotate-right"></i></button>
-											</div>
-										</div>
-										<div class="whm-service-row">
-											<div class="whm-service-info">
-												<span class="whm-service-dot dot-running"></span
-												><span class="whm-service-name">mariadb</span>
-											</div>
-											<div class="whm-service-ctrl">
-												<button class="whm-srv-btn"><i class="fas fa-rotate-right"></i></button>
-											</div>
-										</div>
-									</div>
+							</div>
+
+							<div class="cp-auth-field">
+								<div class="cp-auth-label-row">
+									<label for="demo_password" class="cp-auth-label">
+										<i class="fas fa-lock"></i> Password
+									</label>
+									<a class="cp-auth-link" href="#" onclick="alert('Password reset requested')">
+										Forgot password?
+									</a>
 								</div>
+								<div class="cp-auth-input-wrap">
+									<i class="fas fa-key cp-input-icon"></i>
+									<input
+										type="password"
+										class="cp-auth-input"
+										id="demo_password"
+										value="demo12345"
+										placeholder="Enter your password"
+										required
+									/>
+								</div>
+							</div>
+
+							<button type="submit" class="cp-auth-submit-btn">
+								<span>Sign In to Control Panel</span>
+								<i class="fas fa-arrow-right-to-bracket"></i>
+							</button>
+						</form>
+
+						<div class="cp-auth-footer-info">
+							<div class="cp-auth-sec-badge">
+								<i class="fas fa-shield-halved"></i>
+								<span>256-bit SSL Encrypted & Brute-force Protected</span>
+							</div>
+							<div class="cp-auth-access-hint">
+								<span class="cp-hint-pill"><i class="fas fa-grip"></i> cPanel User</span>
+								<span class="cp-hint-divider">&bull;</span>
+								<span class="cp-hint-pill"><i class="fas fa-server"></i> WHM Root / Reseller</span>
 							</div>
 						</div>
 					</div>
@@ -2881,18 +3058,26 @@
 			function switchView(view) {
 				const cpanelSec = document.getElementById("cpanelViewSection");
 				const whmSec = document.getElementById("whmViewSection");
+				const loginSec = document.getElementById("loginViewSection");
 				const tabCpanel = document.getElementById("tab-cpanel");
 				const tabWhm = document.getElementById("tab-whm");
+				const tabLogin = document.getElementById("tab-login");
+
+				cpanelSec.style.display = "none";
+				whmSec.style.display = "none";
+				loginSec.style.display = "none";
+				tabCpanel.classList.remove("active");
+				tabWhm.classList.remove("active");
+				tabLogin.classList.remove("active");
 
 				if (view === "whm") {
-					cpanelSec.style.display = "none";
 					whmSec.style.display = "block";
-					tabCpanel.classList.remove("active");
 					tabWhm.classList.add("active");
+				} else if (view === "login") {
+					loginSec.style.display = "block";
+					tabLogin.classList.add("active");
 				} else {
 					cpanelSec.style.display = "block";
-					whmSec.style.display = "none";
-					tabWhm.classList.remove("active");
 					tabCpanel.classList.add("active");
 				}
 			}

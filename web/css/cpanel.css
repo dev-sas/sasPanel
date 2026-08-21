@@ -1,7 +1,7 @@
 /* ==========================================================================
    sasPanel - Modern cPanel & WHM Theme System
    Includes unified top navigation, cPanel Dashboard, WHM Center,
-   and Global Form/List Modernization for All Sub-Pages.
+   Universal Authentication Portal, and Global Form/List Modernization.
    ========================================================================== */
 
 /* Google Font Import */
@@ -346,7 +346,325 @@ body {
 }
 
 /* ==========================================================================
-   2. Global Sub-Pages Styling (Forms, Lists, Toolbars, Buttons, Cards)
+   2. Universal Ultra-Premium Auth / Login Portal
+   ========================================================================== */
+body.page-login {
+	background: radial-gradient(circle at 50% 20%, #17233f 0%, #0b0f19 70%) !important;
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+body.page-login .app {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	padding: 2rem 1rem;
+}
+
+body.page-login .login {
+	display: none !important; /* Hide old legacy login container if nested */
+}
+
+.cp-auth-wrapper {
+	width: 100%;
+	max-width: 480px;
+	margin: 0 auto;
+	animation: authFadeUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes authFadeUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px) scale(0.98);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+.cp-auth-card {
+	background: rgba(19, 27, 46, 0.85) !important;
+	backdrop-filter: blur(16px) !important;
+	-webkit-backdrop-filter: blur(16px) !important;
+	border: 1px solid rgba(255, 255, 255, 0.1) !important;
+	border-radius: 20px !important;
+	box-shadow:
+		0 25px 50px -12px rgba(0, 0, 0, 0.7),
+		0 0 40px -10px rgba(37, 99, 235, 0.25) !important;
+	padding: 2.25rem 2.25rem 2rem 2.25rem;
+	color: var(--cp-text-body);
+}
+
+.cp-auth-header {
+	text-align: center;
+	margin-bottom: 1.75rem;
+}
+
+.cp-auth-logo {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.6rem;
+	margin-bottom: 0.75rem;
+}
+
+.cp-auth-logo-icon {
+	font-size: 2rem;
+	color: #38bdf8;
+	filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.5));
+}
+
+.cp-auth-brand-name {
+	font-size: 1.85rem;
+	font-weight: 800;
+	color: #38bdf8;
+	letter-spacing: -0.02em;
+}
+
+.cp-auth-brand-light {
+	color: #ffffff;
+}
+
+.cp-auth-badge-row {
+	margin-bottom: 0.5rem;
+}
+
+.cp-auth-edition-badge {
+	display: inline-block;
+	background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+	color: #fff;
+	font-size: 0.72rem;
+	font-weight: 700;
+	padding: 3px 12px;
+	border-radius: 9999px;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+}
+
+.cp-auth-subtitle {
+	color: var(--cp-text-muted);
+	font-size: 0.85rem;
+	margin: 0;
+	line-height: 1.4;
+}
+
+.cp-auth-alert {
+	margin-bottom: 1.25rem;
+	padding: 0.75rem 1rem;
+	border-radius: 10px;
+	font-size: 0.825rem;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+}
+
+.cp-auth-form {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+}
+
+.cp-auth-field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.45rem;
+}
+
+.cp-auth-label {
+	color: var(--cp-text-heading);
+	font-size: 0.8125rem;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+}
+
+.cp-auth-label-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.cp-auth-link {
+	color: #38bdf8;
+	font-size: 0.78rem;
+	font-weight: 600;
+	text-decoration: none;
+	transition: color 0.15s ease;
+}
+
+.cp-auth-link:hover {
+	color: #7dd3fc;
+	text-decoration: underline;
+}
+
+.cp-auth-input-wrap {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.cp-input-icon {
+	position: absolute;
+	left: 1rem;
+	color: var(--cp-text-muted);
+	font-size: 0.95rem;
+	pointer-events: none;
+	transition: color 0.2s ease;
+}
+
+.cp-auth-input {
+	width: 100% !important;
+	height: 46px !important;
+	padding: 0 1rem 0 2.75rem !important;
+	background: #0b0f19 !important;
+	border: 1.5px solid var(--cp-border-card) !important;
+	border-radius: 10px !important;
+	color: var(--cp-text-heading) !important;
+	font-size: 0.9rem !important;
+	font-family: inherit !important;
+	outline: none !important;
+	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.cp-auth-input:focus {
+	border-color: var(--cp-primary) !important;
+	background: #0f1629 !important;
+	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3) !important;
+}
+
+.cp-auth-input:focus + .cp-input-icon,
+.cp-auth-input-wrap:focus-within .cp-input-icon {
+	color: #38bdf8;
+}
+
+.cp-pwd-toggle {
+	position: absolute;
+	right: 0.75rem;
+	background: none;
+	border: none;
+	color: var(--cp-text-muted);
+	font-size: 0.95rem;
+	cursor: pointer;
+	padding: 4px 6px;
+	border-radius: 6px;
+	transition: color 0.15s ease;
+}
+
+.cp-pwd-toggle:hover {
+	color: #ffffff;
+}
+
+.cp-auth-submit-btn {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	gap: 0.6rem !important;
+	width: 100% !important;
+	height: 46px !important;
+	background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+	border: 1px solid #3b82f6 !important;
+	border-radius: 10px !important;
+	color: #ffffff !important;
+	font-family: var(--cp-font) !important;
+	font-size: 0.925rem !important;
+	font-weight: 700 !important;
+	cursor: pointer !important;
+	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
+	margin-top: 0.5rem;
+}
+
+.cp-auth-submit-btn:hover {
+	background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%) !important;
+	box-shadow: 0 6px 20px rgba(37, 99, 235, 0.55) !important;
+	transform: translateY(-1px);
+}
+
+.cp-auth-submit-btn:active {
+	transform: translateY(1px);
+}
+
+.cp-auth-btn-group {
+	display: flex;
+	flex-direction: column;
+	gap: 0.65rem;
+	margin-top: 0.5rem;
+}
+
+.cp-auth-back-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.4rem;
+	width: 100%;
+	height: 40px;
+	background: #1e293b;
+	border: 1px solid var(--cp-border-card);
+	border-radius: 10px;
+	color: var(--cp-text-muted);
+	font-size: 0.85rem;
+	font-weight: 600;
+	text-decoration: none;
+	transition: all 0.15s ease;
+}
+
+.cp-auth-back-btn:hover {
+	background: #334155;
+	color: #ffffff;
+	border-color: var(--cp-border-card-hover);
+}
+
+.cp-auth-footer-info {
+	margin-top: 1.75rem;
+	padding-top: 1.25rem;
+	border-top: 1px solid rgba(255, 255, 255, 0.08);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.cp-auth-sec-badge {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-size: 0.75rem;
+	color: #10b981;
+	font-weight: 600;
+}
+
+.cp-auth-access-hint {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 0.72rem;
+	color: var(--cp-text-muted);
+}
+
+.cp-hint-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.3rem;
+	background: rgba(11, 15, 25, 0.6);
+	padding: 2px 8px;
+	border-radius: 9999px;
+	border: 1px solid var(--cp-border-card);
+}
+
+.cp-hint-divider {
+	color: #475569;
+}
+
+/* ==========================================================================
+   3. Global Sub-Pages Styling (Forms, Lists, Toolbars, Buttons, Cards)
    ========================================================================== */
 .cp-app-content,
 .app-content {
@@ -549,7 +867,7 @@ select:focus {
 }
 
 /* ==========================================================================
-   3. WHM (Web Host Manager) Styles
+   4. WHM (Web Host Manager) Styles
    ========================================================================== */
 .whm-container {
 	max-width: 1540px;
@@ -1228,7 +1546,7 @@ select:focus {
 }
 
 /* ==========================================================================
-   4. cPanel Dashboard Elements (Grid Cards, Tools, Sidebar, Meters)
+   5. cPanel Dashboard Elements (Grid Cards, Tools, Sidebar, Meters)
    ========================================================================== */
 .cpanel-dashboard-container {
 	max-width: 1540px;
