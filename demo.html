@@ -1,0 +1,1524 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>sasPanel - cPanel Grid Dashboard Preview Demo</title>
+		<!-- Font Awesome Icons -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+		/>
+		<!-- Google Font Inter -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+
+		<style>
+			/* ==========================================================================
+		   CSS Variables & Design Tokens (cPanel Dark/Modern Theme)
+		   ========================================================================== */
+			:root {
+				--font-sans:
+					"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+				--bg-body: #0b0f19;
+				--bg-nav: #131b2e;
+				--bg-card: #131b2e;
+				--bg-card-hover: #1c2640;
+				--bg-input: #0b0f19;
+				--border-color: #1e293b;
+				--border-color-hover: #334155;
+				--text-main: #f8fafc;
+				--text-muted: #94a3b8;
+				--text-dim: #64748b;
+				--primary: #2563eb;
+				--primary-hover: #1d4ed8;
+				--accent: #0284c7;
+				--radius-card: 14px;
+				--radius-tool: 12px;
+				--shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+				--shadow-hover: 0 10px 20px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.2);
+			}
+
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			body {
+				background-color: var(--bg-body);
+				color: var(--text-main);
+				font-family: var(--font-sans);
+				line-height: 1.5;
+				-webkit-font-smoothing: antialiased;
+			}
+
+			/* ==========================================================================
+		   Top Navigation Header (sasPanel Bar)
+		   ========================================================================== */
+			.top-navbar {
+				background: var(--bg-nav);
+				border-bottom: 1px solid var(--border-color);
+				padding: 0.75rem 1.5rem;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				position: sticky;
+				top: 0;
+				z-index: 100;
+				box-shadow: 0 4px 12px rgb(0 0 0 / 0.25);
+			}
+
+			.nav-left {
+				display: flex;
+				align-items: center;
+				gap: 1.5rem;
+			}
+
+			.nav-brand {
+				display: flex;
+				align-items: center;
+				gap: 0.625rem;
+				text-decoration: none;
+				color: #38bdf8;
+				font-size: 1.25rem;
+				font-weight: 800;
+				letter-spacing: -0.02em;
+			}
+
+			.nav-brand span.highlight {
+				color: #fff;
+			}
+
+			.nav-badge {
+				background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+				color: #fff;
+				font-size: 0.6875rem;
+				font-weight: 700;
+				padding: 2px 8px;
+				border-radius: 9999px;
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+			}
+
+			.nav-stats-summary {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				font-size: 0.8125rem;
+				color: var(--text-muted);
+				background: rgba(11, 15, 25, 0.6);
+				padding: 0.35rem 0.875rem;
+				border-radius: 9999px;
+				border: 1px solid var(--border-color);
+			}
+
+			.nav-stats-item {
+				display: flex;
+				align-items: center;
+				gap: 0.375rem;
+			}
+
+			.nav-stats-item i {
+				color: #38bdf8;
+			}
+
+			.nav-tabs {
+				display: flex;
+				align-items: center;
+				gap: 0.375rem;
+				list-style: none;
+			}
+
+			.nav-tab-link {
+				color: var(--text-muted);
+				text-decoration: none;
+				font-size: 0.8125rem;
+				font-weight: 600;
+				padding: 0.5rem 0.875rem;
+				border-radius: 8px;
+				display: flex;
+				align-items: center;
+				gap: 0.4rem;
+				transition: all 0.15s ease;
+			}
+
+			.nav-tab-link:hover {
+				color: var(--text-main);
+				background: #1e293b;
+			}
+
+			.nav-tab-link.active {
+				background: var(--primary);
+				color: #fff;
+				box-shadow: 0 2px 8px rgb(37 99 235 / 0.4);
+			}
+
+			.nav-right {
+				display: flex;
+				align-items: center;
+				gap: 0.875rem;
+			}
+
+			.user-pill {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				background: #1e293b;
+				border: 1px solid var(--border-color);
+				padding: 0.35rem 0.875rem;
+				border-radius: 9999px;
+				font-size: 0.8125rem;
+				font-weight: 600;
+				cursor: pointer;
+			}
+
+			/* ==========================================================================
+		   Main Dashboard Layout
+		   ========================================================================== */
+			.dashboard-wrapper {
+				max-width: 1540px;
+				margin: 0 auto;
+				padding: 1.75rem 1.25rem 4rem 1.25rem;
+			}
+
+			/* Hero Header & Live Search */
+			.hero-box {
+				background: var(--bg-card);
+				border: 1px solid var(--border-color);
+				border-radius: var(--radius-card);
+				padding: 1.25rem 1.5rem;
+				margin-bottom: 1.75rem;
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				justify-content: space-between;
+				gap: 1.25rem;
+				box-shadow: var(--shadow-card);
+			}
+
+			.hero-profile {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+			}
+
+			.hero-avatar {
+				width: 52px;
+				height: 52px;
+				border-radius: 50%;
+				background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+				color: #fff;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 1.5rem;
+				box-shadow: 0 4px 12px rgb(37 99 235 / 0.35);
+				flex-shrink: 0;
+			}
+
+			.hero-heading h1 {
+				font-size: 1.35rem;
+				font-weight: 800;
+				letter-spacing: -0.01em;
+				margin-bottom: 0.15rem;
+			}
+
+			.hero-heading p {
+				color: var(--text-muted);
+				font-size: 0.875rem;
+			}
+
+			.hero-search-area {
+				display: flex;
+				align-items: center;
+				gap: 0.75rem;
+				flex-grow: 1;
+				max-width: 600px;
+			}
+
+			.search-container {
+				position: relative;
+				width: 100%;
+			}
+
+			.search-input {
+				width: 100%;
+				height: 44px;
+				background: var(--bg-input);
+				border: 1.5px solid var(--border-color);
+				border-radius: 9999px;
+				padding: 0 4.5rem 0 2.75rem;
+				font-size: 0.9rem;
+				color: var(--text-main);
+				font-family: inherit;
+				outline: none;
+				transition: all 0.2s ease;
+			}
+
+			.search-input:focus {
+				border-color: var(--primary);
+				background: #101626;
+				box-shadow: 0 0 0 3px rgb(37 99 235 / 0.25);
+			}
+
+			.search-icon {
+				position: absolute;
+				left: 1rem;
+				top: 50%;
+				transform: translateY(-50%);
+				color: var(--text-dim);
+				font-size: 0.95rem;
+				pointer-events: none;
+			}
+
+			.search-shortcut-badge {
+				position: absolute;
+				right: 0.85rem;
+				top: 50%;
+				transform: translateY(-50%);
+				background: #1e293b;
+				border: 1px solid var(--border-color);
+				border-radius: 6px;
+				padding: 2px 7px;
+				font-size: 0.6875rem;
+				font-weight: 700;
+				color: var(--text-muted);
+				pointer-events: none;
+			}
+
+			.btn-pill {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				background: #1e293b;
+				border: 1px solid var(--border-color);
+				color: var(--text-muted);
+				padding: 0.55rem 0.85rem;
+				border-radius: 8px;
+				font-size: 0.8125rem;
+				font-weight: 600;
+				cursor: pointer;
+				transition: all 0.15s ease;
+				white-space: nowrap;
+				user-select: none;
+			}
+
+			.btn-pill:hover {
+				background: #334155;
+				color: var(--text-main);
+			}
+
+			/* Two Column Main Grid */
+			.main-grid {
+				display: grid;
+				grid-template-columns: 1fr 340px;
+				gap: 1.75rem;
+				align-items: start;
+			}
+
+			@media (max-width: 1100px) {
+				.main-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			/* Categories Column */
+			.categories-col {
+				display: flex;
+				flex-direction: column;
+				gap: 1.5rem;
+			}
+
+			/* Category Card */
+			.category-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-color);
+				border-radius: var(--radius-card);
+				overflow: hidden;
+				box-shadow: var(--shadow-card);
+				transition:
+					border-color 0.2s ease,
+					box-shadow 0.2s ease;
+			}
+
+			.category-card:hover {
+				border-color: var(--border-color-hover);
+				box-shadow: var(--shadow-hover);
+			}
+
+			.category-header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 1rem 1.35rem;
+				border-bottom: 1px solid var(--border-color);
+				cursor: pointer;
+				user-select: none;
+				transition: background-color 0.15s ease;
+			}
+
+			.category-header:hover {
+				background-color: var(--bg-card-hover);
+			}
+
+			.cat-title-wrap {
+				display: flex;
+				align-items: center;
+				gap: 0.75rem;
+			}
+
+			.cat-icon-badge {
+				width: 34px;
+				height: 34px;
+				border-radius: 9px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 1rem;
+				flex-shrink: 0;
+			}
+
+			/* Category Gradients */
+			.cat-files {
+				background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+				color: #fff;
+			}
+			.cat-domains {
+				background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+				color: #fff;
+			}
+			.cat-databases {
+				background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+				color: #fff;
+			}
+			.cat-email {
+				background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+				color: #fff;
+			}
+			.cat-metrics {
+				background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+				color: #fff;
+			}
+			.cat-security {
+				background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+				color: #fff;
+			}
+			.cat-software {
+				background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+				color: #fff;
+			}
+
+			.cat-title {
+				font-size: 1.05rem;
+				font-weight: 700;
+				color: var(--text-main);
+			}
+
+			.cat-count {
+				font-size: 0.75rem;
+				font-weight: 600;
+				padding: 2px 8px;
+				border-radius: 9999px;
+				background: #0b0f19;
+				border: 1px solid var(--border-color);
+				color: var(--text-muted);
+			}
+
+			.cat-toggle {
+				width: 28px;
+				height: 28px;
+				border-radius: 6px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: var(--text-muted);
+				transition: transform 0.25s ease;
+			}
+
+			.category-card.collapsed .cat-toggle {
+				transform: rotate(-90deg);
+			}
+
+			.category-card.collapsed .category-body {
+				display: none;
+			}
+
+			.category-body {
+				padding: 1.25rem 1.35rem;
+			}
+
+			/* Tools Responsive Grid */
+			.tools-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+				gap: 1rem;
+			}
+
+			@media (max-width: 640px) {
+				.tools-grid {
+					grid-template-columns: repeat(2, 1fr);
+					gap: 0.75rem;
+				}
+			}
+
+			/* Tool Tile Button */
+			.tool-tile {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				text-align: center;
+				padding: 1.15rem 0.75rem;
+				background: var(--bg-card);
+				border: 1px solid var(--border-color);
+				border-radius: var(--radius-tool);
+				text-decoration: none;
+				color: var(--text-main);
+				transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+				cursor: pointer;
+			}
+
+			.tool-tile:hover {
+				transform: translateY(-3px);
+				border-color: var(--primary);
+				background: var(--bg-card-hover);
+				box-shadow: 0 6px 16px -2px rgb(37 99 235 / 0.25);
+			}
+
+			.tool-icon-wrap {
+				width: 48px;
+				height: 48px;
+				border-radius: 10px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 1.35rem;
+				margin-bottom: 0.65rem;
+				transition: transform 0.2s ease;
+			}
+
+			.tool-tile:hover .tool-icon-wrap {
+				transform: scale(1.1);
+			}
+
+			.icon-green {
+				background: rgb(16 185 129 / 0.15);
+				color: #34d399;
+			}
+			.icon-blue {
+				background: rgb(59 130 246 / 0.15);
+				color: #60a5fa;
+			}
+			.icon-dark {
+				background: rgb(255 255 255 / 0.1);
+				color: #f8fafc;
+			}
+			.icon-amber {
+				background: rgb(245 158 11 / 0.15);
+				color: #fbbf24;
+			}
+			.icon-purple {
+				background: rgb(139 92 246 / 0.15);
+				color: #a78bfa;
+			}
+			.icon-pink {
+				background: rgb(236 72 153 / 0.15);
+				color: #f472b6;
+			}
+			.icon-sky {
+				background: rgb(14 165 233 / 0.15);
+				color: #38bdf8;
+			}
+			.icon-orange {
+				background: rgb(249 115 22 / 0.15);
+				color: #fb923c;
+			}
+			.icon-cyan {
+				background: rgb(6 182 212 / 0.15);
+				color: #22d3ee;
+			}
+			.icon-indigo {
+				background: rgb(99 102 241 / 0.15);
+				color: #818cf8;
+			}
+			.icon-red {
+				background: rgb(239 68 68 / 0.15);
+				color: #f87171;
+			}
+			.icon-slate {
+				background: rgb(148 163 184 / 0.15);
+				color: #cbd5e1;
+			}
+
+			.tool-name {
+				font-size: 0.85rem;
+				font-weight: 700;
+				color: var(--text-main);
+				margin-bottom: 0.2rem;
+				line-height: 1.25;
+			}
+
+			.tool-desc {
+				font-size: 0.72rem;
+				color: var(--text-muted);
+				line-height: 1.2;
+			}
+
+			/* ==========================================================================
+		   Right Sidebar (Stats & Info)
+		   ========================================================================== */
+			.sidebar-col {
+				display: flex;
+				flex-direction: column;
+				gap: 1.5rem;
+			}
+
+			.sidebar-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-color);
+				border-radius: var(--radius-card);
+				box-shadow: var(--shadow-card);
+				overflow: hidden;
+			}
+
+			.sidebar-header {
+				padding: 0.9rem 1.25rem;
+				border-bottom: 1px solid var(--border-color);
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+			}
+
+			.sidebar-title {
+				font-size: 0.95rem;
+				font-weight: 700;
+				color: var(--text-main);
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+
+			.sidebar-body {
+				padding: 1.15rem 1.25rem;
+			}
+
+			.info-list {
+				list-style: none;
+				display: flex;
+				flex-direction: column;
+				gap: 0.75rem;
+			}
+
+			.info-row {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding-bottom: 0.6rem;
+				border-bottom: 1px dashed var(--border-color);
+				font-size: 0.8125rem;
+			}
+
+			.info-row:last-child {
+				border-bottom: none;
+				padding-bottom: 0;
+			}
+
+			.info-label {
+				color: var(--text-muted);
+				font-weight: 500;
+				display: flex;
+				align-items: center;
+				gap: 0.4rem;
+			}
+
+			.info-val {
+				color: var(--text-main);
+				font-weight: 700;
+			}
+
+			.role-badge {
+				background: rgba(249, 115, 22, 0.2);
+				color: #fb923c;
+				font-size: 0.6875rem;
+				padding: 2px 7px;
+				border-radius: 9999px;
+				font-weight: 700;
+				margin-left: 0.35rem;
+			}
+
+			/* Quota Progress Meters */
+			.meters-list {
+				display: flex;
+				flex-direction: column;
+				gap: 1.15rem;
+			}
+
+			.meter-item {
+				display: flex;
+				flex-direction: column;
+				gap: 0.4rem;
+			}
+
+			.meter-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				font-size: 0.8125rem;
+			}
+
+			.meter-title {
+				font-weight: 600;
+				display: flex;
+				align-items: center;
+				gap: 0.4rem;
+			}
+
+			.meter-val {
+				color: var(--text-muted);
+				font-size: 0.75rem;
+				font-weight: 500;
+			}
+
+			.meter-track {
+				width: 100%;
+				height: 8px;
+				background: #0b0f19;
+				border: 1px solid var(--border-color);
+				border-radius: 9999px;
+				overflow: hidden;
+			}
+
+			.meter-fill {
+				height: 100%;
+				border-radius: 9999px;
+				transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+			}
+
+			.fill-green {
+				background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+			}
+			.fill-amber {
+				background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+			}
+			.fill-red {
+				background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+			}
+			.fill-blue {
+				background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+			}
+
+			/* Empty State */
+			.no-results-box {
+				display: none;
+				text-align: center;
+				padding: 4rem 1.5rem;
+				background: var(--bg-card);
+				border: 1px dashed var(--border-color);
+				border-radius: var(--radius-card);
+			}
+
+			.no-results-box.visible {
+				display: block;
+			}
+
+			mark.hl {
+				background: rgba(202, 138, 4, 0.5);
+				color: #fff;
+				border-radius: 2px;
+				padding: 0 2px;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Top Navigation -->
+		<header class="top-navbar">
+			<div class="nav-left">
+				<a href="#" class="nav-brand">
+					<i class="fas fa-cubes-stacked"></i>
+					<span>sas<span class="highlight">Panel</span></span>
+					<span class="nav-badge">cPanel Clone</span>
+				</a>
+
+				<div class="nav-stats-summary">
+					<span class="nav-stats-item"><i class="fas fa-hard-drive"></i> 145 MB / 10 GB</span>
+					<span class="nav-stats-item"><i class="fas fa-right-left"></i> 450 MB / 50 GB</span>
+				</div>
+			</div>
+
+			<ul class="nav-tabs">
+				<li>
+					<a href="#" class="nav-tab-link active"><i class="fas fa-grip"></i> Dashboard</a>
+				</li>
+				<li>
+					<a href="#" class="nav-tab-link"><i class="fas fa-users"></i> Users</a>
+				</li>
+				<li>
+					<a href="#" class="nav-tab-link"><i class="fas fa-globe"></i> Web</a>
+				</li>
+				<li>
+					<a href="#" class="nav-tab-link"><i class="fas fa-book-atlas"></i> DNS</a>
+				</li>
+				<li>
+					<a href="#" class="nav-tab-link"><i class="fas fa-envelope"></i> Mail</a>
+				</li>
+				<li>
+					<a href="#" class="nav-tab-link"><i class="fas fa-database"></i> DB</a>
+				</li>
+				<li>
+					<a href="#" class="nav-tab-link"><i class="fas fa-clock"></i> Cron</a>
+				</li>
+				<li>
+					<a href="#" class="nav-tab-link"><i class="fas fa-box-archive"></i> Backup</a>
+				</li>
+			</ul>
+
+			<div class="nav-right">
+				<div class="user-pill">
+					<i class="fas fa-circle-user" style="color: #38bdf8"></i>
+					<span>devsas</span>
+				</div>
+			</div>
+		</header>
+
+		<main class="dashboard-wrapper">
+			<!-- Hero Header with Live Search -->
+			<section class="hero-box">
+				<div class="hero-profile">
+					<div class="hero-avatar">
+						<i class="fas fa-user-shield"></i>
+					</div>
+					<div class="hero-heading">
+						<h1>Welcome to your Control Panel, devsas!</h1>
+						<p>Quickly access and manage websites, domains, databases, emails, and server tools.</p>
+					</div>
+				</div>
+
+				<div class="hero-search-area">
+					<div class="search-container">
+						<i class="fas fa-magnifying-glass search-icon"></i>
+						<input
+							type="search"
+							id="toolSearchInput"
+							class="search-input"
+							placeholder="Search tools (e.g. mysql, file, mail, ssl, terminal)..."
+							autocomplete="off"
+						/>
+						<span class="search-shortcut-badge">/</span>
+					</div>
+
+					<button type="button" id="btnExpandAll" class="btn-pill" title="Expand all categories">
+						<i class="fas fa-angles-down"></i> Expand
+					</button>
+					<button
+						type="button"
+						id="btnCollapseAll"
+						class="btn-pill"
+						title="Collapse all categories"
+					>
+						<i class="fas fa-angles-up"></i> Collapse
+					</button>
+				</div>
+			</section>
+
+			<!-- Main 2-Column Content -->
+			<div class="main-grid">
+				<!-- Left Categories Column -->
+				<div class="categories-col">
+					<!-- Empty Search State -->
+					<div id="noResultsBox" class="no-results-box">
+						<i
+							class="fas fa-magnifying-glass"
+							style="font-size: 2.5rem; color: var(--text-dim); margin-bottom: 0.75rem"
+						></i>
+						<h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.35rem">
+							No matching tools found
+						</h3>
+						<p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.25rem">
+							Try another keyword like 'ftp', 'php', 'backup' or 'dns'.
+						</p>
+						<button
+							type="button"
+							id="btnResetSearch"
+							class="btn-pill"
+							style="background: var(--primary); color: #fff"
+						>
+							<i class="fas fa-rotate-left"></i> Reset Search
+						</button>
+					</div>
+
+					<!-- 1. FILES -->
+					<div class="category-card" data-cat="files">
+						<div class="category-header">
+							<div class="cat-title-wrap">
+								<div class="cat-icon-badge cat-files"><i class="fas fa-folder-tree"></i></div>
+								<h2 class="cat-title">Files</h2>
+								<span class="cat-count">6</span>
+							</div>
+							<div class="cat-toggle"><i class="fas fa-chevron-down"></i></div>
+						</div>
+						<div class="category-body">
+							<div class="tools-grid">
+								<div
+									class="tool-tile"
+									data-keys="file manager upload download edit explorer directory htdocs"
+								>
+									<div class="tool-icon-wrap icon-green"><i class="fas fa-folder-open"></i></div>
+									<span class="tool-name">File Manager</span>
+									<span class="tool-desc">Browse and edit files</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="backups restore download archive snapshots tar zip"
+								>
+									<div class="tool-icon-wrap icon-blue"><i class="fas fa-box-archive"></i></div>
+									<span class="tool-name">Backups</span>
+									<span class="tool-desc">Create & restore backups</span>
+								</div>
+								<div class="tool-tile" data-keys="backup exclusions ignore filter exclude">
+									<div class="tool-icon-wrap icon-blue"><i class="fas fa-filter"></i></div>
+									<span class="tool-name">Backup Exclusions</span>
+									<span class="tool-desc">Configure ignored paths</span>
+								</div>
+								<div class="tool-tile" data-keys="terminal console ssh shell bash command line">
+									<div class="tool-icon-wrap icon-dark"><i class="fas fa-terminal"></i></div>
+									<span class="tool-name">Web Terminal</span>
+									<span class="tool-desc">In-browser SSH console</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="ftp accounts credentials sftp file transfer upload"
+								>
+									<div class="tool-icon-wrap icon-green"><i class="fas fa-network-wired"></i></div>
+									<span class="tool-name">FTP Accounts</span>
+									<span class="tool-desc">Manage FTP/SFTP logins</span>
+								</div>
+								<div class="tool-tile" data-keys="disk usage quota space storage analyzer">
+									<div class="tool-icon-wrap icon-amber"><i class="fas fa-hard-drive"></i></div>
+									<span class="tool-name">Disk Usage</span>
+									<span class="tool-desc">Storage inspection</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- 2. DOMAINS & WEB -->
+					<div class="category-card" data-cat="domains">
+						<div class="category-header">
+							<div class="cat-title-wrap">
+								<div class="cat-icon-badge cat-domains"><i class="fas fa-earth-americas"></i></div>
+								<h2 class="cat-title">Domains & Web</h2>
+								<span class="cat-count">7</span>
+							</div>
+							<div class="cat-toggle"><i class="fas fa-chevron-down"></i></div>
+						</div>
+						<div class="category-body">
+							<div class="tools-grid">
+								<div
+									class="tool-tile"
+									data-keys="web domains sites virtualhosts vhosts apache nginx aliases"
+								>
+									<div class="tool-icon-wrap icon-blue"><i class="fas fa-globe"></i></div>
+									<span class="tool-name">Web Domains</span>
+									<span class="tool-desc">Manage websites & aliases</span>
+								</div>
+								<div class="tool-tile" data-keys="add domain new website create host domain">
+									<div class="tool-icon-wrap icon-blue"><i class="fas fa-circle-plus"></i></div>
+									<span class="tool-name">Add Domain</span>
+									<span class="tool-desc">Create new website</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="dns zone editor records a mx cname txt ns bind named"
+								>
+									<div class="tool-icon-wrap icon-purple"><i class="fas fa-book-atlas"></i></div>
+									<span class="tool-name">Zone Editor</span>
+									<span class="tool-desc">DNS zones & records</span>
+								</div>
+								<div class="tool-tile" data-keys="add dns new zone domain name servers">
+									<div class="tool-icon-wrap icon-purple"><i class="fas fa-plus-circle"></i></div>
+									<span class="tool-name">Add DNS Zone</span>
+									<span class="tool-desc">Create DNS zone</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="ssl tls lets encrypt certificates https secure certs"
+								>
+									<div class="tool-icon-wrap icon-green"><i class="fas fa-shield-halved"></i></div>
+									<span class="tool-name">SSL/TLS Status</span>
+									<span class="tool-desc">Let's Encrypt & certs</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="wordpress quick install web apps joomla drupal phpbb nodejs"
+								>
+									<div class="tool-icon-wrap icon-pink"><i class="fas fa-cubes"></i></div>
+									<span class="tool-name">Web Apps / WordPress</span>
+									<span class="tool-desc">1-Click App Installer</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="web logs access error logs visitor traffic nginx apache"
+								>
+									<div class="tool-icon-wrap icon-slate"><i class="fas fa-file-lines"></i></div>
+									<span class="tool-name">Access & Error Logs</span>
+									<span class="tool-desc">Live web server logs</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- 3. DATABASES -->
+					<div class="category-card" data-cat="databases">
+						<div class="category-header">
+							<div class="cat-title-wrap">
+								<div class="cat-icon-badge cat-databases"><i class="fas fa-database"></i></div>
+								<h2 class="cat-title">Databases</h2>
+								<span class="cat-count">3</span>
+							</div>
+							<div class="cat-toggle"><i class="fas fa-chevron-down"></i></div>
+						</div>
+						<div class="category-body">
+							<div class="tools-grid">
+								<div
+									class="tool-tile"
+									data-keys="mysql databases mariadb db sql users tables postgresql"
+								>
+									<div class="tool-icon-wrap icon-orange"><i class="fas fa-database"></i></div>
+									<span class="tool-name">MySQL Databases</span>
+									<span class="tool-desc">Manage DBs & users</span>
+								</div>
+								<div class="tool-tile" data-keys="add database new mysql mariadb create db user">
+									<div class="tool-icon-wrap icon-orange"><i class="fas fa-folder-plus"></i></div>
+									<span class="tool-name">Add Database</span>
+									<span class="tool-desc">Create new database</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="phpmyadmin pma sql query export import table database admin"
+								>
+									<div class="tool-icon-wrap icon-blue"><i class="fas fa-table-columns"></i></div>
+									<span class="tool-name">phpMyAdmin</span>
+									<span class="tool-desc">Web database manager</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- 4. EMAIL -->
+					<div class="category-card" data-cat="email">
+						<div class="category-header">
+							<div class="cat-title-wrap">
+								<div class="cat-icon-badge cat-email"><i class="fas fa-envelope"></i></div>
+								<h2 class="cat-title">Email</h2>
+								<span class="cat-count">4</span>
+							</div>
+							<div class="cat-toggle"><i class="fas fa-chevron-down"></i></div>
+						</div>
+						<div class="category-body">
+							<div class="tools-grid">
+								<div class="tool-tile" data-keys="email accounts mail inbox mailbox imap pop3 smtp">
+									<div class="tool-icon-wrap icon-cyan">
+										<i class="fas fa-envelope-open-text"></i>
+									</div>
+									<span class="tool-name">Email Accounts</span>
+									<span class="tool-desc">Manage mailboxes</span>
+								</div>
+								<div class="tool-tile" data-keys="add mail domain new email address create">
+									<div class="tool-icon-wrap icon-cyan"><i class="fas fa-plus-circle"></i></div>
+									<span class="tool-name">Add Mail Domain</span>
+									<span class="tool-desc">Setup email domain</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="webmail roundcube snappymail rainloop read email inbox"
+								>
+									<div class="tool-icon-wrap icon-indigo"><i class="fas fa-inbox"></i></div>
+									<span class="tool-name">Webmail</span>
+									<span class="tool-desc">Roundcube / Webmail</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="mail dns dkim spf dmarc spam authentication records"
+								>
+									<div class="tool-icon-wrap icon-cyan"><i class="fas fa-shield-cat"></i></div>
+									<span class="tool-name">Mail DNS & DKIM</span>
+									<span class="tool-desc">Deliverability & anti-spam</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- 5. METRICS & LOGS -->
+					<div class="category-card" data-cat="metrics">
+						<div class="category-header">
+							<div class="cat-title-wrap">
+								<div class="cat-icon-badge cat-metrics"><i class="fas fa-chart-pie"></i></div>
+								<h2 class="cat-title">Metrics & Logs</h2>
+								<span class="cat-count">4</span>
+							</div>
+							<div class="cat-toggle"><i class="fas fa-chevron-down"></i></div>
+						</div>
+						<div class="category-body">
+							<div class="tools-grid">
+								<div
+									class="tool-tile"
+									data-keys="statistics analytics visitors awstats bandwidth traffic chart"
+								>
+									<div class="tool-icon-wrap icon-sky"><i class="fas fa-chart-line"></i></div>
+									<span class="tool-name">Web Statistics</span>
+									<span class="tool-desc">Visitor analytics</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="rrd graphs health monitoring cpu ram load bandwidth server status"
+								>
+									<div class="tool-icon-wrap icon-sky"><i class="fas fa-chart-area"></i></div>
+									<span class="tool-name">System Health (RRD)</span>
+									<span class="tool-desc">CPU, RAM & Load charts</span>
+								</div>
+								<div class="tool-tile" data-keys="activity logs history audit trail actions events">
+									<div class="tool-icon-wrap icon-slate">
+										<i class="fas fa-clock-rotate-left"></i>
+									</div>
+									<span class="tool-name">Activity Logs</span>
+									<span class="tool-desc">Recent account events</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="auth logs login failed attempts security audit ip"
+								>
+									<div class="tool-icon-wrap icon-slate"><i class="fas fa-fingerprint"></i></div>
+									<span class="tool-name">Auth Logs</span>
+									<span class="tool-desc">Login history & audit</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- 6. SECURITY & ACCESS -->
+					<div class="category-card" data-cat="security">
+						<div class="category-header">
+							<div class="cat-title-wrap">
+								<div class="cat-icon-badge cat-security"><i class="fas fa-shield-halved"></i></div>
+								<h2 class="cat-title">Security & Access</h2>
+								<span class="cat-count">5</span>
+							</div>
+							<div class="cat-toggle"><i class="fas fa-chevron-down"></i></div>
+						</div>
+						<div class="category-body">
+							<div class="tools-grid">
+								<div
+									class="tool-tile"
+									data-keys="ssh keys public key authorized keys rsa ed25519 authentication"
+								>
+									<div class="tool-icon-wrap icon-slate"><i class="fas fa-key"></i></div>
+									<span class="tool-name">SSH Keys</span>
+									<span class="tool-desc">SSH public keys</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="api access keys tokens authentication rest automation"
+								>
+									<div class="tool-icon-wrap icon-slate"><i class="fas fa-id-badge"></i></div>
+									<span class="tool-name">API Access Keys</span>
+									<span class="tool-desc">REST API tokens</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="2fa two factor authentication security otp qr code google authenticator"
+								>
+									<div class="tool-icon-wrap icon-green">
+										<i class="fas fa-mobile-screen-button"></i>
+									</div>
+									<span class="tool-name">2-Factor Auth (2FA)</span>
+									<span class="tool-desc">Secure account login</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="firewall iptables ufw ports rules block allow security"
+								>
+									<div class="tool-icon-wrap icon-red"><i class="fas fa-shield"></i></div>
+									<span class="tool-name">Firewall Rules</span>
+									<span class="tool-desc">Port & IP filtering</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="banlist fail2ban blacklists blocked ips brute force"
+								>
+									<div class="tool-icon-wrap icon-red"><i class="fas fa-ban"></i></div>
+									<span class="tool-name">IP Ban List</span>
+									<span class="tool-desc">Fail2ban blocked IPs</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- 7. SOFTWARE & ADVANCED -->
+					<div class="category-card" data-cat="software">
+						<div class="category-header">
+							<div class="cat-title-wrap">
+								<div class="cat-icon-badge cat-software"><i class="fas fa-gears"></i></div>
+								<h2 class="cat-title">Software & Advanced</h2>
+								<span class="cat-count">6</span>
+							</div>
+							<div class="cat-toggle"><i class="fas fa-chevron-down"></i></div>
+						</div>
+						<div class="category-body">
+							<div class="tools-grid">
+								<div
+									class="tool-tile"
+									data-keys="cron jobs crontab scheduled tasks automation timing schedule"
+								>
+									<div class="tool-icon-wrap icon-orange"><i class="fas fa-clock"></i></div>
+									<span class="tool-name">Cron Jobs</span>
+									<span class="tool-desc">Scheduled background tasks</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="user profile settings password language theme php preferences"
+								>
+									<div class="tool-icon-wrap icon-purple"><i class="fas fa-user-gear"></i></div>
+									<span class="tool-name">User Preferences</span>
+									<span class="tool-desc">Theme & password</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="user accounts management hosting packages customers clients"
+								>
+									<div class="tool-icon-wrap icon-purple"><i class="fas fa-users"></i></div>
+									<span class="tool-name">User Accounts</span>
+									<span class="tool-desc">Manage system users</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="server settings config configuration apache nginx php mysql bind"
+								>
+									<div class="tool-icon-wrap icon-blue"><i class="fas fa-server"></i></div>
+									<span class="tool-name">Server Settings</span>
+									<span class="tool-desc">Core daemon configs</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="services status daemons restart stop start health"
+								>
+									<div class="tool-icon-wrap icon-blue"><i class="fas fa-wave-square"></i></div>
+									<span class="tool-name">Service Status</span>
+									<span class="tool-desc">Monitor services</span>
+								</div>
+								<div
+									class="tool-tile"
+									data-keys="updates upgrade packages software patches version"
+								>
+									<div class="tool-icon-wrap icon-blue"><i class="fas fa-arrows-rotate"></i></div>
+									<span class="tool-name">System Updates</span>
+									<span class="tool-desc">Check & apply upgrades</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Right Sidebar: General Information & Quotas -->
+				<aside class="sidebar-col">
+					<!-- General Information Card -->
+					<div class="sidebar-card">
+						<div class="sidebar-header">
+							<h3 class="sidebar-title">
+								<i class="fas fa-circle-info" style="color: #38bdf8"></i>
+								General Information
+							</h3>
+						</div>
+						<div class="sidebar-body">
+							<ul class="info-list">
+								<li class="info-row">
+									<span class="info-label"><i class="fas fa-user"></i> Current User</span>
+									<span class="info-val">devsas <span class="role-badge">admin</span></span>
+								</li>
+								<li class="info-row">
+									<span class="info-label"><i class="fas fa-server"></i> Hostname</span>
+									<span class="info-val">srv.devsas.shop</span>
+								</li>
+								<li class="info-row">
+									<span class="info-label"><i class="fas fa-network-wired"></i> Shared IP</span>
+									<span class="info-val">192.168.10.78</span>
+								</li>
+								<li class="info-row">
+									<span class="info-label"><i class="fas fa-folder"></i> Home Dir</span>
+									<span class="info-val"><code>/home/devsas</code></span>
+								</li>
+								<li class="info-row">
+									<span class="info-label"><i class="fas fa-box"></i> Package</span>
+									<span class="info-val">default</span>
+								</li>
+								<li class="info-row">
+									<span class="info-label"><i class="fas fa-microchip"></i> Server Load</span>
+									<span class="info-val">0.15, 0.10, 0.08</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<!-- Statistics & Quota Card -->
+					<div class="sidebar-card">
+						<div class="sidebar-header">
+							<h3 class="sidebar-title">
+								<i class="fas fa-chart-simple" style="color: #4ade80"></i>
+								Statistics & Quota
+							</h3>
+						</div>
+						<div class="sidebar-body">
+							<div class="meters-list">
+								<!-- Disk Usage -->
+								<div class="meter-item">
+									<div class="meter-header">
+										<span class="meter-title"><i class="fas fa-hard-drive"></i> Disk Usage</span>
+										<span class="meter-val">145 MB / 10 GB (1.4%)</span>
+									</div>
+									<div class="meter-track">
+										<div class="meter-fill fill-green" style="width: 1.4%"></div>
+									</div>
+								</div>
+
+								<!-- Monthly Bandwidth -->
+								<div class="meter-item">
+									<div class="meter-header">
+										<span class="meter-title"
+											><i class="fas fa-right-left"></i> Monthly Bandwidth</span
+										>
+										<span class="meter-val">450 MB / 50 GB (0.9%)</span>
+									</div>
+									<div class="meter-track">
+										<div class="meter-fill fill-green" style="width: 0.9%"></div>
+									</div>
+								</div>
+
+								<!-- Web Domains -->
+								<div class="meter-item">
+									<div class="meter-header">
+										<span class="meter-title"><i class="fas fa-globe"></i> Web Domains</span>
+										<span class="meter-val">1 / ∞</span>
+									</div>
+									<div class="meter-track">
+										<div class="meter-fill fill-blue" style="width: 12%"></div>
+									</div>
+								</div>
+
+								<!-- MySQL Databases -->
+								<div class="meter-item">
+									<div class="meter-header">
+										<span class="meter-title"><i class="fas fa-database"></i> MySQL Databases</span>
+										<span class="meter-val">2 / ∞</span>
+									</div>
+									<div class="meter-track">
+										<div class="meter-fill fill-blue" style="width: 25%"></div>
+									</div>
+								</div>
+
+								<!-- Email Accounts -->
+								<div class="meter-item">
+									<div class="meter-header">
+										<span class="meter-title"><i class="fas fa-envelope"></i> Email Accounts</span>
+										<span class="meter-val">1 / ∞</span>
+									</div>
+									<div class="meter-track">
+										<div class="meter-fill fill-blue" style="width: 10%"></div>
+									</div>
+								</div>
+
+								<!-- DNS Zones -->
+								<div class="meter-item">
+									<div class="meter-header">
+										<span class="meter-title"><i class="fas fa-book-atlas"></i> DNS Zones</span>
+										<span class="meter-val">1 / ∞</span>
+									</div>
+									<div class="meter-track">
+										<div class="meter-fill fill-blue" style="width: 10%"></div>
+									</div>
+								</div>
+
+								<!-- Cron Jobs -->
+								<div class="meter-item">
+									<div class="meter-header">
+										<span class="meter-title"><i class="fas fa-clock"></i> Cron Jobs</span>
+										<span class="meter-val">1 / ∞</span>
+									</div>
+									<div class="meter-track">
+										<div class="meter-fill fill-blue" style="width: 10%"></div>
+									</div>
+								</div>
+
+								<!-- Backups -->
+								<div class="meter-item">
+									<div class="meter-header">
+										<span class="meter-title"><i class="fas fa-box-archive"></i> Backups</span>
+										<span class="meter-val">1 / 3 (33%)</span>
+									</div>
+									<div class="meter-track">
+										<div class="meter-fill fill-amber" style="width: 33%"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</aside>
+			</div>
+		</main>
+
+		<!-- Interactive Vanilla JS Script -->
+		<script>
+			(() => {
+				const searchInput = document.getElementById("toolSearchInput");
+				const noResultsBox = document.getElementById("noResultsBox");
+				const btnResetSearch = document.getElementById("btnResetSearch");
+				const btnExpandAll = document.getElementById("btnExpandAll");
+				const btnCollapseAll = document.getElementById("btnCollapseAll");
+				const categoryCards = document.querySelectorAll(".category-card");
+				const toolTiles = document.querySelectorAll(".tool-tile");
+
+				// Store original text for highlight
+				toolTiles.forEach((tile) => {
+					const nameEl = tile.querySelector(".tool-name");
+					const descEl = tile.querySelector(".tool-desc");
+					if (nameEl) tile._origName = nameEl.textContent;
+					if (descEl) tile._origDesc = descEl.textContent;
+				});
+
+				// Accordion click
+				categoryCards.forEach((card) => {
+					const header = card.querySelector(".category-header");
+					header.addEventListener("click", () => {
+						card.classList.toggle("collapsed");
+					});
+				});
+
+				// Expand / Collapse all
+				btnExpandAll.addEventListener("click", () => {
+					categoryCards.forEach((card) => card.classList.remove("collapsed"));
+				});
+				btnCollapseAll.addEventListener("click", () => {
+					categoryCards.forEach((card) => card.classList.add("collapsed"));
+				});
+
+				// Live Search Filtering
+				function filterTools(query) {
+					const term = query.trim().toLowerCase();
+					let totalVisible = 0;
+
+					categoryCards.forEach((card) => {
+						const tiles = card.querySelectorAll(".tool-tile");
+						let cardVisible = 0;
+
+						tiles.forEach((tile) => {
+							const name = tile._origName || "";
+							const desc = tile._origDesc || "";
+							const keys = tile.getAttribute("data-keys") || "";
+							const combined = (name + " " + desc + " " + keys).toLowerCase();
+
+							const nameEl = tile.querySelector(".tool-name");
+							const descEl = tile.querySelector(".tool-desc");
+
+							if (term === "" || combined.includes(term)) {
+								tile.style.display = "flex";
+								cardVisible++;
+								totalVisible++;
+
+								if (term !== "" && nameEl) {
+									nameEl.innerHTML = highlight(name, term);
+								} else if (nameEl) {
+									nameEl.textContent = name;
+								}
+
+								if (term !== "" && descEl && desc) {
+									descEl.innerHTML = highlight(desc, term);
+								} else if (descEl && desc) {
+									descEl.textContent = desc;
+								}
+							} else {
+								tile.style.display = "none";
+								if (nameEl) nameEl.textContent = name;
+								if (descEl && desc) descEl.textContent = desc;
+							}
+						});
+
+						const countEl = card.querySelector(".cat-count");
+						if (countEl) {
+							countEl.textContent = term === "" ? tiles.length : `${cardVisible} / ${tiles.length}`;
+						}
+
+						if (cardVisible === 0 && term !== "") {
+							card.style.display = "none";
+						} else {
+							card.style.display = "block";
+							if (term !== "") card.classList.remove("collapsed");
+						}
+					});
+
+					if (noResultsBox) {
+						if (totalVisible === 0 && term !== "") {
+							noResultsBox.classList.add("visible");
+						} else {
+							noResultsBox.classList.remove("visible");
+						}
+					}
+				}
+
+				function highlight(text, term) {
+					const idx = text.toLowerCase().indexOf(term);
+					if (idx === -1) return escapeHtml(text);
+					const before = text.substring(0, idx);
+					const match = text.substring(idx, idx + term.length);
+					const after = text.substring(idx + term.length);
+					return (
+						escapeHtml(before) +
+						'<mark class="hl">' +
+						escapeHtml(match) +
+						"</mark>" +
+						escapeHtml(after)
+					);
+				}
+
+				function escapeHtml(str) {
+					return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+				}
+
+				if (searchInput) {
+					searchInput.addEventListener("input", (e) => filterTools(e.target.value));
+				}
+
+				if (btnResetSearch) {
+					btnResetSearch.addEventListener("click", () => {
+						if (searchInput) {
+							searchInput.value = "";
+							filterTools("");
+							searchInput.focus();
+						}
+					});
+				}
+
+				// Key shortcut /
+				document.addEventListener("keydown", (e) => {
+					const isInput = ["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName);
+					if (
+						(e.key === "/" && !isInput) ||
+						((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k")
+					) {
+						e.preventDefault();
+						if (searchInput) {
+							searchInput.focus();
+							searchInput.select();
+						}
+					}
+					if (e.key === "Escape" && isInput && document.activeElement === searchInput) {
+						searchInput.value = "";
+						filterTools("");
+						searchInput.blur();
+					}
+				});
+			})();
+		</script>
+	</body>
+</html>
