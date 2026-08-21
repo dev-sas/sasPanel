@@ -97,8 +97,8 @@ foreach ($sys_arr as $key => $value) {
 	$_SESSION[$key] = $value;
 }
 
-$v_title = $_SESSION["TITLE"];
-$v_app_name = $_SESSION["APP_NAME"];
+$v_title = !empty($_SESSION["TITLE"]) ? $_SESSION["TITLE"] : "{{page}} - {{hostname}} - {{appname}}";
+$v_app_name = !empty($_SESSION["APP_NAME"]) ? $_SESSION["APP_NAME"] : "sasPanel";
 $v_hide_docs = $_SESSION["HIDE_DOCS"];
 $v_from_name = $_SESSION["FROM_NAME"];
 $v_from_email = $_SESSION["FROM_EMAIL"];

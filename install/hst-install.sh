@@ -2,9 +2,9 @@
 
 # ======================================================== #
 #
-# Hestia Control Panel Installation Routine
-# Automatic OS detection wrapper
-# https://www.hestiacp.com/
+# sasPanel Installation Routine
+# Developed by Md. Sajibul Alom Sajon
+# https://devsas.shop/
 #
 # Currently Supported Operating Systems:
 #
@@ -65,7 +65,7 @@ fi
 no_support_message() {
 	echo "****************************************************"
 	echo "Your operating system (OS) is not supported by"
-	echo "Hestia Control Panel. Officially supported releases:"
+	echo "sasPanel. Officially supported releases:"
 	echo "****************************************************"
 	echo "  Debian 11, 12, 13"
 	echo "  Ubuntu 22.04, 24.04, 26.04 LTS"

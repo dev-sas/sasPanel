@@ -2,11 +2,12 @@
 
 # ======================================================== #
 #
-# Hestia Control Panel Installer for Debian
-# https://www.hestiacp.com/
+# sasPanel Installer for Debian
+# Developed by Md. Sajibul Alom Sajon
+# https://devsas.shop/
 #
 # Currently Supported Versions:
-# Debian 11 12 13
+# Debian 11, 12, 13
 #
 # ======================================================== #
 
@@ -2524,7 +2525,7 @@ echo -e "\n"
 # Sending notification to admin email
 echo -e "Congratulations!
 
-You have successfully installed Hestia Control Panel on your server.
+You have successfully installed sasPanel on your server.
 
 Ready to get started? Log in using the following credentials:
 
@@ -2535,31 +2536,19 @@ fi
 echo -e -n " 	Username:   $username
 	Password:   $displaypass
 
-Thank you for choosing Hestia Control Panel to power your full stack web server,
-we hope that you enjoy using it as much as we do!
+Thank you for choosing sasPanel to power your full stack web server!
+Developer: Md. Sajibul Alom Sajon (https://devsas.shop)
 
-Please feel free to contact us at any time if you have any questions,
-or if you encounter any bugs or problems:
-
-Documentation:  https://docs.hestiacp.com/
-Forum:          https://forum.hestiacp.com/
-GitHub:         https://www.github.com/hestiacp/hestiacp
-
-Note: Automatic updates are enabled by default. If you would like to disable them,
-please log in and navigate to Server > Updates to turn them off.
-
-Help support the Hestia Control Panel project by donating via PayPal:
-https://www.hestiacp.com/donate
+Website & Support: https://devsas.shop
 
 --
 Sincerely yours,
-The Hestia Control Panel development team
-
-Made with love & pride by the open-source community around the world.
+Md. Sajibul Alom Sajon
+sasPanel Development
 " >> $tmpfile
 
 send_mail="$HESTIA/web/inc/mail-wrapper.php"
-cat $tmpfile | $send_mail -s "Hestia Control Panel" $email
+cat $tmpfile | $send_mail -s "sasPanel" $email
 
 # Congrats
 echo
@@ -2567,7 +2556,7 @@ cat $tmpfile
 rm -f $tmpfile
 
 # Add welcome message to notification panel
-$HESTIA/bin/v-add-user-notification "$username" 'Welcome to Hestia Control Panel!' '<p>You are now ready to begin adding <a href="/add/user/">user accounts</a> and <a href="/add/web/">domains</a>. For help and assistance, <a href="https://hestiacp.com/docs/" target="_blank">view the documentation</a> or <a href="https://forum.hestiacp.com/" target="_blank">visit our forum</a>.</p><p>Please <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">report any issues via GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
+$HESTIA/bin/v-add-user-notification "$username" 'Welcome to sasPanel!' '<p>You are now ready to begin adding <a href="/add/user/">user accounts</a> and <a href="/add/web/">domains</a>. For support, <a href="https://devsas.shop" target="_blank">visit devsas.shop</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> Developed by Md. Sajibul Alom Sajon</p>'
 
 # Clean-up
 # Sort final configuration file

@@ -521,9 +521,12 @@ function load_hestia_config() {
 	// Check system configuration
 	exec(HESTIA_CMD . "v-list-sys-config json", $output, $return_var);
 	$data = json_decode(implode("", $output), true);
-	$sys_arr = $data["config"];
+	$sys_arr = $data["config"] ?? [];
 	foreach ($sys_arr as $key => $value) {
 		$_SESSION[$key] = $value;
+	}
+	if (empty($_SESSION["APP_NAME"])) {
+		$_SESSION["APP_NAME"] = "sasPanel";
 	}
 }
 

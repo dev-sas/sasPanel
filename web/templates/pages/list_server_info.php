@@ -16,8 +16,8 @@
 			<div class="top-bar">
 				<div class="container top-bar-inner">
 					<div class="top-bar-left">
-						<a href="/" class="top-bar-logo" title="<?= tohtml( _("Hestia Control Panel")) ?>">
-							<img src="/images/logo-header.svg" alt="<?= tohtml( _("Hestia Control Panel")) ?>" width="54" height="29">
+						<a href="/" class="top-bar-logo" title="<?= tohtml(!empty($_SESSION["APP_NAME"]) ? $_SESSION["APP_NAME"] : "sasPanel") ?>">
+							<img src="/images/logo-header.svg" alt="<?= tohtml(!empty($_SESSION["APP_NAME"]) ? $_SESSION["APP_NAME"] : "sasPanel") ?>" width="54" height="29">
 						</a>
 					</div>
 					<div class="top-bar-right">
