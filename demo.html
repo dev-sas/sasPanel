@@ -3,237 +3,1312 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>sasPanel - cPanel Grid Dashboard Preview Demo</title>
+		<title>sasPanel - cPanel & WHM Interactive Demo</title>
 		<!-- Font Awesome Icons -->
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 		/>
-		<!-- Google Font Inter -->
+		<!-- Google Font Plus Jakarta Sans -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
 			rel="stylesheet"
 		/>
-
 		<style>
 			/* ==========================================================================
-		   CSS Variables & Design Tokens (cPanel Dark/Modern Theme)
-		   ========================================================================== */
-			:root {
-				--font-sans:
-					"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-				--bg-body: #0b0f19;
-				--bg-nav: #131b2e;
-				--bg-card: #131b2e;
-				--bg-card-hover: #1c2640;
-				--bg-input: #0b0f19;
-				--border-color: #1e293b;
-				--border-color-hover: #334155;
-				--text-main: #f8fafc;
-				--text-muted: #94a3b8;
-				--text-dim: #64748b;
-				--primary: #2563eb;
-				--primary-hover: #1d4ed8;
-				--accent: #0284c7;
-				--radius-card: 14px;
-				--radius-tool: 12px;
-				--shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.2);
-				--shadow-hover: 0 10px 20px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.2);
-			}
+   sasPanel - Modern cPanel & WHM Theme System
+   Includes unified top navigation, cPanel Dashboard, WHM Center,
+   and Global Form/List Modernization for All Sub-Pages.
+   ========================================================================== */
 
-			* {
-				box-sizing: border-box;
-				margin: 0;
-				padding: 0;
+			/* Google Font Import */
+			@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+			:root {
+				--cp-font:
+					"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+				--cp-bg-main: #0b0f19;
+				--cp-bg-nav: #131b2e;
+				--cp-bg-card: #131b2e;
+				--cp-bg-card-hover: #1c2640;
+				--cp-bg-input: #0b0f19;
+				--cp-border-card: #1e293b;
+				--cp-border-card-hover: #334155;
+				--cp-text-heading: #f8fafc;
+				--cp-text-muted: #94a3b8;
+				--cp-text-body: #cbd5e1;
+				--cp-primary: #2563eb;
+				--cp-primary-hover: #1d4ed8;
+				--cp-accent: #0284c7;
+				--cp-success: #10b981;
+				--cp-warning: #f59e0b;
+				--cp-danger: #ef4444;
+				--cp-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+				--cp-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+				--cp-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+				--cp-radius-card: 14px;
+				--cp-radius-tool: 12px;
+				--cp-radius-icon: 10px;
 			}
 
 			body {
-				background-color: var(--bg-body);
-				color: var(--text-main);
-				font-family: var(--font-sans);
-				line-height: 1.5;
+				background-color: var(--cp-bg-main) !important;
+				color: var(--cp-text-body) !important;
+				font-family: var(--cp-font) !important;
 				-webkit-font-smoothing: antialiased;
 			}
 
 			/* ==========================================================================
-		   Top Navigation Header (sasPanel Bar)
-		   ========================================================================== */
-			.top-navbar {
-				background: var(--bg-nav);
-				border-bottom: 1px solid var(--border-color);
-				padding: 0.75rem 1.5rem;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
+   1. Modern Top Header & Navigation Bar
+   ========================================================================== */
+			.app-header.cpanel-header {
+				background: var(--cp-bg-nav) !important;
+				border-bottom: 1px solid var(--cp-border-card) !important;
+				box-shadow: 0 4px 12px rgb(0 0 0 / 0.3) !important;
 				position: sticky;
 				top: 0;
 				z-index: 100;
-				box-shadow: 0 4px 12px rgb(0 0 0 / 0.25);
 			}
 
-			.nav-left {
+			.cpanel-header .top-bar {
+				background: transparent !important;
+				border-bottom: 1px solid var(--cp-border-card) !important;
+				padding: 0.65rem 1.25rem !important;
+			}
+
+			.cpanel-header .top-bar-inner {
 				display: flex;
 				align-items: center;
-				gap: 1.5rem;
+				justify-content: space-between;
+				max-width: 1540px;
+				margin: 0 auto;
 			}
 
-			.nav-brand {
+			.cpanel-header .top-bar-left {
 				display: flex;
 				align-items: center;
-				gap: 0.625rem;
-				text-decoration: none;
-				color: #38bdf8;
-				font-size: 1.25rem;
-				font-weight: 800;
-				letter-spacing: -0.02em;
+				gap: 1.25rem;
 			}
 
-			.nav-brand span.highlight {
-				color: #fff;
+			/* Brand Logo */
+			.cp-brand-link {
+				text-decoration: none !important;
 			}
 
-			.nav-badge {
-				background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-				color: #fff;
-				font-size: 0.6875rem;
-				font-weight: 700;
-				padding: 2px 8px;
-				border-radius: 9999px;
-				text-transform: uppercase;
-				letter-spacing: 0.05em;
-			}
-
-			.nav-stats-summary {
-				display: flex;
-				align-items: center;
-				gap: 1rem;
-				font-size: 0.8125rem;
-				color: var(--text-muted);
-				background: rgba(11, 15, 25, 0.6);
-				padding: 0.35rem 0.875rem;
-				border-radius: 9999px;
-				border: 1px solid var(--border-color);
-			}
-
-			.nav-stats-item {
-				display: flex;
-				align-items: center;
-				gap: 0.375rem;
-			}
-
-			.nav-stats-item i {
-				color: #38bdf8;
-			}
-
-			.nav-tabs {
-				display: flex;
-				align-items: center;
-				gap: 0.375rem;
-				list-style: none;
-			}
-
-			.nav-tab-link {
-				color: var(--text-muted);
-				text-decoration: none;
-				font-size: 0.8125rem;
-				font-weight: 600;
-				padding: 0.5rem 0.875rem;
-				border-radius: 8px;
-				display: flex;
-				align-items: center;
-				gap: 0.4rem;
-				transition: all 0.15s ease;
-			}
-
-			.nav-tab-link:hover {
-				color: var(--text-main);
-				background: #1e293b;
-			}
-
-			.nav-tab-link.active {
-				background: var(--primary);
-				color: #fff;
-				box-shadow: 0 2px 8px rgb(37 99 235 / 0.4);
-			}
-
-			.nav-right {
-				display: flex;
-				align-items: center;
-				gap: 0.875rem;
-			}
-
-			.user-pill {
+			.cp-brand-logo {
 				display: flex;
 				align-items: center;
 				gap: 0.5rem;
-				background: #1e293b;
-				border: 1px solid var(--border-color);
-				padding: 0.35rem 0.875rem;
+			}
+
+			.cp-brand-icon {
+				font-size: 1.35rem;
+				color: #38bdf8;
+			}
+
+			.cp-brand-name {
+				font-size: 1.25rem;
+				font-weight: 800;
+				color: #38bdf8;
+				letter-spacing: -0.02em;
+			}
+
+			.cp-brand-name-light {
+				color: #ffffff;
+			}
+
+			.cp-edition-badge {
+				background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+				color: #fff;
+				font-size: 0.65rem;
+				font-weight: 700;
+				padding: 2px 7px;
 				border-radius: 9999px;
+				text-transform: uppercase;
+				letter-spacing: 0.04em;
+				margin-left: 0.25rem;
+			}
+
+			/* Resource Usage Stats Capsule */
+			.cp-stats-capsule {
+				display: flex;
+				align-items: center;
+				gap: 0.75rem;
+				background: rgba(11, 15, 25, 0.75) !important;
+				border: 1px solid var(--cp-border-card) !important;
+				padding: 0.35rem 0.85rem !important;
+				border-radius: 9999px !important;
+				font-size: 0.78rem !important;
+				color: var(--cp-text-muted) !important;
+			}
+
+			.cp-stats-capsule i {
+				color: #38bdf8;
+				margin-right: 0.25rem;
+			}
+
+			.top-bar-usage-divider {
+				width: 1px;
+				height: 14px;
+				background: var(--cp-border-card);
+			}
+
+			.u-text-dim {
+				color: #64748b;
+			}
+
+			/* Top Bar Right Quick Controls */
+			.cpanel-header .top-bar-right {
+				display: flex;
+				align-items: center;
+				gap: 0.65rem;
+			}
+
+			.top-bar-quick-btn {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35rem;
+				background: var(--cp-bg-main);
+				border: 1px solid var(--cp-border-card);
+				border-radius: 8px;
+				color: var(--cp-text-muted);
+				padding: 0.42rem 0.75rem;
 				font-size: 0.8125rem;
 				font-weight: 600;
+				text-decoration: none;
+				transition: all 0.15s ease;
 				cursor: pointer;
 			}
 
-			/* ==========================================================================
-		   Main Dashboard Layout
-		   ========================================================================== */
-			.dashboard-wrapper {
-				max-width: 1540px;
-				margin: 0 auto;
-				padding: 1.75rem 1.25rem 4rem 1.25rem;
+			.top-bar-quick-btn:hover,
+			.top-bar-quick-btn.active {
+				background: #1e293b;
+				color: #fff;
+				border-color: var(--cp-border-card-hover);
 			}
 
-			/* Hero Header & Live Search */
-			.hero-box {
-				background: var(--bg-card);
-				border: 1px solid var(--border-color);
-				border-radius: var(--radius-card);
-				padding: 1.25rem 1.5rem;
-				margin-bottom: 1.75rem;
+			.cp-whm-quick-btn {
+				background: linear-gradient(
+					135deg,
+					rgba(234, 88, 12, 0.15) 0%,
+					rgba(194, 65, 12, 0.15) 100%
+				);
+				border-color: rgba(234, 88, 12, 0.4);
+				color: #fb923c !important;
+			}
+
+			.cp-whm-quick-btn:hover {
+				background: #ea580c !important;
+				color: #fff !important;
+			}
+
+			/* User Capsule */
+			.cp-user-capsule {
 				display: flex;
-				flex-wrap: wrap;
 				align-items: center;
-				justify-content: space-between;
-				gap: 1.25rem;
-				box-shadow: var(--shadow-card);
+				gap: 0.4rem;
+				background: #0b0f19;
+				border: 1px solid var(--cp-border-card);
+				border-radius: 9999px;
+				padding: 2px 4px 2px 4px;
 			}
 
-			.hero-profile {
+			.cp-user-pill {
 				display: flex;
 				align-items: center;
-				gap: 1rem;
+				gap: 0.45rem;
+				padding: 0.25rem 0.6rem;
+				border-radius: 9999px;
+				text-decoration: none;
+				color: var(--cp-text-heading);
+				font-size: 0.8125rem;
+				font-weight: 600;
+				transition: all 0.15s ease;
 			}
 
-			.hero-avatar {
-				width: 52px;
-				height: 52px;
+			.cp-user-pill:hover {
+				background: #1e293b;
+			}
+
+			.cp-user-avatar {
+				width: 26px;
+				height: 26px;
 				border-radius: 50%;
 				background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
 				color: #fff;
 				display: flex;
 				align-items: center;
 				justify-content: center;
+				font-size: 0.75rem;
+			}
+
+			.cp-user-role-badge {
+				font-size: 0.65rem;
+				font-weight: 700;
+				padding: 1px 6px;
+				border-radius: 9999px;
+				background: rgba(59, 130, 246, 0.2);
+				color: #60a5fa;
+			}
+
+			.cp-user-role-badge.badge-admin {
+				background: rgba(234, 88, 12, 0.2);
+				color: #fb923c;
+			}
+
+			.cp-logout-btn {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 28px;
+				height: 28px;
+				border-radius: 50%;
+				background: transparent;
+				color: var(--cp-text-muted);
+				text-decoration: none;
+				font-size: 0.8125rem;
+				transition: all 0.15s ease;
+			}
+
+			.cp-logout-btn:hover {
+				background: rgba(239, 68, 68, 0.2);
+				color: #ef4444;
+			}
+
+			.cp-impersonate-exit {
+				width: auto !important;
+				padding: 0 0.5rem !important;
+				border-radius: 9999px !important;
+				background: rgba(234, 88, 12, 0.2) !important;
+				color: #fb923c !important;
+				gap: 0.25rem;
+				font-size: 0.75rem;
+				font-weight: 700;
+			}
+
+			/* Nav Bar Tabs */
+			.cp-nav-bar {
+				background: var(--cp-bg-nav) !important;
+				padding: 0.35rem 1.25rem !important;
+				border-top: none !important;
+			}
+
+			.cp-nav-container {
+				max-width: 1540px;
+				margin: 0 auto;
+			}
+
+			.cp-nav-tabs {
+				display: flex !important;
+				align-items: center !important;
+				gap: 0.35rem !important;
+				list-style: none !important;
+				margin: 0 !important;
+				padding: 0 !important;
+				overflow-x: auto;
+				scrollbar-width: none;
+			}
+
+			.cp-nav-tabs::-webkit-scrollbar {
+				display: none;
+			}
+
+			.cp-nav-tabs .main-menu-item {
+				margin: 0 !important;
+			}
+
+			.cp-nav-link {
+				display: flex !important;
+				align-items: center !important;
+				gap: 0.4rem !important;
+				color: var(--cp-text-muted) !important;
+				text-decoration: none !important;
+				padding: 0.45rem 0.85rem !important;
+				border-radius: 8px !important;
+				font-size: 0.8125rem !important;
+				font-weight: 600 !important;
+				transition: all 0.15s ease !important;
+				border: 1px solid transparent !important;
+			}
+
+			.cp-nav-link:hover {
+				color: #fff !important;
+				background: #1e293b !important;
+			}
+
+			.cp-nav-link.active {
+				background: var(--cp-primary) !important;
+				color: #fff !important;
+				box-shadow: 0 2px 8px rgb(37 99 235 / 0.4) !important;
+			}
+
+			.cp-whm-tab {
+				background: rgba(234, 88, 12, 0.1) !important;
+				border-color: rgba(234, 88, 12, 0.25) !important;
+				color: #fb923c !important;
+			}
+
+			.cp-whm-tab.active {
+				background: #ea580c !important;
+				color: #fff !important;
+				box-shadow: 0 2px 8px rgb(234 88 12 / 0.4) !important;
+			}
+
+			.cp-nav-icon {
+				font-size: 0.875rem;
+			}
+
+			.cp-nav-badge-pill {
+				background: rgba(11, 15, 25, 0.6);
+				font-size: 0.65rem;
+				padding: 1px 6px;
+				border-radius: 9999px;
+				font-weight: 700;
+				color: inherit;
+			}
+
+			/* ==========================================================================
+   2. Global Sub-Pages Styling (Forms, Lists, Toolbars, Buttons, Cards)
+   ========================================================================== */
+			.cp-app-content,
+			.app-content {
+				background: var(--cp-bg-main) !important;
+				min-height: calc(100vh - 160px);
+				padding: 1.5rem 0 4rem 0 !important;
+			}
+
+			.container {
+				max-width: 1540px !important;
+				margin: 0 auto;
+				padding-left: 1.25rem !important;
+				padding-right: 1.25rem !important;
+			}
+
+			/* Toolbar Buttons */
+			.toolbar {
+				background: var(--cp-bg-card) !important;
+				border: 1px solid var(--cp-border-card) !important;
+				border-radius: var(--cp-radius-card) !important;
+				padding: 0.75rem 1.25rem !important;
+				margin-bottom: 1.5rem !important;
+				box-shadow: var(--cp-shadow-sm) !important;
+			}
+
+			.toolbar-inner {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 1rem;
+			}
+
+			.toolbar-buttons {
+				display: flex;
+				align-items: center;
+				gap: 0.65rem;
+			}
+
+			/* Global Buttons */
+			.button,
+			button.button,
+			a.button {
+				display: inline-flex !important;
+				align-items: center !important;
+				gap: 0.4rem !important;
+				background: var(--cp-primary) !important;
+				color: #ffffff !important;
+				font-family: var(--cp-font) !important;
+				font-size: 0.8125rem !important;
+				font-weight: 600 !important;
+				padding: 0.5rem 1rem !important;
+				border-radius: 8px !important;
+				border: 1px solid transparent !important;
+				text-decoration: none !important;
+				transition: all 0.15s ease !important;
+				box-shadow: 0 1px 3px rgb(0 0 0 / 0.2) !important;
+				cursor: pointer;
+			}
+
+			.button:hover {
+				background: var(--cp-primary-hover) !important;
+				box-shadow: 0 4px 10px rgb(37 99 235 / 0.3) !important;
+			}
+
+			.button-secondary,
+			a.button-secondary {
+				background: #1e293b !important;
+				color: var(--cp-text-heading) !important;
+				border: 1px solid var(--cp-border-card) !important;
+			}
+
+			.button-secondary:hover {
+				background: #334155 !important;
+				border-color: var(--cp-border-card-hover) !important;
+			}
+
+			.button-danger,
+			a.button-danger {
+				background: var(--cp-danger) !important;
+				color: #fff !important;
+			}
+
+			.button-danger:hover {
+				background: #dc2626 !important;
+			}
+
+			/* Form Containers */
+			.form-container {
+				background: var(--cp-bg-card) !important;
+				border: 1px solid var(--cp-border-card) !important;
+				border-radius: var(--cp-radius-card) !important;
+				padding: 1.75rem 2rem !important;
+				box-shadow: var(--cp-shadow-md) !important;
+				color: var(--cp-text-body) !important;
+			}
+
+			.form-container h1,
+			.form-container h2,
+			.form-container h3 {
+				color: var(--cp-text-heading) !important;
+				font-weight: 700 !important;
+				letter-spacing: -0.01em;
+			}
+
+			.form-label {
+				color: var(--cp-text-heading) !important;
+				font-size: 0.8125rem !important;
+				font-weight: 600 !important;
+				margin-bottom: 0.4rem !important;
+				display: block;
+			}
+
+			.form-control,
+			.form-select,
+			input[type="text"],
+			input[type="password"],
+			input[type="email"],
+			input[type="search"],
+			textarea,
+			select {
+				width: 100% !important;
+				box-sizing: border-box !important;
+				background: var(--cp-bg-input) !important;
+				border: 1.5px solid var(--cp-border-card) !important;
+				border-radius: 8px !important;
+				color: var(--cp-text-heading) !important;
+				padding: 0.55rem 0.85rem !important;
+				font-size: 0.875rem !important;
+				font-family: inherit !important;
+				outline: none !important;
+				transition: all 0.2s ease !important;
+			}
+
+			.form-control:focus,
+			.form-select:focus,
+			input:focus,
+			textarea:focus,
+			select:focus {
+				border-color: var(--cp-primary) !important;
+				background: #101626 !important;
+				box-shadow: 0 0 0 3px rgb(37 99 235 / 0.2) !important;
+			}
+
+			/* Units / Lists Table & Cards (Domain list, Mail list, DB list, etc.) */
+			.units-container,
+			.units-list {
+				display: flex;
+				flex-direction: column;
+				gap: 0.75rem;
+			}
+
+			.unit,
+			.unit-card,
+			.units-row {
+				background: var(--cp-bg-card) !important;
+				border: 1px solid var(--cp-border-card) !important;
+				border-radius: var(--cp-radius-card) !important;
+				box-shadow: var(--cp-shadow-sm) !important;
+				transition:
+					border-color 0.2s ease,
+					box-shadow 0.2s ease !important;
+				color: var(--cp-text-body) !important;
+			}
+
+			.unit:hover,
+			.unit-card:hover,
+			.units-row:hover {
+				border-color: var(--cp-border-card-hover) !important;
+				box-shadow: var(--cp-shadow-md) !important;
+			}
+
+			/* Alerts */
+			.alert {
+				border-radius: 10px !important;
+				padding: 0.85rem 1.25rem !important;
+				font-size: 0.85rem !important;
+				font-weight: 500 !important;
+				display: flex;
+				align-items: center;
+				gap: 0.75rem;
+				margin-bottom: 1.25rem;
+			}
+
+			.alert-danger {
+				background: rgba(239, 68, 68, 0.15) !important;
+				border: 1px solid rgba(239, 68, 68, 0.3) !important;
+				color: #fca5a5 !important;
+			}
+
+			.alert-success {
+				background: rgba(16, 185, 129, 0.15) !important;
+				border: 1px solid rgba(16, 185, 129, 0.3) !important;
+				color: #86efac !important;
+			}
+
+			.alert-info {
+				background: rgba(59, 130, 246, 0.15) !important;
+				border: 1px solid rgba(59, 130, 246, 0.3) !important;
+				color: #93c5fd !important;
+			}
+
+			/* ==========================================================================
+   3. WHM (Web Host Manager) Styles
+   ========================================================================== */
+			.whm-container {
+				max-width: 1540px;
+				margin: 0 auto;
+				padding: 1.5rem 1.25rem 4rem 1.25rem;
+			}
+
+			.whm-hero {
+				background: var(--cp-bg-card);
+				border: 1px solid var(--cp-border-card);
+				border-radius: var(--cp-radius-card);
+				padding: 1.5rem 1.75rem;
+				margin-bottom: 1.75rem;
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				justify-content: space-between;
+				gap: 1.25rem;
+				box-shadow: var(--cp-shadow-md);
+			}
+
+			.whm-hero-badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35rem;
+				background: rgba(234, 88, 12, 0.15);
+				color: #fb923c;
+				font-size: 0.75rem;
+				font-weight: 700;
+				padding: 3px 10px;
+				border-radius: 9999px;
+				margin-bottom: 0.5rem;
+				border: 1px solid rgba(234, 88, 12, 0.3);
+			}
+
+			.whm-hero-title {
 				font-size: 1.5rem;
+				font-weight: 800;
+				color: var(--cp-text-heading);
+				margin: 0 0 0.25rem 0;
+				letter-spacing: -0.02em;
+			}
+
+			.whm-hero-subtitle {
+				color: var(--cp-text-muted);
+				font-size: 0.875rem;
+				margin: 0;
+			}
+
+			.whm-hero-actions {
+				display: flex;
+				align-items: center;
+				gap: 0.75rem;
+				flex-wrap: wrap;
+			}
+
+			.whm-btn-accent {
+				background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%) !important;
+				border-color: #ea580c !important;
+			}
+
+			.whm-btn-accent:hover {
+				background: linear-gradient(135deg, #c2410c 0%, #9a3412 100%) !important;
+				box-shadow: 0 4px 12px rgb(234 88 12 / 0.4) !important;
+			}
+
+			/* Metric Cards */
+			.whm-metrics-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+				gap: 1.25rem;
+				margin-bottom: 1.75rem;
+			}
+
+			.whm-stat-card {
+				background: var(--cp-bg-card);
+				border: 1px solid var(--cp-border-card);
+				border-radius: var(--cp-radius-card);
+				padding: 1.25rem 1.35rem;
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				box-shadow: var(--cp-shadow-sm);
+			}
+
+			.whm-stat-icon-box {
+				width: 48px;
+				height: 48px;
+				border-radius: var(--cp-radius-icon);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 1.35rem;
+				flex-shrink: 0;
+			}
+
+			.stat-icon-accounts {
+				background: rgba(59, 130, 246, 0.15);
+				color: #60a5fa;
+			}
+			.stat-icon-domains {
+				background: rgba(16, 185, 129, 0.15);
+				color: #34d399;
+			}
+			.stat-icon-disk {
+				background: rgba(245, 158, 11, 0.15);
+				color: #fbbf24;
+			}
+			.stat-icon-server {
+				background: rgba(139, 92, 246, 0.15);
+				color: #a78bfa;
+			}
+
+			.whm-stat-info {
+				display: flex;
+				flex-direction: column;
+				gap: 0.15rem;
+			}
+
+			.whm-stat-label {
+				font-size: 0.78rem;
+				font-weight: 600;
+				color: var(--cp-text-muted);
+			}
+
+			.whm-stat-value {
+				font-size: 1.35rem;
+				font-weight: 800;
+				color: var(--cp-text-heading);
+				line-height: 1.2;
+			}
+
+			.whm-stat-subtext {
+				font-size: 0.72rem;
+				color: var(--cp-text-muted);
+			}
+
+			.text-green {
+				color: #34d399 !important;
+			}
+			.text-red {
+				color: #f87171 !important;
+			}
+
+			/* 2-Column WHM Layout */
+			.whm-content-grid {
+				display: grid;
+				grid-template-columns: 1fr 340px;
+				gap: 1.5rem;
+				align-items: start;
+			}
+
+			@media (max-width: 1150px) {
+				.whm-content-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			.whm-card {
+				background: var(--cp-bg-card);
+				border: 1px solid var(--cp-border-card);
+				border-radius: var(--cp-radius-card);
+				box-shadow: var(--cp-shadow-sm);
+				overflow: hidden;
+				margin-bottom: 1.5rem;
+			}
+
+			.whm-card-header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 1rem 1.35rem;
+				border-bottom: 1px solid var(--cp-border-card);
+				background: var(--cp-bg-card);
+			}
+
+			.whm-card-header-left {
+				display: flex;
+				align-items: center;
+				gap: 0.65rem;
+			}
+
+			.whm-card-title {
+				font-size: 1.05rem;
+				font-weight: 700;
+				color: var(--cp-text-heading);
+				margin: 0;
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+
+			.whm-pill-counter {
+				font-size: 0.75rem;
+				font-weight: 700;
+				padding: 2px 8px;
+				border-radius: 9999px;
+				background: #0b0f19;
+				border: 1px solid var(--cp-border-card);
+				color: var(--cp-text-muted);
+			}
+
+			.whm-search-box {
+				position: relative;
+				width: 320px;
+				max-width: 100%;
+			}
+
+			.whm-search-box i {
+				position: absolute;
+				left: 0.85rem;
+				top: 50%;
+				transform: translateY(-50%);
+				color: var(--cp-text-muted);
+				font-size: 0.85rem;
+			}
+
+			.whm-search-input {
+				width: 100%;
+				padding-left: 2.35rem !important;
+				height: 38px;
+				border-radius: 9999px !important;
+				font-size: 0.8125rem !important;
+			}
+
+			.whm-card-body {
+				padding: 1.25rem 1.35rem;
+			}
+
+			.u-p0 {
+				padding: 0 !important;
+			}
+
+			/* WHM Accounts Table */
+			.whm-table {
+				width: 100%;
+				border-collapse: collapse;
+				font-size: 0.8125rem;
+				text-align: left;
+			}
+
+			.whm-table th {
+				background: #0e1424;
+				padding: 0.75rem 1.15rem;
+				font-weight: 600;
+				color: var(--cp-text-muted);
+				border-bottom: 1px solid var(--cp-border-card);
+				text-transform: uppercase;
+				font-size: 0.7rem;
+				letter-spacing: 0.05em;
+			}
+
+			.whm-table td {
+				padding: 0.85rem 1.15rem;
+				border-bottom: 1px solid var(--cp-border-card);
+				color: var(--cp-text-body);
+				vertical-align: middle;
+			}
+
+			.whm-table tr:last-child td {
+				border-bottom: none;
+			}
+
+			.whm-table tbody tr {
+				transition: background-color 0.15s ease;
+			}
+
+			.whm-table tbody tr:hover {
+				background-color: var(--cp-bg-card-hover);
+			}
+
+			.whm-user-cell {
+				display: flex;
+				align-items: center;
+				gap: 0.75rem;
+			}
+
+			.whm-user-avatar {
+				width: 36px;
+				height: 36px;
+				border-radius: 50%;
+				background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+				color: #fff;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 0.95rem;
+				flex-shrink: 0;
+			}
+
+			.whm-user-avatar.avatar-suspended {
+				background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+			}
+
+			.whm-user-primary {
+				display: flex;
+				align-items: center;
+				gap: 0.4rem;
+			}
+
+			.whm-user-link {
+				font-weight: 700;
+				color: var(--cp-text-heading);
+				text-decoration: none;
+				font-size: 0.875rem;
+			}
+
+			.whm-user-link:hover {
+				color: var(--cp-primary);
+			}
+
+			.whm-tag-root {
+				background: rgba(234, 88, 12, 0.2);
+				color: #fb923c;
+				font-size: 0.65rem;
+				font-weight: 700;
+				padding: 1px 5px;
+				border-radius: 4px;
+			}
+
+			.whm-user-sub {
+				font-size: 0.75rem;
+				color: var(--cp-text-muted);
+				display: block;
+			}
+
+			.whm-pkg-badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35rem;
+				padding: 2px 8px;
+				background: #0b0f19;
+				border: 1px solid var(--cp-border-card);
+				border-radius: 6px;
+				color: #94a3b8;
+				font-size: 0.75rem;
+				font-weight: 600;
+				text-decoration: none;
+			}
+
+			.whm-pkg-badge:hover {
+				border-color: var(--cp-primary);
+				color: #fff;
+			}
+
+			.whm-resource-counts {
+				display: flex;
+				align-items: center;
+				gap: 0.75rem;
+				font-size: 0.78rem;
+				font-weight: 600;
+			}
+
+			.whm-quota-mini {
+				display: flex;
+				flex-direction: column;
+				gap: 0.25rem;
+				min-width: 110px;
+			}
+
+			.whm-quota-text {
+				font-size: 0.75rem;
+				font-weight: 600;
+			}
+
+			.whm-meter-mini {
+				width: 100%;
+				height: 5px;
+				background: #0b0f19;
+				border-radius: 9999px;
+				overflow: hidden;
+				border: 1px solid var(--cp-border-card);
+			}
+
+			.whm-meter-fill {
+				height: 100%;
+				border-radius: 9999px;
+			}
+
+			.whm-status-badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.3rem;
+				font-size: 0.72rem;
+				font-weight: 700;
+				padding: 3px 8px;
+				border-radius: 9999px;
+			}
+
+			.status-active {
+				background: rgba(16, 185, 129, 0.15);
+				color: #34d399;
+			}
+
+			.status-suspended {
+				background: rgba(239, 68, 68, 0.15);
+				color: #f87171;
+			}
+
+			.whm-row-actions {
+				display: flex;
+				align-items: center;
+				justify-content: flex-end;
+				gap: 0.4rem;
+			}
+
+			.whm-action-btn {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				gap: 0.3rem;
+				height: 30px;
+				padding: 0 0.6rem;
+				border-radius: 6px;
+				background: #0b0f19;
+				border: 1px solid var(--cp-border-card);
+				color: var(--cp-text-muted);
+				text-decoration: none;
+				font-size: 0.75rem;
+				font-weight: 600;
+				transition: all 0.15s ease;
+			}
+
+			.whm-action-btn:hover {
+				border-color: var(--cp-border-card-hover);
+				color: #fff;
+			}
+
+			.btn-cpanel-login {
+				background: rgba(37, 99, 235, 0.15) !important;
+				border-color: rgba(37, 99, 235, 0.35) !important;
+				color: #60a5fa !important;
+			}
+
+			.btn-cpanel-login:hover {
+				background: var(--cp-primary) !important;
+				color: #fff !important;
+			}
+
+			.btn-delete:hover {
+				background: rgba(239, 68, 68, 0.2) !important;
+				color: #ef4444 !important;
+				border-color: #ef4444 !important;
+			}
+
+			.btn-suspend:hover {
+				background: rgba(245, 158, 11, 0.2) !important;
+				color: #f59e0b !important;
+			}
+
+			.btn-unsuspend:hover {
+				background: rgba(16, 185, 129, 0.2) !important;
+				color: #10b981 !important;
+			}
+
+			/* WHM Sidebar Items */
+			.whm-pkg-list {
+				display: flex;
+				flex-direction: column;
+				gap: 0.75rem;
+			}
+
+			.whm-pkg-item {
+				background: #0b0f19;
+				border: 1px solid var(--cp-border-card);
+				border-radius: 8px;
+				padding: 0.75rem 0.85rem;
+			}
+
+			.whm-pkg-item-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 0.35rem;
+			}
+
+			.whm-pkg-item-name {
+				font-weight: 700;
+				color: var(--cp-text-heading);
+				font-size: 0.85rem;
+			}
+
+			.whm-pkg-limits {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.6rem;
+				font-size: 0.72rem;
+				color: var(--cp-text-muted);
+			}
+
+			.whm-services-list {
+				display: flex;
+				flex-direction: column;
+				gap: 0.5rem;
+			}
+
+			.whm-service-row {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 0.45rem 0.6rem;
+				background: #0b0f19;
+				border: 1px solid var(--cp-border-card);
+				border-radius: 6px;
+			}
+
+			.whm-service-info {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+
+			.whm-service-dot {
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+			}
+
+			.dot-running {
+				background: #10b981;
+				box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+			}
+			.dot-stopped {
+				background: #ef4444;
+			}
+
+			.whm-service-name {
+				font-size: 0.8125rem;
+				font-weight: 600;
+				color: var(--cp-text-heading);
+			}
+
+			.whm-srv-btn {
+				color: var(--cp-text-muted);
+				font-size: 0.75rem;
+				padding: 3px 6px;
+				border-radius: 4px;
+				text-decoration: none;
+			}
+
+			.whm-srv-btn:hover {
+				color: #fff;
+				background: #1e293b;
+			}
+
+			.whm-header-link {
+				font-size: 0.78rem;
+				color: var(--cp-primary);
+				text-decoration: none;
+				font-weight: 600;
+			}
+
+			.whm-header-link:hover {
+				text-decoration: underline;
+			}
+
+			/* WHM Modal */
+			.whm-modal-overlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100vw;
+				height: 100vh;
+				background: rgba(0, 0, 0, 0.75);
+				backdrop-filter: blur(4px);
+				z-index: 200;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 1rem;
+			}
+
+			.whm-modal-card {
+				background: var(--cp-bg-card);
+				border: 1px solid var(--cp-border-card-hover);
+				border-radius: var(--cp-radius-card);
+				width: 580px;
+				max-width: 100%;
+				box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.5);
+				overflow: hidden;
+				animation: modalSlide 0.2s ease-out;
+			}
+
+			@keyframes modalSlide {
+				from {
+					transform: translateY(15px);
+					opacity: 0;
+				}
+				to {
+					transform: translateY(0);
+					opacity: 1;
+				}
+			}
+
+			.whm-modal-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 1.15rem 1.5rem;
+				border-bottom: 1px solid var(--cp-border-card);
+			}
+
+			.whm-modal-title {
+				margin: 0;
+				font-size: 1.15rem;
+				font-weight: 700;
+				color: var(--cp-text-heading);
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+
+			.whm-modal-close {
+				background: none;
+				border: none;
+				color: var(--cp-text-muted);
+				font-size: 1.1rem;
+				cursor: pointer;
+			}
+
+			.whm-modal-close:hover {
+				color: #fff;
+			}
+
+			.whm-modal-body {
+				padding: 1.5rem;
+			}
+
+			.form-row-2 {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 1rem;
+				margin-bottom: 1rem;
+			}
+
+			@media (max-width: 600px) {
+				.form-row-2 {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			.whm-form-group {
+				margin-bottom: 1rem;
+			}
+
+			.input-group {
+				display: flex;
+				position: relative;
+			}
+
+			.btn-input-action {
+				position: absolute;
+				right: 4px;
+				top: 4px;
+				bottom: 4px;
+				background: #1e293b;
+				border: 1px solid var(--cp-border-card);
+				color: var(--cp-text-muted);
+				border-radius: 6px;
+				padding: 0 0.6rem;
+				cursor: pointer;
+			}
+
+			.btn-input-action:hover {
+				color: #fff;
+				background: var(--cp-primary);
+			}
+
+			.whm-form-footer {
+				display: flex;
+				justify-content: flex-end;
+				gap: 0.75rem;
+				margin-top: 1.5rem;
+				padding-top: 1rem;
+				border-top: 1px solid var(--cp-border-card);
+			}
+
+			/* ==========================================================================
+   4. cPanel Dashboard Elements (Grid Cards, Tools, Sidebar, Meters)
+   ========================================================================== */
+			.cpanel-dashboard-container {
+				max-width: 1540px;
+				margin: 0 auto;
+				padding: 1.5rem 1.25rem 3rem 1.25rem;
+			}
+
+			.cpanel-hero {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				justify-content: space-between;
+				gap: 1.25rem;
+				margin-bottom: 1.75rem;
+				padding: 1.25rem 1.5rem;
+				background: var(--cp-bg-card);
+				border: 1px solid var(--cp-border-card);
+				border-radius: var(--cp-radius-card);
+				box-shadow: var(--cp-shadow-sm);
+			}
+
+			.cpanel-hero-welcome {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+			}
+
+			.cpanel-hero-avatar {
+				width: 48px;
+				height: 48px;
+				border-radius: 50%;
+				background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+				color: #fff;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 1.35rem;
 				box-shadow: 0 4px 12px rgb(37 99 235 / 0.35);
 				flex-shrink: 0;
 			}
 
-			.hero-heading h1 {
+			.cpanel-hero-title {
+				margin: 0;
 				font-size: 1.35rem;
 				font-weight: 800;
-				letter-spacing: -0.01em;
-				margin-bottom: 0.15rem;
+				color: var(--cp-text-heading);
+				line-height: 1.2;
 			}
 
-			.hero-heading p {
-				color: var(--text-muted);
-				font-size: 0.875rem;
+			.cpanel-hero-subtitle {
+				margin: 0.25rem 0 0 0;
+				font-size: 0.85rem;
+				color: var(--cp-text-muted);
 			}
 
-			.hero-search-area {
+			.cpanel-hero-actions {
 				display: flex;
 				align-items: center;
 				gap: 0.75rem;
@@ -241,80 +1316,103 @@
 				max-width: 600px;
 			}
 
-			.search-container {
+			.cpanel-search-wrapper {
 				position: relative;
 				width: 100%;
 			}
 
-			.search-input {
+			.cpanel-search-input {
 				width: 100%;
 				height: 44px;
-				background: var(--bg-input);
-				border: 1.5px solid var(--border-color);
-				border-radius: 9999px;
 				padding: 0 4.5rem 0 2.75rem;
 				font-size: 0.9rem;
-				color: var(--text-main);
-				font-family: inherit;
+				color: var(--cp-text-heading);
+				background: var(--cp-bg-input);
+				border: 1.5px solid var(--cp-border-card);
+				border-radius: 9999px;
 				outline: none;
-				transition: all 0.2s ease;
+				transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 			}
 
-			.search-input:focus {
-				border-color: var(--primary);
+			.cpanel-search-input:focus {
+				border-color: var(--cp-primary);
 				background: #101626;
 				box-shadow: 0 0 0 3px rgb(37 99 235 / 0.25);
 			}
 
-			.search-icon {
+			.cpanel-search-icon {
 				position: absolute;
 				left: 1rem;
 				top: 50%;
 				transform: translateY(-50%);
-				color: var(--text-dim);
+				color: var(--cp-text-muted);
 				font-size: 0.95rem;
 				pointer-events: none;
 			}
 
-			.search-shortcut-badge {
+			.cpanel-search-badge {
 				position: absolute;
 				right: 0.85rem;
 				top: 50%;
 				transform: translateY(-50%);
 				background: #1e293b;
-				border: 1px solid var(--border-color);
+				border: 1px solid var(--cp-border-card);
 				border-radius: 6px;
 				padding: 2px 7px;
 				font-size: 0.6875rem;
 				font-weight: 700;
-				color: var(--text-muted);
+				color: var(--cp-text-muted);
 				pointer-events: none;
 			}
 
-			.btn-pill {
+			.cpanel-search-clear {
+				position: absolute;
+				right: 0.75rem;
+				top: 50%;
+				transform: translateY(-50%);
+				background: none;
+				border: none;
+				color: var(--cp-text-muted);
+				cursor: pointer;
+				padding: 4px;
+				display: none;
+				align-items: center;
+				justify-content: center;
+				border-radius: 50%;
+			}
+
+			.cpanel-quick-controls {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				flex-shrink: 0;
+			}
+
+			.cpanel-control-btn {
 				display: inline-flex;
 				align-items: center;
 				gap: 0.4rem;
-				background: #1e293b;
-				border: 1px solid var(--border-color);
-				color: var(--text-muted);
 				padding: 0.55rem 0.85rem;
-				border-radius: 8px;
 				font-size: 0.8125rem;
 				font-weight: 600;
+				color: var(--cp-text-muted);
+				background: #1e293b;
+				border: 1px solid var(--cp-border-card);
+				border-radius: 8px;
 				cursor: pointer;
 				transition: all 0.15s ease;
-				white-space: nowrap;
 				user-select: none;
+				white-space: nowrap;
 			}
 
-			.btn-pill:hover {
+			.cpanel-control-btn:hover {
+				color: #fff;
+				border-color: var(--cp-border-card-hover);
 				background: #334155;
-				color: var(--text-main);
 			}
 
-			/* Two Column Main Grid */
-			.main-grid {
+			/* Two Column Dashboard Grid */
+			.cpanel-grid-layout {
 				display: grid;
 				grid-template-columns: 1fr 340px;
 				gap: 1.75rem;
@@ -322,57 +1420,58 @@
 			}
 
 			@media (max-width: 1100px) {
-				.main-grid {
+				.cpanel-grid-layout {
 					grid-template-columns: 1fr;
 				}
 			}
 
-			/* Categories Column */
-			.categories-col {
+			.cpanel-main-content {
 				display: flex;
 				flex-direction: column;
 				gap: 1.5rem;
+				min-width: 0;
 			}
 
 			/* Category Card */
-			.category-card {
-				background: var(--bg-card);
-				border: 1px solid var(--border-color);
-				border-radius: var(--radius-card);
+			.cpanel-category-card {
+				background: var(--cp-bg-card);
+				border: 1px solid var(--cp-border-card);
+				border-radius: var(--cp-radius-card);
+				box-shadow: var(--cp-shadow-sm);
 				overflow: hidden;
-				box-shadow: var(--shadow-card);
 				transition:
-					border-color 0.2s ease,
-					box-shadow 0.2s ease;
+					box-shadow 0.2s ease,
+					border-color 0.2s ease;
 			}
 
-			.category-card:hover {
-				border-color: var(--border-color-hover);
-				box-shadow: var(--shadow-hover);
+			.cpanel-category-card:hover {
+				box-shadow: var(--cp-shadow-lg);
+				border-color: var(--cp-border-card-hover);
 			}
 
-			.category-header {
+			.cpanel-category-header {
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
 				padding: 1rem 1.35rem;
-				border-bottom: 1px solid var(--border-color);
+				background: var(--cp-bg-card);
+				border-bottom: 1px solid var(--cp-border-card);
 				cursor: pointer;
 				user-select: none;
 				transition: background-color 0.15s ease;
 			}
 
-			.category-header:hover {
-				background-color: var(--bg-card-hover);
+			.cpanel-category-header:hover {
+				background-color: var(--cp-bg-card-hover);
 			}
 
-			.cat-title-wrap {
+			.cpanel-category-header-left {
 				display: flex;
 				align-items: center;
 				gap: 0.75rem;
 			}
 
-			.cat-icon-badge {
+			.cpanel-category-icon {
 				width: 34px;
 				height: 34px;
 				border-radius: 9px;
@@ -383,116 +1482,118 @@
 				flex-shrink: 0;
 			}
 
-			/* Category Gradients */
-			.cat-files {
+			.cat-icon-files {
 				background: linear-gradient(135deg, #10b981 0%, #059669 100%);
 				color: #fff;
 			}
-			.cat-domains {
+			.cat-icon-domains {
 				background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
 				color: #fff;
 			}
-			.cat-databases {
+			.cat-icon-databases {
 				background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
 				color: #fff;
 			}
-			.cat-email {
+			.cat-icon-email {
 				background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
 				color: #fff;
 			}
-			.cat-metrics {
+			.cat-icon-metrics {
 				background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
 				color: #fff;
 			}
-			.cat-security {
+			.cat-icon-security {
 				background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
 				color: #fff;
 			}
-			.cat-software {
+			.cat-icon-software {
 				background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
 				color: #fff;
 			}
 
-			.cat-title {
+			.cpanel-category-title {
+				margin: 0;
 				font-size: 1.05rem;
 				font-weight: 700;
-				color: var(--text-main);
+				color: var(--cp-text-heading);
+				letter-spacing: -0.01em;
 			}
 
-			.cat-count {
+			.cpanel-category-count {
 				font-size: 0.75rem;
 				font-weight: 600;
 				padding: 2px 8px;
 				border-radius: 9999px;
 				background: #0b0f19;
-				border: 1px solid var(--border-color);
-				color: var(--text-muted);
+				color: var(--cp-text-muted);
+				border: 1px solid var(--cp-border-card);
 			}
 
-			.cat-toggle {
+			.cpanel-category-toggle {
 				width: 28px;
 				height: 28px;
 				border-radius: 6px;
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				color: var(--text-muted);
+				color: var(--cp-text-muted);
+				font-size: 0.85rem;
 				transition: transform 0.25s ease;
 			}
 
-			.category-card.collapsed .cat-toggle {
+			.cpanel-category-card.is-collapsed .cpanel-category-toggle {
 				transform: rotate(-90deg);
 			}
 
-			.category-card.collapsed .category-body {
+			.cpanel-category-card.is-collapsed .cpanel-category-body {
 				display: none;
 			}
 
-			.category-body {
+			.cpanel-category-body {
 				padding: 1.25rem 1.35rem;
 			}
 
-			/* Tools Responsive Grid */
-			.tools-grid {
+			.cpanel-tools-grid {
 				display: grid;
 				grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 				gap: 1rem;
 			}
 
 			@media (max-width: 640px) {
-				.tools-grid {
+				.cpanel-tools-grid {
 					grid-template-columns: repeat(2, 1fr);
 					gap: 0.75rem;
 				}
 			}
 
-			/* Tool Tile Button */
-			.tool-tile {
+			.cpanel-tool-item {
+				position: relative;
 				display: flex;
 				flex-direction: column;
 				align-items: center;
 				text-align: center;
 				padding: 1.15rem 0.75rem;
-				background: var(--bg-card);
-				border: 1px solid var(--border-color);
-				border-radius: var(--radius-tool);
+				background: var(--cp-bg-card);
+				border: 1px solid var(--cp-border-card);
+				border-radius: var(--cp-radius-tool);
 				text-decoration: none;
-				color: var(--text-main);
+				color: var(--cp-text-body);
 				transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-				cursor: pointer;
+				user-select: none;
 			}
 
-			.tool-tile:hover {
+			.cpanel-tool-item:hover {
 				transform: translateY(-3px);
-				border-color: var(--primary);
-				background: var(--bg-card-hover);
+				border-color: var(--cp-primary);
+				background: var(--cp-bg-card-hover);
 				box-shadow: 0 6px 16px -2px rgb(37 99 235 / 0.25);
+				text-decoration: none;
 			}
 
-			.tool-icon-wrap {
+			.cpanel-tool-icon-box {
 				width: 48px;
 				height: 48px;
-				border-radius: 10px;
+				border-radius: var(--cp-radius-icon);
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -501,198 +1602,240 @@
 				transition: transform 0.2s ease;
 			}
 
-			.tool-tile:hover .tool-icon-wrap {
+			.cpanel-tool-item:hover .cpanel-tool-icon-box {
 				transform: scale(1.1);
 			}
 
-			.icon-green {
-				background: rgb(16 185 129 / 0.15);
+			.tool-icon-fm {
+				background: rgba(16, 185, 129, 0.15);
 				color: #34d399;
 			}
-			.icon-blue {
-				background: rgb(59 130 246 / 0.15);
+			.tool-icon-backup {
+				background: rgba(59, 130, 246, 0.15);
 				color: #60a5fa;
 			}
-			.icon-dark {
-				background: rgb(255 255 255 / 0.1);
+			.tool-icon-terminal {
+				background: rgba(255, 255, 255, 0.1);
 				color: #f8fafc;
 			}
-			.icon-amber {
-				background: rgb(245 158 11 / 0.15);
+			.tool-icon-disk {
+				background: rgba(245, 158, 11, 0.15);
 				color: #fbbf24;
 			}
-			.icon-purple {
-				background: rgb(139 92 246 / 0.15);
+			.tool-icon-web {
+				background: rgba(37, 99, 235, 0.15);
+				color: #60a5fa;
+			}
+			.tool-icon-dns {
+				background: rgba(139, 92, 246, 0.15);
 				color: #a78bfa;
 			}
-			.icon-pink {
-				background: rgb(236 72 153 / 0.15);
+			.tool-icon-ssl {
+				background: rgba(16, 185, 129, 0.15);
+				color: #34d399;
+			}
+			.tool-icon-app {
+				background: rgba(236, 72, 153, 0.15);
 				color: #f472b6;
 			}
-			.icon-sky {
-				background: rgb(14 165 233 / 0.15);
+			.tool-icon-stats {
+				background: rgba(14, 165, 233, 0.15);
 				color: #38bdf8;
 			}
-			.icon-orange {
-				background: rgb(249 115 22 / 0.15);
+			.tool-icon-db {
+				background: rgba(249, 115, 22, 0.15);
 				color: #fb923c;
 			}
-			.icon-cyan {
-				background: rgb(6 182 212 / 0.15);
+			.tool-icon-pma {
+				background: rgba(59, 130, 246, 0.15);
+				color: #60a5fa;
+			}
+			.tool-icon-mail {
+				background: rgba(6, 182, 212, 0.15);
 				color: #22d3ee;
 			}
-			.icon-indigo {
-				background: rgb(99 102 241 / 0.15);
+			.tool-icon-webmail {
+				background: rgba(99, 102, 241, 0.15);
 				color: #818cf8;
 			}
-			.icon-red {
-				background: rgb(239 68 68 / 0.15);
+			.tool-icon-cron {
+				background: rgba(234, 88, 12, 0.15);
+				color: #fb923c;
+			}
+			.tool-icon-firewall {
+				background: rgba(239, 68, 68, 0.15);
 				color: #f87171;
 			}
-			.icon-slate {
-				background: rgb(148 163 184 / 0.15);
+			.tool-icon-ssh {
+				background: rgba(148, 163, 184, 0.15);
+				color: #cbd5e1;
+			}
+			.tool-icon-2fa {
+				background: rgba(16, 185, 129, 0.15);
+				color: #34d399;
+			}
+			.tool-icon-server {
+				background: rgba(37, 99, 235, 0.15);
+				color: #60a5fa;
+			}
+			.tool-icon-users {
+				background: rgba(139, 92, 246, 0.15);
+				color: #a78bfa;
+			}
+			.tool-icon-logs {
+				background: rgba(148, 163, 184, 0.15);
 				color: #cbd5e1;
 			}
 
-			.tool-name {
+			.cpanel-tool-name {
 				font-size: 0.85rem;
 				font-weight: 700;
-				color: var(--text-main);
-				margin-bottom: 0.2rem;
+				color: var(--cp-text-heading);
 				line-height: 1.25;
+				margin-bottom: 0.2rem;
 			}
 
-			.tool-desc {
+			.cpanel-tool-desc {
 				font-size: 0.72rem;
-				color: var(--text-muted);
+				color: var(--cp-text-muted);
 				line-height: 1.2;
 			}
 
-			/* ==========================================================================
-		   Right Sidebar (Stats & Info)
-		   ========================================================================== */
-			.sidebar-col {
+			/* Sidebar Column */
+			.cpanel-sidebar {
 				display: flex;
 				flex-direction: column;
 				gap: 1.5rem;
 			}
 
-			.sidebar-card {
-				background: var(--bg-card);
-				border: 1px solid var(--border-color);
-				border-radius: var(--radius-card);
-				box-shadow: var(--shadow-card);
+			.cpanel-sidebar-card {
+				background: var(--cp-bg-card);
+				border: 1px solid var(--cp-border-card);
+				border-radius: var(--cp-radius-card);
+				box-shadow: var(--cp-shadow-sm);
 				overflow: hidden;
 			}
 
-			.sidebar-header {
-				padding: 0.9rem 1.25rem;
-				border-bottom: 1px solid var(--border-color);
+			.cpanel-sidebar-header {
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
+				padding: 0.9rem 1.25rem;
+				background: var(--cp-bg-card);
+				border-bottom: 1px solid var(--cp-border-card);
 			}
 
-			.sidebar-title {
+			.cpanel-sidebar-title {
+				margin: 0;
 				font-size: 0.95rem;
 				font-weight: 700;
-				color: var(--text-main);
+				color: var(--cp-text-heading);
 				display: flex;
 				align-items: center;
 				gap: 0.5rem;
 			}
 
-			.sidebar-body {
+			.cpanel-sidebar-body {
 				padding: 1.15rem 1.25rem;
 			}
 
-			.info-list {
+			.cpanel-info-list {
 				list-style: none;
+				padding: 0;
+				margin: 0;
 				display: flex;
 				flex-direction: column;
 				gap: 0.75rem;
 			}
 
-			.info-row {
+			.cpanel-info-row {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
 				padding-bottom: 0.6rem;
-				border-bottom: 1px dashed var(--border-color);
+				border-bottom: 1px dashed var(--cp-border-card);
 				font-size: 0.8125rem;
 			}
 
-			.info-row:last-child {
+			.cpanel-info-row:last-child {
 				border-bottom: none;
 				padding-bottom: 0;
 			}
 
-			.info-label {
-				color: var(--text-muted);
+			.cpanel-info-label {
+				color: var(--cp-text-muted);
 				font-weight: 500;
 				display: flex;
 				align-items: center;
 				gap: 0.4rem;
 			}
 
-			.info-val {
-				color: var(--text-main);
+			.cpanel-info-value {
+				color: var(--cp-text-heading);
 				font-weight: 700;
+				text-align: right;
 			}
 
-			.role-badge {
-				background: rgba(249, 115, 22, 0.2);
-				color: #fb923c;
-				font-size: 0.6875rem;
-				padding: 2px 7px;
+			.cpanel-pill-badge {
+				display: inline-block;
+				padding: 2px 8px;
 				border-radius: 9999px;
-				font-weight: 700;
-				margin-left: 0.35rem;
+				font-size: 0.6875rem;
+				font-weight: 600;
+				background: rgba(37, 99, 235, 0.2);
+				color: #60a5fa;
 			}
 
-			/* Quota Progress Meters */
-			.meters-list {
+			.cpanel-pill-badge.badge-admin {
+				background: rgba(234, 88, 12, 0.2);
+				color: #fb923c;
+			}
+
+			/* Statistics Progress Bars */
+			.cpanel-meters-list {
 				display: flex;
 				flex-direction: column;
 				gap: 1.15rem;
 			}
 
-			.meter-item {
+			.cpanel-meter-item {
 				display: flex;
 				flex-direction: column;
 				gap: 0.4rem;
 			}
 
-			.meter-header {
+			.cpanel-meter-header {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
 				font-size: 0.8125rem;
 			}
 
-			.meter-title {
+			.cpanel-meter-title {
+				color: var(--cp-text-heading);
 				font-weight: 600;
 				display: flex;
 				align-items: center;
 				gap: 0.4rem;
 			}
 
-			.meter-val {
-				color: var(--text-muted);
+			.cpanel-meter-value {
+				color: var(--cp-text-muted);
 				font-size: 0.75rem;
 				font-weight: 500;
 			}
 
-			.meter-track {
+			.cpanel-meter-track {
 				width: 100%;
 				height: 8px;
 				background: #0b0f19;
-				border: 1px solid var(--border-color);
 				border-radius: 9999px;
 				overflow: hidden;
+				position: relative;
+				border: 1px solid var(--cp-border-card);
 			}
 
-			.meter-fill {
+			.cpanel-meter-fill {
 				height: 100%;
 				border-radius: 9999px;
 				transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -711,814 +1854,1049 @@
 				background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
 			}
 
-			/* Empty State */
-			.no-results-box {
+			.cpanel-no-results {
 				display: none;
 				text-align: center;
 				padding: 4rem 1.5rem;
-				background: var(--bg-card);
-				border: 1px dashed var(--border-color);
-				border-radius: var(--radius-card);
+				background: var(--cp-bg-card);
+				border: 1px dashed var(--cp-border-card);
+				border-radius: var(--cp-radius-card);
 			}
 
-			.no-results-box.visible {
+			.cpanel-no-results.is-visible {
 				display: block;
 			}
 
-			mark.hl {
+			.cpanel-no-results-icon {
+				font-size: 2.5rem;
+				color: var(--cp-text-muted);
+				margin-bottom: 0.75rem;
+			}
+
+			.cpanel-no-results-title {
+				font-size: 1.2rem;
+				font-weight: 700;
+				color: var(--cp-text-heading);
+				margin: 0 0 0.5rem 0;
+			}
+
+			.cpanel-no-results-desc {
+				font-size: 0.875rem;
+				color: var(--cp-text-muted);
+				margin: 0 0 1.25rem 0;
+			}
+
+			mark.cp-highlight {
 				background: rgba(202, 138, 4, 0.5);
 				color: #fff;
 				border-radius: 2px;
 				padding: 0 2px;
 			}
+
+			/* Footer Styling */
+			.app-footer {
+				background: var(--cp-bg-nav) !important;
+				border-top: 1px solid var(--cp-border-card) !important;
+				padding: 1.25rem 1.5rem !important;
+				text-align: center;
+				color: var(--cp-text-muted) !important;
+				font-size: 0.8125rem;
+			}
+
+			.app-footer-link {
+				color: #38bdf8 !important;
+				text-decoration: none !important;
+				font-weight: 700;
+			}
+
+			.app-footer-link:hover {
+				text-decoration: underline !important;
+			}
 		</style>
 	</head>
-	<body>
-		<!-- Top Navigation -->
-		<header class="top-navbar">
-			<div class="nav-left">
-				<a href="#" class="nav-brand">
-					<i class="fas fa-cubes-stacked"></i>
-					<span>sas<span class="highlight">Panel</span></span>
-					<span class="nav-badge">cPanel Clone</span>
-				</a>
+	<body class="theme-dark">
+		<!-- Top Navigation Header -->
+		<header class="app-header cpanel-header">
+			<div class="top-bar">
+				<div class="container top-bar-inner">
+					<!-- Logo & Stats -->
+					<div class="top-bar-left">
+						<a href="#" class="top-bar-logo cp-brand-link" onclick="switchView('cpanel')">
+							<div class="cp-brand-logo">
+								<i class="fas fa-cubes-stacked cp-brand-icon"></i>
+								<span class="cp-brand-name">sas<span class="cp-brand-name-light">Panel</span></span>
+								<span class="cp-edition-badge">cPanel Edition</span>
+							</div>
+						</a>
 
-				<div class="nav-stats-summary">
-					<span class="nav-stats-item"><i class="fas fa-hard-drive"></i> 145 MB / 10 GB</span>
-					<span class="nav-stats-item"><i class="fas fa-right-left"></i> 450 MB / 50 GB</span>
-				</div>
-			</div>
-
-			<ul class="nav-tabs">
-				<li>
-					<a href="#" class="nav-tab-link active"><i class="fas fa-grip"></i> Dashboard</a>
-				</li>
-				<li>
-					<a href="#" class="nav-tab-link"><i class="fas fa-users"></i> Users</a>
-				</li>
-				<li>
-					<a href="#" class="nav-tab-link"><i class="fas fa-globe"></i> Web</a>
-				</li>
-				<li>
-					<a href="#" class="nav-tab-link"><i class="fas fa-book-atlas"></i> DNS</a>
-				</li>
-				<li>
-					<a href="#" class="nav-tab-link"><i class="fas fa-envelope"></i> Mail</a>
-				</li>
-				<li>
-					<a href="#" class="nav-tab-link"><i class="fas fa-database"></i> DB</a>
-				</li>
-				<li>
-					<a href="#" class="nav-tab-link"><i class="fas fa-clock"></i> Cron</a>
-				</li>
-				<li>
-					<a href="#" class="nav-tab-link"><i class="fas fa-box-archive"></i> Backup</a>
-				</li>
-			</ul>
-
-			<div class="nav-right">
-				<div class="user-pill">
-					<i class="fas fa-circle-user" style="color: #38bdf8"></i>
-					<span>devsas</span>
-				</div>
-			</div>
-		</header>
-
-		<main class="dashboard-wrapper">
-			<!-- Hero Header with Live Search -->
-			<section class="hero-box">
-				<div class="hero-profile">
-					<div class="hero-avatar">
-						<i class="fas fa-user-shield"></i>
-					</div>
-					<div class="hero-heading">
-						<h1>Welcome to your Control Panel, devsas!</h1>
-						<p>Quickly access and manage websites, domains, databases, emails, and server tools.</p>
-					</div>
-				</div>
-
-				<div class="hero-search-area">
-					<div class="search-container">
-						<i class="fas fa-magnifying-glass search-icon"></i>
-						<input
-							type="search"
-							id="toolSearchInput"
-							class="search-input"
-							placeholder="Search tools (e.g. mysql, file, mail, ssl, terminal)..."
-							autocomplete="off"
-						/>
-						<span class="search-shortcut-badge">/</span>
+						<div class="top-bar-usage cp-stats-capsule">
+							<span class="top-bar-usage-item" title="Disk Usage">
+								<i class="fas fa-hard-drive"></i>
+								<span>145 MB</span>
+								<span class="u-text-dim">/</span>
+								<span>10 GB</span>
+							</span>
+							<span class="top-bar-usage-divider"></span>
+							<span class="top-bar-usage-item" title="Bandwidth">
+								<i class="fas fa-right-left"></i>
+								<span>450 MB</span>
+								<span class="u-text-dim">/</span>
+								<span>50 GB</span>
+							</span>
+						</div>
 					</div>
 
-					<button type="button" id="btnExpandAll" class="btn-pill" title="Expand all categories">
-						<i class="fas fa-angles-down"></i> Expand
-					</button>
-					<button
-						type="button"
-						id="btnCollapseAll"
-						class="btn-pill"
-						title="Collapse all categories"
-					>
-						<i class="fas fa-angles-up"></i> Collapse
-					</button>
-				</div>
-			</section>
-
-			<!-- Main 2-Column Content -->
-			<div class="main-grid">
-				<!-- Left Categories Column -->
-				<div class="categories-col">
-					<!-- Empty Search State -->
-					<div id="noResultsBox" class="no-results-box">
-						<i
-							class="fas fa-magnifying-glass"
-							style="font-size: 2.5rem; color: var(--text-dim); margin-bottom: 0.75rem"
-						></i>
-						<h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.35rem">
-							No matching tools found
-						</h3>
-						<p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.25rem">
-							Try another keyword like 'ftp', 'php', 'backup' or 'dns'.
-						</p>
+					<!-- Right Quick Controls -->
+					<div class="top-bar-right">
+						<a title="File Manager" class="top-bar-quick-btn" href="/fm/">
+							<i class="fas fa-folder-open"></i>
+							<span>Files</span>
+						</a>
+						<a title="Web Terminal" class="top-bar-quick-btn" href="/list/terminal/">
+							<i class="fas fa-terminal"></i>
+							<span>Terminal</span>
+						</a>
 						<button
 							type="button"
-							id="btnResetSearch"
-							class="btn-pill"
-							style="background: var(--primary); color: #fff"
+							class="top-bar-quick-btn cp-whm-quick-btn"
+							onclick="switchView('whm')"
 						>
-							<i class="fas fa-rotate-left"></i> Reset Search
+							<i class="fas fa-server"></i>
+							<span>WHM Center</span>
 						</button>
-					</div>
 
-					<!-- 1. FILES -->
-					<div class="category-card" data-cat="files">
-						<div class="category-header">
-							<div class="cat-title-wrap">
-								<div class="cat-icon-badge cat-files"><i class="fas fa-folder-tree"></i></div>
-								<h2 class="cat-title">Files</h2>
-								<span class="cat-count">6</span>
+						<div class="cp-user-capsule">
+							<div class="cp-user-pill">
+								<div class="cp-user-avatar"><i class="fas fa-user-shield"></i></div>
+								<span class="cp-user-name">devsas</span>
+								<span class="cp-user-role-badge badge-admin">admin</span>
 							</div>
-							<div class="cat-toggle"><i class="fas fa-chevron-down"></i></div>
-						</div>
-						<div class="category-body">
-							<div class="tools-grid">
-								<div
-									class="tool-tile"
-									data-keys="file manager upload download edit explorer directory htdocs"
-								>
-									<div class="tool-icon-wrap icon-green"><i class="fas fa-folder-open"></i></div>
-									<span class="tool-name">File Manager</span>
-									<span class="tool-desc">Browse and edit files</span>
-								</div>
-								<div
-									class="tool-tile"
-									data-keys="backups restore download archive snapshots tar zip"
-								>
-									<div class="tool-icon-wrap icon-blue"><i class="fas fa-box-archive"></i></div>
-									<span class="tool-name">Backups</span>
-									<span class="tool-desc">Create & restore backups</span>
-								</div>
-								<div class="tool-tile" data-keys="backup exclusions ignore filter exclude">
-									<div class="tool-icon-wrap icon-blue"><i class="fas fa-filter"></i></div>
-									<span class="tool-name">Backup Exclusions</span>
-									<span class="tool-desc">Configure ignored paths</span>
-								</div>
-								<div class="tool-tile" data-keys="terminal console ssh shell bash command line">
-									<div class="tool-icon-wrap icon-dark"><i class="fas fa-terminal"></i></div>
-									<span class="tool-name">Web Terminal</span>
-									<span class="tool-desc">In-browser SSH console</span>
-								</div>
-								<div
-									class="tool-tile"
-									data-keys="ftp accounts credentials sftp file transfer upload"
-								>
-									<div class="tool-icon-wrap icon-green"><i class="fas fa-network-wired"></i></div>
-									<span class="tool-name">FTP Accounts</span>
-									<span class="tool-desc">Manage FTP/SFTP logins</span>
-								</div>
-								<div class="tool-tile" data-keys="disk usage quota space storage analyzer">
-									<div class="tool-icon-wrap icon-amber"><i class="fas fa-hard-drive"></i></div>
-									<span class="tool-name">Disk Usage</span>
-									<span class="tool-desc">Storage inspection</span>
-								</div>
-							</div>
+							<a title="Log out" class="cp-logout-btn" href="#"
+								><i class="fas fa-right-from-bracket"></i
+							></a>
 						</div>
 					</div>
+				</div>
+			</div>
 
-					<!-- 2. DOMAINS & WEB -->
-					<div class="category-card" data-cat="domains">
-						<div class="category-header">
-							<div class="cat-title-wrap">
-								<div class="cat-icon-badge cat-domains"><i class="fas fa-earth-americas"></i></div>
-								<h2 class="cat-title">Domains & Web</h2>
-								<span class="cat-count">7</span>
-							</div>
-							<div class="cat-toggle"><i class="fas fa-chevron-down"></i></div>
-						</div>
-						<div class="category-body">
-							<div class="tools-grid">
-								<div
-									class="tool-tile"
-									data-keys="web domains sites virtualhosts vhosts apache nginx aliases"
-								>
-									<div class="tool-icon-wrap icon-blue"><i class="fas fa-globe"></i></div>
-									<span class="tool-name">Web Domains</span>
-									<span class="tool-desc">Manage websites & aliases</span>
-								</div>
-								<div class="tool-tile" data-keys="add domain new website create host domain">
-									<div class="tool-icon-wrap icon-blue"><i class="fas fa-circle-plus"></i></div>
-									<span class="tool-name">Add Domain</span>
-									<span class="tool-desc">Create new website</span>
-								</div>
-								<div
-									class="tool-tile"
-									data-keys="dns zone editor records a mx cname txt ns bind named"
-								>
-									<div class="tool-icon-wrap icon-purple"><i class="fas fa-book-atlas"></i></div>
-									<span class="tool-name">Zone Editor</span>
-									<span class="tool-desc">DNS zones & records</span>
-								</div>
-								<div class="tool-tile" data-keys="add dns new zone domain name servers">
-									<div class="tool-icon-wrap icon-purple"><i class="fas fa-plus-circle"></i></div>
-									<span class="tool-name">Add DNS Zone</span>
-									<span class="tool-desc">Create DNS zone</span>
-								</div>
-								<div
-									class="tool-tile"
-									data-keys="ssl tls lets encrypt certificates https secure certs"
-								>
-									<div class="tool-icon-wrap icon-green"><i class="fas fa-shield-halved"></i></div>
-									<span class="tool-name">SSL/TLS Status</span>
-									<span class="tool-desc">Let's Encrypt & certs</span>
-								</div>
-								<div
-									class="tool-tile"
-									data-keys="wordpress quick install web apps joomla drupal phpbb nodejs"
-								>
-									<div class="tool-icon-wrap icon-pink"><i class="fas fa-cubes"></i></div>
-									<span class="tool-name">Web Apps / WordPress</span>
-									<span class="tool-desc">1-Click App Installer</span>
-								</div>
-								<div
-									class="tool-tile"
-									data-keys="web logs access error logs visitor traffic nginx apache"
-								>
-									<div class="tool-icon-wrap icon-slate"><i class="fas fa-file-lines"></i></div>
-									<span class="tool-name">Access & Error Logs</span>
-									<span class="tool-desc">Live web server logs</span>
-								</div>
-							</div>
-						</div>
-					</div>
+			<!-- Nav Tabs -->
+			<nav class="main-menu cp-nav-bar">
+				<div class="container cp-nav-container">
+					<ul class="main-menu-list cp-nav-tabs">
+						<li class="main-menu-item">
+							<a
+								class="main-menu-item-link cp-nav-link active"
+								id="tab-cpanel"
+								href="#"
+								onclick="switchView('cpanel')"
+							>
+								<i class="fas fa-grip cp-nav-icon"></i>
+								<span class="cp-nav-text">cPanel Dashboard</span>
+							</a>
+						</li>
+						<li class="main-menu-item">
+							<a
+								class="main-menu-item-link cp-nav-link cp-whm-tab"
+								id="tab-whm"
+								href="#"
+								onclick="switchView('whm')"
+							>
+								<i class="fas fa-server cp-nav-icon"></i>
+								<span class="cp-nav-text">WHM Multi-Manager</span>
+								<span class="cp-nav-badge-pill">Root</span>
+							</a>
+						</li>
+						<li class="main-menu-item">
+							<a class="main-menu-item-link cp-nav-link" href="/list/user/">
+								<i class="fas fa-users cp-nav-icon"></i>
+								<span class="cp-nav-text">Users</span>
+								<span class="cp-nav-badge-pill">3</span>
+							</a>
+						</li>
+						<li class="main-menu-item">
+							<a class="main-menu-item-link cp-nav-link" href="/list/web/">
+								<i class="fas fa-globe cp-nav-icon"></i>
+								<span class="cp-nav-text">Web</span>
+								<span class="cp-nav-badge-pill">1</span>
+							</a>
+						</li>
+						<li class="main-menu-item">
+							<a class="main-menu-item-link cp-nav-link" href="/list/dns/">
+								<i class="fas fa-book-atlas cp-nav-icon"></i>
+								<span class="cp-nav-text">DNS</span>
+								<span class="cp-nav-badge-pill">1</span>
+							</a>
+						</li>
+						<li class="main-menu-item">
+							<a class="main-menu-item-link cp-nav-link" href="/list/mail/">
+								<i class="fas fa-envelope cp-nav-icon"></i>
+								<span class="cp-nav-text">Mail</span>
+								<span class="cp-nav-badge-pill">1</span>
+							</a>
+						</li>
+						<li class="main-menu-item">
+							<a class="main-menu-item-link cp-nav-link" href="/list/db/">
+								<i class="fas fa-database cp-nav-icon"></i>
+								<span class="cp-nav-text">DB</span>
+								<span class="cp-nav-badge-pill">2</span>
+							</a>
+						</li>
+						<li class="main-menu-item">
+							<a class="main-menu-item-link cp-nav-link" href="/list/cron/">
+								<i class="fas fa-clock cp-nav-icon"></i>
+								<span class="cp-nav-text">Cron</span>
+							</a>
+						</li>
+						<li class="main-menu-item">
+							<a class="main-menu-item-link cp-nav-link" href="/list/backup/">
+								<i class="fas fa-box-archive cp-nav-icon"></i>
+								<span class="cp-nav-text">Backup</span>
+								<span class="cp-nav-badge-pill">1</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</header>
 
-					<!-- 3. DATABASES -->
-					<div class="category-card" data-cat="databases">
-						<div class="category-header">
-							<div class="cat-title-wrap">
-								<div class="cat-icon-badge cat-databases"><i class="fas fa-database"></i></div>
-								<h2 class="cat-title">Databases</h2>
-								<span class="cat-count">3</span>
+		<main class="app-content cp-app-content">
+			<!-- VIEW 1: cPanel User Dashboard View -->
+			<div id="cpanelViewSection">
+				<div class="cpanel-dashboard-container">
+					<!-- Hero & Search -->
+					<div class="cpanel-hero">
+						<div class="cpanel-hero-welcome">
+							<div class="cpanel-hero-avatar">
+								<i class="fas fa-user-shield"></i>
 							</div>
-							<div class="cat-toggle"><i class="fas fa-chevron-down"></i></div>
+							<div>
+								<h1 class="cpanel-hero-title">Welcome to your Control Panel, devsas!</h1>
+								<p class="cpanel-hero-subtitle">
+									Manage your websites, domains, databases, emails, and server settings.
+								</p>
+							</div>
 						</div>
-						<div class="category-body">
-							<div class="tools-grid">
-								<div
-									class="tool-tile"
-									data-keys="mysql databases mariadb db sql users tables postgresql"
-								>
-									<div class="tool-icon-wrap icon-orange"><i class="fas fa-database"></i></div>
-									<span class="tool-name">MySQL Databases</span>
-									<span class="tool-desc">Manage DBs & users</span>
-								</div>
-								<div class="tool-tile" data-keys="add database new mysql mariadb create db user">
-									<div class="tool-icon-wrap icon-orange"><i class="fas fa-folder-plus"></i></div>
-									<span class="tool-name">Add Database</span>
-									<span class="tool-desc">Create new database</span>
-								</div>
-								<div
-									class="tool-tile"
-									data-keys="phpmyadmin pma sql query export import table database admin"
-								>
-									<div class="tool-icon-wrap icon-blue"><i class="fas fa-table-columns"></i></div>
-									<span class="tool-name">phpMyAdmin</span>
-									<span class="tool-desc">Web database manager</span>
-								</div>
+
+						<div class="cpanel-hero-actions">
+							<div class="cpanel-search-wrapper">
+								<i class="fas fa-magnifying-glass cpanel-search-icon"></i>
+								<input
+									type="search"
+									id="cpanelSearchInput"
+									class="cpanel-search-input"
+									placeholder="Search tools, domains, databases, emails..."
+									autocomplete="off"
+								/>
+								<span class="cpanel-search-badge">/</span>
+							</div>
+
+							<div class="cpanel-quick-controls">
+								<button type="button" id="cpanelExpandAll" class="cpanel-control-btn">
+									<i class="fas fa-angles-down"></i> Expand
+								</button>
+								<button type="button" id="cpanelCollapseAll" class="cpanel-control-btn">
+									<i class="fas fa-angles-up"></i> Collapse
+								</button>
 							</div>
 						</div>
 					</div>
 
-					<!-- 4. EMAIL -->
-					<div class="category-card" data-cat="email">
-						<div class="category-header">
-							<div class="cat-title-wrap">
-								<div class="cat-icon-badge cat-email"><i class="fas fa-envelope"></i></div>
-								<h2 class="cat-title">Email</h2>
-								<span class="cat-count">4</span>
-							</div>
-							<div class="cat-toggle"><i class="fas fa-chevron-down"></i></div>
-						</div>
-						<div class="category-body">
-							<div class="tools-grid">
-								<div class="tool-tile" data-keys="email accounts mail inbox mailbox imap pop3 smtp">
-									<div class="tool-icon-wrap icon-cyan">
-										<i class="fas fa-envelope-open-text"></i>
+					<!-- Grid Layout -->
+					<div class="cpanel-grid-layout">
+						<!-- Left: Categories -->
+						<div class="cpanel-main-content">
+							<!-- 1. FILES -->
+							<div class="cpanel-category-card" data-category-id="files">
+								<div class="cpanel-category-header">
+									<div class="cpanel-category-header-left">
+										<div class="cpanel-category-icon cat-icon-files">
+											<i class="fas fa-folder-tree"></i>
+										</div>
+										<h2 class="cpanel-category-title">Files</h2>
+										<span class="cpanel-category-count">6</span>
 									</div>
-									<span class="tool-name">Email Accounts</span>
-									<span class="tool-desc">Manage mailboxes</span>
+									<div class="cpanel-category-toggle"><i class="fas fa-chevron-down"></i></div>
 								</div>
-								<div class="tool-tile" data-keys="add mail domain new email address create">
-									<div class="tool-icon-wrap icon-cyan"><i class="fas fa-plus-circle"></i></div>
-									<span class="tool-name">Add Mail Domain</span>
-									<span class="tool-desc">Setup email domain</span>
-								</div>
-								<div
-									class="tool-tile"
-									data-keys="webmail roundcube snappymail rainloop read email inbox"
-								>
-									<div class="tool-icon-wrap icon-indigo"><i class="fas fa-inbox"></i></div>
-									<span class="tool-name">Webmail</span>
-									<span class="tool-desc">Roundcube / Webmail</span>
-								</div>
-								<div
-									class="tool-tile"
-									data-keys="mail dns dkim spf dmarc spam authentication records"
-								>
-									<div class="tool-icon-wrap icon-cyan"><i class="fas fa-shield-cat"></i></div>
-									<span class="tool-name">Mail DNS & DKIM</span>
-									<span class="tool-desc">Deliverability & anti-spam</span>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- 5. METRICS & LOGS -->
-					<div class="category-card" data-cat="metrics">
-						<div class="category-header">
-							<div class="cat-title-wrap">
-								<div class="cat-icon-badge cat-metrics"><i class="fas fa-chart-pie"></i></div>
-								<h2 class="cat-title">Metrics & Logs</h2>
-								<span class="cat-count">4</span>
-							</div>
-							<div class="cat-toggle"><i class="fas fa-chevron-down"></i></div>
-						</div>
-						<div class="category-body">
-							<div class="tools-grid">
-								<div
-									class="tool-tile"
-									data-keys="statistics analytics visitors awstats bandwidth traffic chart"
-								>
-									<div class="tool-icon-wrap icon-sky"><i class="fas fa-chart-line"></i></div>
-									<span class="tool-name">Web Statistics</span>
-									<span class="tool-desc">Visitor analytics</span>
-								</div>
-								<div
-									class="tool-tile"
-									data-keys="rrd graphs health monitoring cpu ram load bandwidth server status"
-								>
-									<div class="tool-icon-wrap icon-sky"><i class="fas fa-chart-area"></i></div>
-									<span class="tool-name">System Health (RRD)</span>
-									<span class="tool-desc">CPU, RAM & Load charts</span>
-								</div>
-								<div class="tool-tile" data-keys="activity logs history audit trail actions events">
-									<div class="tool-icon-wrap icon-slate">
-										<i class="fas fa-clock-rotate-left"></i>
+								<div class="cpanel-category-body">
+									<div class="cpanel-tools-grid">
+										<a
+											href="/fm/"
+											class="cpanel-tool-item"
+											data-keywords="file manager upload download edit explorer directory htdocs"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-fm">
+												<i class="fas fa-folder-open"></i>
+											</div>
+											<span class="cpanel-tool-name">File Manager</span>
+											<span class="cpanel-tool-desc">Browse and manage files</span>
+										</a>
+										<a
+											href="/list/backup/"
+											class="cpanel-tool-item"
+											data-keywords="backups restore download archive snapshots tar zip"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-backup">
+												<i class="fas fa-box-archive"></i>
+											</div>
+											<span class="cpanel-tool-name">Backups</span>
+											<span class="cpanel-tool-desc">Create & restore backups</span>
+										</a>
+										<a
+											href="/list/backup/exclusions/"
+											class="cpanel-tool-item"
+											data-keywords="backup exclusions ignore filter exclude"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-backup">
+												<i class="fas fa-filter"></i>
+											</div>
+											<span class="cpanel-tool-name">Backup Exclusions</span>
+											<span class="cpanel-tool-desc">Configure ignored paths</span>
+										</a>
+										<a
+											href="/list/terminal/"
+											class="cpanel-tool-item"
+											data-keywords="terminal console ssh shell bash command line"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-terminal">
+												<i class="fas fa-terminal"></i>
+											</div>
+											<span class="cpanel-tool-name">Web Terminal</span>
+											<span class="cpanel-tool-desc">In-browser SSH console</span>
+										</a>
+										<a
+											href="/list/web/"
+											class="cpanel-tool-item"
+											data-keywords="ftp accounts credentials sftp file transfer upload"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-fm">
+												<i class="fas fa-network-wired"></i>
+											</div>
+											<span class="cpanel-tool-name">FTP Accounts</span>
+											<span class="cpanel-tool-desc">Manage FTP / SFTP users</span>
+										</a>
+										<a
+											href="/list/server/?disk"
+											class="cpanel-tool-item"
+											data-keywords="disk usage quota space storage analyzer"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-disk">
+												<i class="fas fa-hard-drive"></i>
+											</div>
+											<span class="cpanel-tool-name">Disk Usage</span>
+											<span class="cpanel-tool-desc">Inspect storage consumption</span>
+										</a>
 									</div>
-									<span class="tool-name">Activity Logs</span>
-									<span class="tool-desc">Recent account events</span>
-								</div>
-								<div
-									class="tool-tile"
-									data-keys="auth logs login failed attempts security audit ip"
-								>
-									<div class="tool-icon-wrap icon-slate"><i class="fas fa-fingerprint"></i></div>
-									<span class="tool-name">Auth Logs</span>
-									<span class="tool-desc">Login history & audit</span>
 								</div>
 							</div>
-						</div>
-					</div>
 
-					<!-- 6. SECURITY & ACCESS -->
-					<div class="category-card" data-cat="security">
-						<div class="category-header">
-							<div class="cat-title-wrap">
-								<div class="cat-icon-badge cat-security"><i class="fas fa-shield-halved"></i></div>
-								<h2 class="cat-title">Security & Access</h2>
-								<span class="cat-count">5</span>
-							</div>
-							<div class="cat-toggle"><i class="fas fa-chevron-down"></i></div>
-						</div>
-						<div class="category-body">
-							<div class="tools-grid">
-								<div
-									class="tool-tile"
-									data-keys="ssh keys public key authorized keys rsa ed25519 authentication"
-								>
-									<div class="tool-icon-wrap icon-slate"><i class="fas fa-key"></i></div>
-									<span class="tool-name">SSH Keys</span>
-									<span class="tool-desc">SSH public keys</span>
-								</div>
-								<div
-									class="tool-tile"
-									data-keys="api access keys tokens authentication rest automation"
-								>
-									<div class="tool-icon-wrap icon-slate"><i class="fas fa-id-badge"></i></div>
-									<span class="tool-name">API Access Keys</span>
-									<span class="tool-desc">REST API tokens</span>
-								</div>
-								<div
-									class="tool-tile"
-									data-keys="2fa two factor authentication security otp qr code google authenticator"
-								>
-									<div class="tool-icon-wrap icon-green">
-										<i class="fas fa-mobile-screen-button"></i>
+							<!-- 2. DOMAINS & WEB -->
+							<div class="cpanel-category-card" data-category-id="domains">
+								<div class="cpanel-category-header">
+									<div class="cpanel-category-header-left">
+										<div class="cpanel-category-icon cat-icon-domains">
+											<i class="fas fa-earth-americas"></i>
+										</div>
+										<h2 class="cpanel-category-title">Domains & Web</h2>
+										<span class="cpanel-category-count">7</span>
 									</div>
-									<span class="tool-name">2-Factor Auth (2FA)</span>
-									<span class="tool-desc">Secure account login</span>
+									<div class="cpanel-category-toggle"><i class="fas fa-chevron-down"></i></div>
 								</div>
-								<div
-									class="tool-tile"
-									data-keys="firewall iptables ufw ports rules block allow security"
-								>
-									<div class="tool-icon-wrap icon-red"><i class="fas fa-shield"></i></div>
-									<span class="tool-name">Firewall Rules</span>
-									<span class="tool-desc">Port & IP filtering</span>
-								</div>
-								<div
-									class="tool-tile"
-									data-keys="banlist fail2ban blacklists blocked ips brute force"
-								>
-									<div class="tool-icon-wrap icon-red"><i class="fas fa-ban"></i></div>
-									<span class="tool-name">IP Ban List</span>
-									<span class="tool-desc">Fail2ban blocked IPs</span>
+								<div class="cpanel-category-body">
+									<div class="cpanel-tools-grid">
+										<a
+											href="/list/web/"
+											class="cpanel-tool-item"
+											data-keywords="web domains sites virtualhosts vhosts apache nginx aliases"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-web">
+												<i class="fas fa-globe"></i>
+											</div>
+											<span class="cpanel-tool-name">Web Domains</span>
+											<span class="cpanel-tool-desc">Manage websites & aliases</span>
+										</a>
+										<a
+											href="/add/web/"
+											class="cpanel-tool-item"
+											data-keywords="add domain new website create host domain"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-web">
+												<i class="fas fa-circle-plus"></i>
+											</div>
+											<span class="cpanel-tool-name">Add Domain</span>
+											<span class="cpanel-tool-desc">Create new web domain</span>
+										</a>
+										<a
+											href="/list/dns/"
+											class="cpanel-tool-item"
+											data-keywords="dns zone editor records a mx cname txt ns bind named"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-dns">
+												<i class="fas fa-book-atlas"></i>
+											</div>
+											<span class="cpanel-tool-name">Zone Editor</span>
+											<span class="cpanel-tool-desc">DNS zones & records</span>
+										</a>
+										<a
+											href="/add/dns/"
+											class="cpanel-tool-item"
+											data-keywords="add dns new zone domain name servers"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-dns">
+												<i class="fas fa-plus-circle"></i>
+											</div>
+											<span class="cpanel-tool-name">Add DNS Zone</span>
+											<span class="cpanel-tool-desc">Create custom DNS zone</span>
+										</a>
+										<a
+											href="/list/ssl/"
+											class="cpanel-tool-item"
+											data-keywords="ssl tls lets encrypt certificates https secure certs"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-ssl">
+												<i class="fas fa-shield-halved"></i>
+											</div>
+											<span class="cpanel-tool-name">SSL/TLS Status</span>
+											<span class="cpanel-tool-desc">Let's Encrypt & certs</span>
+										</a>
+										<a
+											href="/list/webapps/"
+											class="cpanel-tool-item"
+											data-keywords="wordpress quick install web apps joomla drupal phpbb nodejs"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-app">
+												<i class="fas fa-cubes"></i>
+											</div>
+											<span class="cpanel-tool-name">Web Apps / WordPress</span>
+											<span class="cpanel-tool-desc">1-Click App Installer</span>
+										</a>
+										<a
+											href="/list/web-log/"
+											class="cpanel-tool-item"
+											data-keywords="web logs access error logs visitor traffic nginx apache"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-logs">
+												<i class="fas fa-file-lines"></i>
+											</div>
+											<span class="cpanel-tool-name">Access & Error Logs</span>
+											<span class="cpanel-tool-desc">Live web server logs</span>
+										</a>
+									</div>
 								</div>
 							</div>
-						</div>
-					</div>
 
-					<!-- 7. SOFTWARE & ADVANCED -->
-					<div class="category-card" data-cat="software">
-						<div class="category-header">
-							<div class="cat-title-wrap">
-								<div class="cat-icon-badge cat-software"><i class="fas fa-gears"></i></div>
-								<h2 class="cat-title">Software & Advanced</h2>
-								<span class="cat-count">6</span>
+							<!-- 3. DATABASES -->
+							<div class="cpanel-category-card" data-category-id="databases">
+								<div class="cpanel-category-header">
+									<div class="cpanel-category-header-left">
+										<div class="cpanel-category-icon cat-icon-databases">
+											<i class="fas fa-database"></i>
+										</div>
+										<h2 class="cpanel-category-title">Databases</h2>
+										<span class="cpanel-category-count">3</span>
+									</div>
+									<div class="cpanel-category-toggle"><i class="fas fa-chevron-down"></i></div>
+								</div>
+								<div class="cpanel-category-body">
+									<div class="cpanel-tools-grid">
+										<a
+											href="/list/db/"
+											class="cpanel-tool-item"
+											data-keywords="mysql databases mariadb db sql users tables postgresql"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-db">
+												<i class="fas fa-database"></i>
+											</div>
+											<span class="cpanel-tool-name">MySQL Databases</span>
+											<span class="cpanel-tool-desc">Manage DBs & users</span>
+										</a>
+										<a
+											href="/add/db/"
+											class="cpanel-tool-item"
+											data-keywords="add database new mysql mariadb create db user"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-db">
+												<i class="fas fa-folder-plus"></i>
+											</div>
+											<span class="cpanel-tool-name">Add Database</span>
+											<span class="cpanel-tool-desc">Create new database</span>
+										</a>
+										<a
+											href="/phpmyadmin/"
+											target="_blank"
+											class="cpanel-tool-item"
+											data-keywords="phpmyadmin pma sql query export import table database admin"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-pma">
+												<i class="fas fa-table-columns"></i>
+											</div>
+											<span class="cpanel-tool-name">phpMyAdmin</span>
+											<span class="cpanel-tool-desc">Web database manager</span>
+										</a>
+									</div>
+								</div>
 							</div>
-							<div class="cat-toggle"><i class="fas fa-chevron-down"></i></div>
+
+							<!-- 4. EMAIL -->
+							<div class="cpanel-category-card" data-category-id="email">
+								<div class="cpanel-category-header">
+									<div class="cpanel-category-header-left">
+										<div class="cpanel-category-icon cat-icon-email">
+											<i class="fas fa-envelope"></i>
+										</div>
+										<h2 class="cpanel-category-title">Email</h2>
+										<span class="cpanel-category-count">4</span>
+									</div>
+									<div class="cpanel-category-toggle"><i class="fas fa-chevron-down"></i></div>
+								</div>
+								<div class="cpanel-category-body">
+									<div class="cpanel-tools-grid">
+										<a
+											href="/list/mail/"
+											class="cpanel-tool-item"
+											data-keywords="email accounts mail inbox mailbox imap pop3 smtp"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-mail">
+												<i class="fas fa-envelope-open-text"></i>
+											</div>
+											<span class="cpanel-tool-name">Email Accounts</span>
+											<span class="cpanel-tool-desc">Manage mailboxes</span>
+										</a>
+										<a
+											href="/add/mail/"
+											class="cpanel-tool-item"
+											data-keywords="add mail domain new email address create"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-mail">
+												<i class="fas fa-plus-circle"></i>
+											</div>
+											<span class="cpanel-tool-name">Add Mail Domain</span>
+											<span class="cpanel-tool-desc">Setup email domain</span>
+										</a>
+										<a
+											href="/webmail/"
+											target="_blank"
+											class="cpanel-tool-item"
+											data-keywords="webmail roundcube snappymail rainloop read email inbox"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-webmail">
+												<i class="fas fa-inbox"></i>
+											</div>
+											<span class="cpanel-tool-name">Webmail</span>
+											<span class="cpanel-tool-desc">Roundcube / Webmail</span>
+										</a>
+										<a
+											href="/list/mail-dns/"
+											class="cpanel-tool-item"
+											data-keywords="mail dns dkim spf dmarc spam authentication records"
+										>
+											<div class="cpanel-tool-icon-box tool-icon-mail">
+												<i class="fas fa-shield-cat"></i>
+											</div>
+											<span class="cpanel-tool-name">Mail DNS & DKIM</span>
+											<span class="cpanel-tool-desc">SPF & deliverability</span>
+										</a>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="category-body">
-							<div class="tools-grid">
-								<div
-									class="tool-tile"
-									data-keys="cron jobs crontab scheduled tasks automation timing schedule"
-								>
-									<div class="tool-icon-wrap icon-orange"><i class="fas fa-clock"></i></div>
-									<span class="tool-name">Cron Jobs</span>
-									<span class="tool-desc">Scheduled background tasks</span>
+
+						<!-- Right: Sidebar Information & Statistics -->
+						<div class="cpanel-sidebar">
+							<div class="cpanel-sidebar-card">
+								<div class="cpanel-sidebar-header">
+									<h3 class="cpanel-sidebar-title">
+										<i class="fas fa-circle-info" style="color: #38bdf8"></i> General Information
+									</h3>
 								</div>
-								<div
-									class="tool-tile"
-									data-keys="user profile settings password language theme php preferences"
-								>
-									<div class="tool-icon-wrap icon-purple"><i class="fas fa-user-gear"></i></div>
-									<span class="tool-name">User Preferences</span>
-									<span class="tool-desc">Theme & password</span>
+								<div class="cpanel-sidebar-body">
+									<ul class="cpanel-info-list">
+										<li class="cpanel-info-row">
+											<span class="cpanel-info-label"
+												><i class="fas fa-user"></i> Current User</span
+											>
+											<span class="cpanel-info-value"
+												>devsas <span class="cpanel-pill-badge badge-admin">admin</span></span
+											>
+										</li>
+										<li class="cpanel-info-row">
+											<span class="cpanel-info-label"><i class="fas fa-server"></i> Hostname</span>
+											<span class="cpanel-info-value">srv.devsas.shop</span>
+										</li>
+										<li class="cpanel-info-row">
+											<span class="cpanel-info-label"
+												><i class="fas fa-network-wired"></i> Shared IP</span
+											>
+											<span class="cpanel-info-value">192.168.10.78</span>
+										</li>
+										<li class="cpanel-info-row">
+											<span class="cpanel-info-label"
+												><i class="fas fa-folder"></i> Home Directory</span
+											>
+											<span class="cpanel-info-value"><code>/home/devsas</code></span>
+										</li>
+										<li class="cpanel-info-row">
+											<span class="cpanel-info-label"><i class="fas fa-box"></i> Package Plan</span>
+											<span class="cpanel-info-value">default</span>
+										</li>
+									</ul>
 								</div>
-								<div
-									class="tool-tile"
-									data-keys="user accounts management hosting packages customers clients"
-								>
-									<div class="tool-icon-wrap icon-purple"><i class="fas fa-users"></i></div>
-									<span class="tool-name">User Accounts</span>
-									<span class="tool-desc">Manage system users</span>
+							</div>
+
+							<div class="cpanel-sidebar-card">
+								<div class="cpanel-sidebar-header">
+									<h3 class="cpanel-sidebar-title">
+										<i class="fas fa-chart-simple" style="color: #4ade80"></i> Statistics & Quota
+									</h3>
 								</div>
-								<div
-									class="tool-tile"
-									data-keys="server settings config configuration apache nginx php mysql bind"
-								>
-									<div class="tool-icon-wrap icon-blue"><i class="fas fa-server"></i></div>
-									<span class="tool-name">Server Settings</span>
-									<span class="tool-desc">Core daemon configs</span>
-								</div>
-								<div
-									class="tool-tile"
-									data-keys="services status daemons restart stop start health"
-								>
-									<div class="tool-icon-wrap icon-blue"><i class="fas fa-wave-square"></i></div>
-									<span class="tool-name">Service Status</span>
-									<span class="tool-desc">Monitor services</span>
-								</div>
-								<div
-									class="tool-tile"
-									data-keys="updates upgrade packages software patches version"
-								>
-									<div class="tool-icon-wrap icon-blue"><i class="fas fa-arrows-rotate"></i></div>
-									<span class="tool-name">System Updates</span>
-									<span class="tool-desc">Check & apply upgrades</span>
+								<div class="cpanel-sidebar-body">
+									<div class="cpanel-meters-list">
+										<div class="cpanel-meter-item">
+											<div class="cpanel-meter-header">
+												<span class="cpanel-meter-title"
+													><i class="fas fa-hard-drive"></i> Disk Usage</span
+												>
+												<span class="cpanel-meter-value">145 MB / 10 GB (1.4%)</span>
+											</div>
+											<div class="cpanel-meter-track">
+												<div class="cpanel-meter-fill fill-green" style="width: 1.4%"></div>
+											</div>
+										</div>
+										<div class="cpanel-meter-item">
+											<div class="cpanel-meter-header">
+												<span class="cpanel-meter-title"
+													><i class="fas fa-right-left"></i> Monthly Bandwidth</span
+												>
+												<span class="cpanel-meter-value">450 MB / 50 GB (0.9%)</span>
+											</div>
+											<div class="cpanel-meter-track">
+												<div class="cpanel-meter-fill fill-green" style="width: 0.9%"></div>
+											</div>
+										</div>
+										<div class="cpanel-meter-item">
+											<div class="cpanel-meter-header">
+												<span class="cpanel-meter-title"
+													><i class="fas fa-globe"></i> Web Domains</span
+												>
+												<span class="cpanel-meter-value">1 / ∞</span>
+											</div>
+											<div class="cpanel-meter-track">
+												<div class="cpanel-meter-fill fill-blue" style="width: 15%"></div>
+											</div>
+										</div>
+										<div class="cpanel-meter-item">
+											<div class="cpanel-meter-header">
+												<span class="cpanel-meter-title"
+													><i class="fas fa-database"></i> MySQL Databases</span
+												>
+												<span class="cpanel-meter-value">2 / ∞</span>
+											</div>
+											<div class="cpanel-meter-track">
+												<div class="cpanel-meter-fill fill-blue" style="width: 25%"></div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+			</div>
 
-				<!-- Right Sidebar: General Information & Quotas -->
-				<aside class="sidebar-col">
-					<!-- General Information Card -->
-					<div class="sidebar-card">
-						<div class="sidebar-header">
-							<h3 class="sidebar-title">
-								<i class="fas fa-circle-info" style="color: #38bdf8"></i>
-								General Information
-							</h3>
+			<!-- VIEW 2: WHM (Web Host Manager) Multi-Account Center View -->
+			<div id="whmViewSection" style="display: none">
+				<div class="whm-container">
+					<div class="whm-hero">
+						<div class="whm-hero-left">
+							<div class="whm-hero-badge">
+								<i class="fas fa-server"></i> WHM Multi-Tenant Manager
+							</div>
+							<h1 class="whm-hero-title">Web Host Manager (WHM)</h1>
+							<p class="whm-hero-subtitle">
+								Manage, create, provision, and administer individual cPanel accounts and hosting
+								packages.
+							</p>
 						</div>
-						<div class="sidebar-body">
-							<ul class="info-list">
-								<li class="info-row">
-									<span class="info-label"><i class="fas fa-user"></i> Current User</span>
-									<span class="info-val">devsas <span class="role-badge">admin</span></span>
-								</li>
-								<li class="info-row">
-									<span class="info-label"><i class="fas fa-server"></i> Hostname</span>
-									<span class="info-val">srv.devsas.shop</span>
-								</li>
-								<li class="info-row">
-									<span class="info-label"><i class="fas fa-network-wired"></i> Shared IP</span>
-									<span class="info-val">192.168.10.78</span>
-								</li>
-								<li class="info-row">
-									<span class="info-label"><i class="fas fa-folder"></i> Home Dir</span>
-									<span class="info-val"><code>/home/devsas</code></span>
-								</li>
-								<li class="info-row">
-									<span class="info-label"><i class="fas fa-box"></i> Package</span>
-									<span class="info-val">default</span>
-								</li>
-								<li class="info-row">
-									<span class="info-label"><i class="fas fa-microchip"></i> Server Load</span>
-									<span class="info-val">0.15, 0.10, 0.08</span>
-								</li>
-							</ul>
+
+						<div class="whm-hero-actions">
+							<button
+								type="button"
+								class="button button-primary whm-btn-accent"
+								onclick="document.getElementById('demoWhmModal').style.display = 'flex'"
+							>
+								<i class="fas fa-user-plus"></i> Create New cPanel Account
+							</button>
+							<button type="button" class="button button-secondary" onclick="switchView('cpanel')">
+								<i class="fas fa-grip"></i> Switch to cPanel Mode
+							</button>
 						</div>
 					</div>
 
-					<!-- Statistics & Quota Card -->
-					<div class="sidebar-card">
-						<div class="sidebar-header">
-							<h3 class="sidebar-title">
-								<i class="fas fa-chart-simple" style="color: #4ade80"></i>
-								Statistics & Quota
-							</h3>
+					<div class="whm-metrics-grid">
+						<div class="whm-stat-card">
+							<div class="whm-stat-icon-box stat-icon-accounts"><i class="fas fa-users"></i></div>
+							<div class="whm-stat-info">
+								<span class="whm-stat-label">Total Accounts</span>
+								<span class="whm-stat-value">3</span>
+								<span class="whm-stat-subtext"
+									><span class="text-green">3 Active</span> &bull;
+									<span class="text-red">0 Suspended</span></span
+								>
+							</div>
 						</div>
-						<div class="sidebar-body">
-							<div class="meters-list">
-								<!-- Disk Usage -->
-								<div class="meter-item">
-									<div class="meter-header">
-										<span class="meter-title"><i class="fas fa-hard-drive"></i> Disk Usage</span>
-										<span class="meter-val">145 MB / 10 GB (1.4%)</span>
+						<div class="whm-stat-card">
+							<div class="whm-stat-icon-box stat-icon-domains">
+								<i class="fas fa-earth-americas"></i>
+							</div>
+							<div class="whm-stat-info">
+								<span class="whm-stat-label">Hosted Domains</span>
+								<span class="whm-stat-value">4</span>
+								<span class="whm-stat-subtext">Active Virtual Hosts</span>
+							</div>
+						</div>
+						<div class="whm-stat-card">
+							<div class="whm-stat-icon-box stat-icon-disk"><i class="fas fa-hard-drive"></i></div>
+							<div class="whm-stat-info">
+								<span class="whm-stat-label">Total Disk Space</span>
+								<span class="whm-stat-value">620 MB</span>
+								<span class="whm-stat-subtext">Across all cPanel accounts</span>
+							</div>
+						</div>
+						<div class="whm-stat-card">
+							<div class="whm-stat-icon-box stat-icon-server"><i class="fas fa-microchip"></i></div>
+							<div class="whm-stat-info">
+								<span class="whm-stat-label">Server Load</span>
+								<span class="whm-stat-value">0.12, 0.08, 0.05</span>
+								<span class="whm-stat-subtext text-green">Optimal Health</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="whm-content-grid">
+						<div class="whm-main-section">
+							<div class="whm-card">
+								<div class="whm-card-header">
+									<div class="whm-card-header-left">
+										<h2 class="whm-card-title">
+											<i class="fas fa-users-gear icon-blue"></i> cPanel Accounts Manager
+										</h2>
+										<span class="whm-pill-counter">3 Accounts</span>
 									</div>
-									<div class="meter-track">
-										<div class="meter-fill fill-green" style="width: 1.4%"></div>
+									<div class="whm-search-box">
+										<i class="fas fa-magnifying-glass"></i>
+										<input
+											type="text"
+											class="whm-search-input"
+											placeholder="Search accounts by user, domain, package..."
+										/>
 									</div>
 								</div>
+								<div class="whm-card-body u-p0">
+									<table class="whm-table">
+										<thead>
+											<tr>
+												<th>User / Account</th>
+												<th>Package</th>
+												<th>Web / Mail / DB</th>
+												<th>Disk Usage</th>
+												<th>Status</th>
+												<th class="text-right">Actions</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div class="whm-user-cell">
+														<div class="whm-user-avatar"><i class="fas fa-user-shield"></i></div>
+														<div class="whm-user-meta">
+															<div class="whm-user-primary">
+																<span class="whm-user-link">devsas</span>
+																<span class="whm-tag-root">root</span>
+															</div>
+															<span class="whm-user-sub">Administrator</span>
+														</div>
+													</div>
+												</td>
+												<td>
+													<span class="whm-pkg-badge"><i class="fas fa-box-open"></i> default</span>
+												</td>
+												<td>
+													<div class="whm-resource-counts">
+														<span><i class="fas fa-globe icon-blue"></i> 1</span>
+														<span><i class="fas fa-envelope icon-cyan"></i> 1</span>
+														<span><i class="fas fa-database icon-orange"></i> 2</span>
+													</div>
+												</td>
+												<td>
+													<div class="whm-quota-mini">
+														<div class="whm-quota-text">
+															145 MB <span class="u-text-dim">/ 10 GB</span>
+														</div>
+														<div class="whm-meter-mini">
+															<div class="whm-meter-fill fill-green" style="width: 1.4%"></div>
+														</div>
+													</div>
+												</td>
+												<td>
+													<span class="whm-status-badge status-active"
+														><i class="fas fa-check-circle"></i> Active</span
+													>
+												</td>
+												<td class="text-right">
+													<div class="whm-row-actions">
+														<button
+															class="whm-action-btn btn-cpanel-login"
+															onclick="switchView('cpanel')"
+														>
+															<i class="fas fa-arrow-right-to-bracket"></i> <span>cPanel</span>
+														</button>
+														<button class="whm-action-btn btn-edit">
+															<i class="fas fa-pen-to-square"></i>
+														</button>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<div class="whm-user-cell">
+														<div class="whm-user-avatar"><i class="fas fa-user"></i></div>
+														<div class="whm-user-meta">
+															<div class="whm-user-primary">
+																<span class="whm-user-link">client_alpha</span>
+															</div>
+															<span class="whm-user-sub">Alpha Media Ltd.</span>
+														</div>
+													</div>
+												</td>
+												<td>
+													<span class="whm-pkg-badge"
+														><i class="fas fa-box-open"></i> standard</span
+													>
+												</td>
+												<td>
+													<div class="whm-resource-counts">
+														<span><i class="fas fa-globe icon-blue"></i> 2</span>
+														<span><i class="fas fa-envelope icon-cyan"></i> 5</span>
+														<span><i class="fas fa-database icon-orange"></i> 1</span>
+													</div>
+												</td>
+												<td>
+													<div class="whm-quota-mini">
+														<div class="whm-quota-text">
+															320 MB <span class="u-text-dim">/ 5 GB</span>
+														</div>
+														<div class="whm-meter-mini">
+															<div class="whm-meter-fill fill-green" style="width: 6.4%"></div>
+														</div>
+													</div>
+												</td>
+												<td>
+													<span class="whm-status-badge status-active"
+														><i class="fas fa-check-circle"></i> Active</span
+													>
+												</td>
+												<td class="text-right">
+													<div class="whm-row-actions">
+														<button
+															class="whm-action-btn btn-cpanel-login"
+															onclick="alert('Instant Login as client_alpha into cPanel!')"
+														>
+															<i class="fas fa-arrow-right-to-bracket"></i> <span>cPanel</span>
+														</button>
+														<button class="whm-action-btn btn-edit">
+															<i class="fas fa-pen-to-square"></i>
+														</button>
+														<button class="whm-action-btn btn-suspend">
+															<i class="fas fa-pause"></i>
+														</button>
+														<button class="whm-action-btn btn-delete">
+															<i class="fas fa-trash-can"></i>
+														</button>
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
 
-								<!-- Monthly Bandwidth -->
-								<div class="meter-item">
-									<div class="meter-header">
-										<span class="meter-title"
-											><i class="fas fa-right-left"></i> Monthly Bandwidth</span
-										>
-										<span class="meter-val">450 MB / 50 GB (0.9%)</span>
-									</div>
-									<div class="meter-track">
-										<div class="meter-fill fill-green" style="width: 0.9%"></div>
+						<div class="whm-sidebar-section">
+							<div class="whm-card">
+								<div class="whm-card-header">
+									<h3 class="whm-card-title">
+										<i class="fas fa-boxes-packing icon-orange"></i> Hosting Packages
+									</h3>
+									<span class="whm-header-link">+ New</span>
+								</div>
+								<div class="whm-card-body">
+									<div class="whm-pkg-list">
+										<div class="whm-pkg-item">
+											<div class="whm-pkg-item-header">
+												<span class="whm-pkg-item-name">default</span>
+												<i class="fas fa-gear" style="color: #64748b"></i>
+											</div>
+											<div class="whm-pkg-limits">
+												<span><i class="fas fa-hard-drive"></i> 10 GB</span>
+												<span><i class="fas fa-right-left"></i> 50 GB</span>
+												<span><i class="fas fa-globe"></i> ∞</span>
+											</div>
+										</div>
+										<div class="whm-pkg-item">
+											<div class="whm-pkg-item-header">
+												<span class="whm-pkg-item-name">starter</span>
+												<i class="fas fa-gear" style="color: #64748b"></i>
+											</div>
+											<div class="whm-pkg-limits">
+												<span><i class="fas fa-hard-drive"></i> 2 GB</span>
+												<span><i class="fas fa-right-left"></i> 10 GB</span>
+												<span><i class="fas fa-globe"></i> 1</span>
+											</div>
+										</div>
 									</div>
 								</div>
+							</div>
 
-								<!-- Web Domains -->
-								<div class="meter-item">
-									<div class="meter-header">
-										<span class="meter-title"><i class="fas fa-globe"></i> Web Domains</span>
-										<span class="meter-val">1 / ∞</span>
-									</div>
-									<div class="meter-track">
-										<div class="meter-fill fill-blue" style="width: 12%"></div>
-									</div>
+							<div class="whm-card">
+								<div class="whm-card-header">
+									<h3 class="whm-card-title">
+										<i class="fas fa-server icon-green"></i> Server Daemons
+									</h3>
+									<span class="whm-header-link">All</span>
 								</div>
-
-								<!-- MySQL Databases -->
-								<div class="meter-item">
-									<div class="meter-header">
-										<span class="meter-title"><i class="fas fa-database"></i> MySQL Databases</span>
-										<span class="meter-val">2 / ∞</span>
-									</div>
-									<div class="meter-track">
-										<div class="meter-fill fill-blue" style="width: 25%"></div>
-									</div>
-								</div>
-
-								<!-- Email Accounts -->
-								<div class="meter-item">
-									<div class="meter-header">
-										<span class="meter-title"><i class="fas fa-envelope"></i> Email Accounts</span>
-										<span class="meter-val">1 / ∞</span>
-									</div>
-									<div class="meter-track">
-										<div class="meter-fill fill-blue" style="width: 10%"></div>
-									</div>
-								</div>
-
-								<!-- DNS Zones -->
-								<div class="meter-item">
-									<div class="meter-header">
-										<span class="meter-title"><i class="fas fa-book-atlas"></i> DNS Zones</span>
-										<span class="meter-val">1 / ∞</span>
-									</div>
-									<div class="meter-track">
-										<div class="meter-fill fill-blue" style="width: 10%"></div>
-									</div>
-								</div>
-
-								<!-- Cron Jobs -->
-								<div class="meter-item">
-									<div class="meter-header">
-										<span class="meter-title"><i class="fas fa-clock"></i> Cron Jobs</span>
-										<span class="meter-val">1 / ∞</span>
-									</div>
-									<div class="meter-track">
-										<div class="meter-fill fill-blue" style="width: 10%"></div>
-									</div>
-								</div>
-
-								<!-- Backups -->
-								<div class="meter-item">
-									<div class="meter-header">
-										<span class="meter-title"><i class="fas fa-box-archive"></i> Backups</span>
-										<span class="meter-val">1 / 3 (33%)</span>
-									</div>
-									<div class="meter-track">
-										<div class="meter-fill fill-amber" style="width: 33%"></div>
+								<div class="whm-card-body">
+									<div class="whm-services-list">
+										<div class="whm-service-row">
+											<div class="whm-service-info">
+												<span class="whm-service-dot dot-running"></span
+												><span class="whm-service-name">nginx</span>
+											</div>
+											<div class="whm-service-ctrl">
+												<button class="whm-srv-btn"><i class="fas fa-rotate-right"></i></button>
+											</div>
+										</div>
+										<div class="whm-service-row">
+											<div class="whm-service-info">
+												<span class="whm-service-dot dot-running"></span
+												><span class="whm-service-name">php8.2-fpm</span>
+											</div>
+											<div class="whm-service-ctrl">
+												<button class="whm-srv-btn"><i class="fas fa-rotate-right"></i></button>
+											</div>
+										</div>
+										<div class="whm-service-row">
+											<div class="whm-service-info">
+												<span class="whm-service-dot dot-running"></span
+												><span class="whm-service-name">mariadb</span>
+											</div>
+											<div class="whm-service-ctrl">
+												<button class="whm-srv-btn"><i class="fas fa-rotate-right"></i></button>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</aside>
+				</div>
 			</div>
 		</main>
 
-		<!-- Interactive Vanilla JS Script -->
+		<!-- Demo WHM Account Modal -->
+		<div id="demoWhmModal" class="whm-modal-overlay" style="display: none">
+			<div class="whm-modal-card">
+				<div class="whm-modal-header">
+					<h3 class="whm-modal-title">
+						<i class="fas fa-user-plus icon-blue"></i> Create New cPanel Account
+					</h3>
+					<button
+						type="button"
+						class="whm-modal-close"
+						onclick="document.getElementById('demoWhmModal').style.display = 'none'"
+					>
+						<i class="fas fa-xmark"></i>
+					</button>
+				</div>
+				<div class="whm-modal-body">
+					<form
+						onsubmit="
+							event.preventDefault();
+							alert('Account Provisioned Successfully!');
+							document.getElementById('demoWhmModal').style.display = 'none';
+						"
+					>
+						<div class="form-row-2">
+							<div class="whm-form-group">
+								<label class="form-label">Username *</label>
+								<input type="text" class="form-control" required placeholder="e.g. clientname" />
+							</div>
+							<div class="whm-form-group">
+								<label class="form-label">Contact Email *</label>
+								<input type="email" class="form-control" required placeholder="user@domain.com" />
+							</div>
+						</div>
+						<div class="form-row-2">
+							<div class="whm-form-group">
+								<label class="form-label">Password *</label>
+								<input type="password" class="form-control" value="SecurePass#2026!" required />
+							</div>
+							<div class="whm-form-group">
+								<label class="form-label">Hosting Package</label>
+								<select class="form-select">
+									<option>default (10 GB Disk / 50 GB BW)</option>
+									<option>starter (2 GB Disk / 10 GB BW)</option>
+								</select>
+							</div>
+						</div>
+						<div class="whm-form-footer">
+							<button
+								type="button"
+								class="button button-secondary"
+								onclick="document.getElementById('demoWhmModal').style.display = 'none'"
+							>
+								Cancel
+							</button>
+							<button type="submit" class="button button-primary whm-btn-accent">
+								<i class="fas fa-check"></i> Provision cPanel Account
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<!-- Footer -->
+		<footer class="app-footer">
+			<div class="container">
+				<p>
+					<a href="https://devsas.shop" class="app-footer-link" target="_blank">sasPanel</a>
+					v1.10.3 &bull; Developed by
+					<a href="https://devsas.shop" class="app-footer-link" target="_blank"
+						>Md. Sajibul Alom Sajon</a
+					>
+				</p>
+			</div>
+		</footer>
+
 		<script>
-			(() => {
-				const searchInput = document.getElementById("toolSearchInput");
-				const noResultsBox = document.getElementById("noResultsBox");
-				const btnResetSearch = document.getElementById("btnResetSearch");
-				const btnExpandAll = document.getElementById("btnExpandAll");
-				const btnCollapseAll = document.getElementById("btnCollapseAll");
-				const categoryCards = document.querySelectorAll(".category-card");
-				const toolTiles = document.querySelectorAll(".tool-tile");
+			function switchView(view) {
+				const cpanelSec = document.getElementById("cpanelViewSection");
+				const whmSec = document.getElementById("whmViewSection");
+				const tabCpanel = document.getElementById("tab-cpanel");
+				const tabWhm = document.getElementById("tab-whm");
 
-				// Store original text for highlight
-				toolTiles.forEach((tile) => {
-					const nameEl = tile.querySelector(".tool-name");
-					const descEl = tile.querySelector(".tool-desc");
-					if (nameEl) tile._origName = nameEl.textContent;
-					if (descEl) tile._origDesc = descEl.textContent;
-				});
-
-				// Accordion click
-				categoryCards.forEach((card) => {
-					const header = card.querySelector(".category-header");
-					header.addEventListener("click", () => {
-						card.classList.toggle("collapsed");
-					});
-				});
-
-				// Expand / Collapse all
-				btnExpandAll.addEventListener("click", () => {
-					categoryCards.forEach((card) => card.classList.remove("collapsed"));
-				});
-				btnCollapseAll.addEventListener("click", () => {
-					categoryCards.forEach((card) => card.classList.add("collapsed"));
-				});
-
-				// Live Search Filtering
-				function filterTools(query) {
-					const term = query.trim().toLowerCase();
-					let totalVisible = 0;
-
-					categoryCards.forEach((card) => {
-						const tiles = card.querySelectorAll(".tool-tile");
-						let cardVisible = 0;
-
-						tiles.forEach((tile) => {
-							const name = tile._origName || "";
-							const desc = tile._origDesc || "";
-							const keys = tile.getAttribute("data-keys") || "";
-							const combined = (name + " " + desc + " " + keys).toLowerCase();
-
-							const nameEl = tile.querySelector(".tool-name");
-							const descEl = tile.querySelector(".tool-desc");
-
-							if (term === "" || combined.includes(term)) {
-								tile.style.display = "flex";
-								cardVisible++;
-								totalVisible++;
-
-								if (term !== "" && nameEl) {
-									nameEl.innerHTML = highlight(name, term);
-								} else if (nameEl) {
-									nameEl.textContent = name;
-								}
-
-								if (term !== "" && descEl && desc) {
-									descEl.innerHTML = highlight(desc, term);
-								} else if (descEl && desc) {
-									descEl.textContent = desc;
-								}
-							} else {
-								tile.style.display = "none";
-								if (nameEl) nameEl.textContent = name;
-								if (descEl && desc) descEl.textContent = desc;
-							}
-						});
-
-						const countEl = card.querySelector(".cat-count");
-						if (countEl) {
-							countEl.textContent = term === "" ? tiles.length : `${cardVisible} / ${tiles.length}`;
-						}
-
-						if (cardVisible === 0 && term !== "") {
-							card.style.display = "none";
-						} else {
-							card.style.display = "block";
-							if (term !== "") card.classList.remove("collapsed");
-						}
-					});
-
-					if (noResultsBox) {
-						if (totalVisible === 0 && term !== "") {
-							noResultsBox.classList.add("visible");
-						} else {
-							noResultsBox.classList.remove("visible");
-						}
-					}
+				if (view === "whm") {
+					cpanelSec.style.display = "none";
+					whmSec.style.display = "block";
+					tabCpanel.classList.remove("active");
+					tabWhm.classList.add("active");
+				} else {
+					cpanelSec.style.display = "block";
+					whmSec.style.display = "none";
+					tabWhm.classList.remove("active");
+					tabCpanel.classList.add("active");
 				}
-
-				function highlight(text, term) {
-					const idx = text.toLowerCase().indexOf(term);
-					if (idx === -1) return escapeHtml(text);
-					const before = text.substring(0, idx);
-					const match = text.substring(idx, idx + term.length);
-					const after = text.substring(idx + term.length);
-					return (
-						escapeHtml(before) +
-						'<mark class="hl">' +
-						escapeHtml(match) +
-						"</mark>" +
-						escapeHtml(after)
-					);
-				}
-
-				function escapeHtml(str) {
-					return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-				}
-
-				if (searchInput) {
-					searchInput.addEventListener("input", (e) => filterTools(e.target.value));
-				}
-
-				if (btnResetSearch) {
-					btnResetSearch.addEventListener("click", () => {
-						if (searchInput) {
-							searchInput.value = "";
-							filterTools("");
-							searchInput.focus();
-						}
-					});
-				}
-
-				// Key shortcut /
-				document.addEventListener("keydown", (e) => {
-					const isInput = ["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName);
-					if (
-						(e.key === "/" && !isInput) ||
-						((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k")
-					) {
-						e.preventDefault();
-						if (searchInput) {
-							searchInput.focus();
-							searchInput.select();
-						}
-					}
-					if (e.key === "Escape" && isInput && document.activeElement === searchInput) {
-						searchInput.value = "";
-						filterTools("");
-						searchInput.blur();
-					}
-				});
-			})();
+			}
 		</script>
+		<script src="/js/custom_scripts/cpanel-dashboard.js"></script>
 	</body>
 </html>

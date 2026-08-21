@@ -507,7 +507,11 @@ function load_hestia_config() {
 	foreach ($sys_arr as $key => $value) {
 		$_SESSION[$key] = $value;
 	}
-	if (empty($_SESSION["APP_NAME"])) {
+	if (
+		empty($_SESSION["APP_NAME"]) ||
+		$_SESSION["APP_NAME"] === "Hestia" ||
+		$_SESSION["APP_NAME"] === "Hestia Control Panel"
+	) {
 		$_SESSION["APP_NAME"] = "sasPanel";
 	}
 }
