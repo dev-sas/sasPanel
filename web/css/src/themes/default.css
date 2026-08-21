@@ -7,6 +7,7 @@
 @import url("../fonts");
 @import url("../base");
 @import url("../utilities");
+@import url("../cpanel");
 
 :root {
 	--animate-duration: 300ms;

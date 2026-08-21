@@ -168,6 +168,16 @@
 					<div x-cloak x-show="open" x-on:click.outside="open = false" class="top-bar-menu-panel">
 						<ul class="top-bar-menu-list">
 
+							<!-- Dashboard -->
+							<li class="top-bar-menu-item">
+								<a title="<?= _("Dashboard") ?>" class="top-bar-menu-link <?php if ($TAB == "DASHBOARD") {
+	echo "active";
+} ?>" href="/list/dashboard/">
+									<i class="fas fa-grip"></i>
+									<span class="top-bar-menu-link-label u-hide-desktop"><?= _("Dashboard") ?></span>
+								</a>
+							</li>
+
 							<!-- File Manager -->
 							<?php if (isset($_SESSION["FILE_MANAGER"]) && !empty($_SESSION["FILE_MANAGER"]) && $_SESSION["FILE_MANAGER"] == "true") { ?>
 								<?php if ($_SESSION["userContext"] === "admin" && $_SESSION["look"] === "admin" && $_SESSION["POLICY_SYSTEM_PROTECTED_ADMIN"] == "yes") { ?>
@@ -294,6 +304,21 @@
 				</span>
 			</button>
 			<ul x-cloak x-show="open" class="main-menu-list">
+
+				<!-- Dashboard tab -->
+				<li class="main-menu-item">
+					<a class="main-menu-item-link <?php if ($TAB == "DASHBOARD") { echo "active"; } ?>" href="/list/dashboard/" title="<?= _("Dashboard") ?>">
+						<p class="main-menu-item-label"><?= _("DASHBOARD") ?><i class="fas fa-grip"></i></p>
+						<ul class="main-menu-stats">
+							<li>
+								<?= _("cPanel") ?>
+							</li>
+							<li>
+								<?= _("Overview") ?>
+							</li>
+						</ul>
+					</a>
+				</li>
 
 				<!-- Users tab -->
 				<?php if ($_SESSION["userContext"] == "admin" && $_SESSION["look"] === "") { ?>

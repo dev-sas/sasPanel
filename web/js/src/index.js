@@ -4,6 +4,7 @@ import handleAutoTrimInputs from './autoTrimInputs';
 import handleClipboardCopy from './clipboardCopy';
 import handleConfirmAction from './confirmAction';
 import handleCopyCreds from './copyCreds';
+import initCpanelDashboard from './cpanelDashboard';
 import handleCronGenerator from './cronGenerator';
 import handleDatabaseHints from './databaseHints';
 import handleDiscardAllMail from './discardAllMail';
@@ -55,6 +56,7 @@ function initListeners() {
 	handleToggleAdvanced();
 	initRrdCharts();
 	initWebTerminal();
+	initCpanelDashboard();
 }
 
 document.addEventListener('alpine:init', () => {

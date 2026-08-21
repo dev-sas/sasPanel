@@ -5,6 +5,7 @@
 */
 
 @import url("../media_queries");
+@import url("../cpanel");
 
 :root {
 	/* Colors */
