@@ -56,6 +56,22 @@ $dns_pct = get_percentage($u_dns, $max_dns);
 $server_host = $_SERVER['SERVER_NAME'] ?? gethostname();
 $server_ip = $_SERVER['SERVER_ADDR'] ?? get_real_user_ip();
 $display_name = !empty($user_data["NAME"]) ? $user_data["NAME"] : $active_user;
+
+[$http_host, $port] = explode(":", $_SERVER["HTTP_HOST"] . ":");
+$db_myadmin_link = "//" . $http_host . "/phpmyadmin/";
+if (!empty($_SESSION["DB_PMA_ALIAS"])) {
+	$db_myadmin_link = "//" . $http_host . "/" . $_SESSION["DB_PMA_ALIAS"] . "/";
+}
+if (isset($_SESSION['PHPMYADMIN_KEY']) && $_SESSION['PHPMYADMIN_KEY'] != '' && !ipUsed()) {
+	$time = time();
+	$pma_token = md5($_SESSION['user_combined_ip'] . $time . $_SESSION['PHPMYADMIN_KEY']);
+	$db_myadmin_link = "//" . $http_host . "/phpmyadmin/hst_sso.php?user=" . urlencode($active_user) . "&time=" . $time . "&token=" . $pma_token;
+}
+
+$webmail_link = "//" . $http_host . "/webmail/";
+if (!empty($_SESSION["WEBMAIL_ALIAS"])) {
+	$webmail_link = "//" . $http_host . "/" . $_SESSION["WEBMAIL_ALIAS"] . "/";
+}
 ?>
 
 <link rel="stylesheet" href="/css/cpanel.css?<?= JS_LATEST_UPDATE ?>">
@@ -253,15 +269,15 @@ $display_name = !empty($user_data["NAME"]) ? $user_data["NAME"] : $active_user;
 						</a>
 						<?php } ?>
 
-						<a href="/list/ssl/" class="cpanel-tool-item" data-keywords="ssl tls lets encrypt certificates https secure certs">
+						<a href="/list/web/" class="cpanel-tool-item" data-keywords="ssl tls lets encrypt certificates https secure certs">
 							<div class="cpanel-tool-icon-box tool-icon-ssl">
 								<i class="fas fa-shield-halved"></i>
 							</div>
-							<span class="cpanel-tool-name"><?= _("SSL/TLS Status") ?></span>
+							<span class="cpanel-tool-name"><?= _("SSL / HTTPS") ?></span>
 							<span class="cpanel-tool-desc"><?= _("Let's Encrypt & certs") ?></span>
 						</a>
 
-						<a href="/list/webapps/" class="cpanel-tool-item" data-keywords="wordpress quick install web apps joomla drupal phpbb nodejs">
+						<a href="/add/webapp/" class="cpanel-tool-item" data-keywords="wordpress quick install web apps joomla drupal phpbb nodejs">
 							<div class="cpanel-tool-icon-box tool-icon-app">
 								<i class="fas fa-cubes"></i>
 							</div>
@@ -316,7 +332,7 @@ $display_name = !empty($user_data["NAME"]) ? $user_data["NAME"] : $active_user;
 							<span class="cpanel-tool-desc"><?= _("Create new database") ?></span>
 						</a>
 
-						<a href="/phpmyadmin/" target="_blank" rel="noopener" class="cpanel-tool-item" data-keywords="phpmyadmin pma sql query export import table database admin">
+						<a href="<?= htmlspecialchars($db_myadmin_link) ?>" target="_blank" rel="noopener" class="cpanel-tool-item" data-keywords="phpmyadmin pma sql query export import table database admin">
 							<div class="cpanel-tool-icon-box tool-icon-pma">
 								<i class="fas fa-table-columns"></i>
 							</div>
@@ -363,7 +379,7 @@ $display_name = !empty($user_data["NAME"]) ? $user_data["NAME"] : $active_user;
 							<span class="cpanel-tool-desc"><?= _("Setup new email domain") ?></span>
 						</a>
 
-						<a href="/webmail/" target="_blank" rel="noopener" class="cpanel-tool-item" data-keywords="webmail roundcube snappymail rainloop read email inbox">
+						<a href="<?= htmlspecialchars($webmail_link) ?>" target="_blank" rel="noopener" class="cpanel-tool-item" data-keywords="webmail roundcube snappymail rainloop read email inbox">
 							<div class="cpanel-tool-icon-box tool-icon-webmail">
 								<i class="fas fa-inbox"></i>
 							</div>
@@ -371,7 +387,7 @@ $display_name = !empty($user_data["NAME"]) ? $user_data["NAME"] : $active_user;
 							<span class="cpanel-tool-desc"><?= _("Access Roundcube / Webmail") ?></span>
 						</a>
 
-						<a href="/list/mail-dns/" class="cpanel-tool-item" data-keywords="mail dns dkim spf dmarc spam authentication records">
+						<a href="/list/dns/" class="cpanel-tool-item" data-keywords="mail dns dkim spf dmarc spam authentication records">
 							<div class="cpanel-tool-icon-box tool-icon-mail">
 								<i class="fas fa-shield-cat"></i>
 							</div>
@@ -552,7 +568,7 @@ $display_name = !empty($user_data["NAME"]) ? $user_data["NAME"] : $active_user;
 							<span class="cpanel-tool-desc"><?= _("Core daemon configurations") ?></span>
 						</a>
 
-						<a href="/list/services/" class="cpanel-tool-item" data-keywords="services status daemons restart stop start health">
+						<a href="/list/server/" class="cpanel-tool-item" data-keywords="services status daemons restart stop start health">
 							<div class="cpanel-tool-icon-box tool-icon-server">
 								<i class="fas fa-wave-square"></i>
 							</div>

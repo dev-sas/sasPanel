@@ -23,7 +23,7 @@
 			</div>
 		<?php } ?>
 
-		<!-- Login Form -->
+		<!-- Login Form: Username & Password in 1 Unified Form -->
 		<form id="login-form" method="post" action="/login/" class="cp-auth-form">
 			<input type="hidden" name="token" value="<?= tohtml($_SESSION["token"]) ?>">
 
@@ -43,6 +43,7 @@
 						autocomplete="username"
 						required
 						autofocus
+						value="<?= isset($_POST["user"]) ? tohtml($_POST["user"]) : "" ?>"
 					>
 				</div>
 			</div>

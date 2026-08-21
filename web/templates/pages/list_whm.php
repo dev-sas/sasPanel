@@ -280,7 +280,7 @@ $token = $_SESSION["token"] ?? "";
 					<h3 class="whm-card-title">
 						<i class="fas fa-server icon-green"></i> <?= _("Server Daemons & Services") ?>
 					</h3>
-					<a href="/list/services/" class="whm-header-link" title="<?= _("View all services") ?>">
+					<a href="/list/server/" class="whm-header-link" title="<?= _("View all services") ?>">
 						<?= _("View All") ?>
 					</a>
 				</div>

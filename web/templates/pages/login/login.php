@@ -23,10 +23,11 @@
 			</div>
 		<?php } ?>
 
-		<!-- Login Form Step 1: Username -->
+		<!-- Login Form: Username & Password in 1 Unified Form -->
 		<form id="login-form" method="post" action="/login/" class="cp-auth-form">
 			<input type="hidden" name="token" value="<?= tohtml($_SESSION["token"]) ?>">
 
+			<!-- Username -->
 			<div class="cp-auth-field">
 				<label for="username" class="cp-auth-label">
 					<i class="fas fa-user-circle"></i> <?= tohtml(_("Username or Domain")) ?>
@@ -42,13 +43,44 @@
 						autocomplete="username"
 						required
 						autofocus
+						value="<?= isset($_POST["user"]) ? tohtml($_POST["user"]) : "" ?>"
 					>
 				</div>
 			</div>
 
+			<!-- Password -->
+			<div class="cp-auth-field">
+				<div class="cp-auth-label-row">
+					<label for="password" class="cp-auth-label">
+						<i class="fas fa-lock"></i> <?= tohtml(_("Password")) ?>
+					</label>
+					<?php if ($_SESSION["POLICY_SYSTEM_PASSWORD_RESET"] !== "no") { ?>
+						<a class="cp-auth-link" href="/reset/">
+							<?= tohtml(_("Forgot password?")) ?>
+						</a>
+					<?php } ?>
+				</div>
+				<div class="cp-auth-input-wrap">
+					<i class="fas fa-key cp-input-icon"></i>
+					<input
+						type="password"
+						class="cp-auth-input"
+						name="password"
+						id="password"
+						placeholder="<?= _("Enter your password") ?>"
+						autocomplete="current-password"
+						required
+					>
+					<button type="button" class="cp-pwd-toggle" onclick="togglePasswordVisibility('password', this)" title="<?= _("Show/Hide Password") ?>">
+						<i class="fas fa-eye"></i>
+					</button>
+				</div>
+			</div>
+
+			<!-- Submit Button -->
 			<button type="submit" class="cp-auth-submit-btn">
-				<span><?= tohtml(_("Continue to Password")) ?></span>
-				<i class="fas fa-arrow-right"></i>
+				<span><?= tohtml(_("Sign In to Control Panel")) ?></span>
+				<i class="fas fa-arrow-right-to-bracket"></i>
 			</button>
 		</form>
 
@@ -67,3 +99,24 @@
 
 	</div>
 </div>
+
+<script>
+	function togglePasswordVisibility(inputId, btn) {
+		const input = document.getElementById(inputId);
+		if (!input) return;
+		const icon = btn.querySelector('i');
+		if (input.type === 'password') {
+			input.type = 'text';
+			if (icon) {
+				icon.classList.remove('fa-eye');
+				icon.classList.add('fa-eye-slash');
+			}
+		} else {
+			input.type = 'password';
+			if (icon) {
+				icon.classList.remove('fa-eye-slash');
+				icon.classList.add('fa-eye');
+			}
+		}
+	}
+</script>
